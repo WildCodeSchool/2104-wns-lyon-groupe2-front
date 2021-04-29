@@ -1,8 +1,6 @@
-/* eslint-disable */
-
 import React from 'react'
-import Routes from '../Routes/Routes'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
+import Routes from '../Routes/Routes'
 
 function App() {
   const { REACT_APP_API_URL } = process.env
