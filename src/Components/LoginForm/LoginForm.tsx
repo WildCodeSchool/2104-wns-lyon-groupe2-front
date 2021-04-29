@@ -14,6 +14,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './LoginStyle'
 import * as EmailValidator from 'email-validator'
+import { Link } from 'react-router-dom'
 
 interface ILogin {
   email: string
@@ -89,7 +90,7 @@ const LoginForm: React.FC = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              Mot de passe oublié ?
+              <Link to="/forgotpassword">Mot de passe oublié ?</Link>
             </Grid>
           </Grid>
         </form>
