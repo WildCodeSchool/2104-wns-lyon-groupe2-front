@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState } from 'react'
 import {
   Avatar,
@@ -12,9 +10,9 @@ import {
   Container,
 } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import useStyles from './LoginStyle'
 import * as EmailValidator from 'email-validator'
 import { Link } from 'react-router-dom'
+import useStyles from './LoginStyle'
 
 interface ILogin {
   email: string
@@ -30,7 +28,6 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = (): void => {
     const formData: ILogin = { email, password, remember }
-    console.log(formData)
   }
 
   const validate = () => {
