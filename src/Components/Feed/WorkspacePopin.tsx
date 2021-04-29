@@ -1,13 +1,12 @@
-/* eslint-disable  */
 import './WorkspacePopin.scss'
 import { VscClose } from 'react-icons/vsc'
 
-type TWorkspacePopinPros = {
+export type TWorkspacePopinProps = {
   workspacePopin: boolean
   setWorkspacePopin: (newValue: boolean) => React.SetStateAction<boolean>
 }
 
-const WorkspacePopin: React.FC<TWorkspacePopinPros> = ({
+const WorkspacePopin: React.FC<TWorkspacePopinProps> = ({
   workspacePopin,
   setWorkspacePopin,
 }) => {
@@ -20,10 +19,12 @@ const WorkspacePopin: React.FC<TWorkspacePopinPros> = ({
             <VscClose onClick={() => setWorkspacePopin(false)} />
           </div>
           <div className="popin_footer">
-            <ul style={{ listStyle:'none' }}>
-              <li onClick={() => setWorkspacePopin(false)}>Annuler</li>
-            </ul>
-            <button type='button'>Créer</button>
+            <div onClick={() => setWorkspacePopin(false)}>
+              <ul style={{ listStyle: 'none' }}>
+                <li>Annuler</li>
+              </ul>
+            </div>
+            <button type="button">Créer</button>
           </div>
         </div>
       )}

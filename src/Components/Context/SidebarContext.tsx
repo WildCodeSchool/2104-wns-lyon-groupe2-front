@@ -1,14 +1,13 @@
-/* eslint-disable  */
 import { createContext, useState } from 'react'
 
-export const SidebarContext = createContext()
+export const SidebarContext: any = createContext(null)
 
-const SidebarProvider = ({ children }) => {
+const SidebarProvider: React.FC = ({ children }) => {
   const [workspacePopin, setWorkspacePopin] = useState(false)
   const [checked, setChecked] = useState(false)
   const [assetsPopin, setAssetsPopin] = useState(false)
 
-  const handleClick = () => {
+  const handleClick: () => void = () => {
     if (!checked) {
       setWorkspacePopin(true)
     }

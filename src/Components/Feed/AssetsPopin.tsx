@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import './AssetsPopin.scss'
 import { VscClose } from 'react-icons/vsc'
 
@@ -16,14 +15,14 @@ const AssetsPopin: React.FC<TAssetsPopinProps> = ({
       {assetsPopin && (
         <div className="popin_add_assets">
           <div className="popin_header">
-          <p>Ajouter une ressource</p>
-          <VscClose onClick={() => setAssetsPopin(false)} />
+            <p>Ajouter une ressource</p>
+            <VscClose onClick={() => setAssetsPopin(false)} />
           </div>
           <div className="popin_footer">
-            <ul style={{ listStyle:'none' }}>
+            <ul style={{ listStyle: 'none' }}>
               <li onClick={() => setAssetsPopin(false)}>Annuler</li>
             </ul>
-            <button type='button'>Créer</button>
+            <button type="button">Créer</button>
           </div>
         </div>
       )}

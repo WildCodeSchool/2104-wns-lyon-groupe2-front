@@ -92,3 +92,12 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .sidebar_container_workspace {
+    display: none;
+  }
+  .sidebar_container_assets {
+    display: none;
+  }
+}

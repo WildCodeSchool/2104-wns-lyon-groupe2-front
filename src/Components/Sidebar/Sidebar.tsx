@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import { useState, useContext } from 'react'
 import Switch from '@material-ui/core/Switch'
 import { FcPlus, FcSettings } from 'react-icons/fc'
@@ -8,13 +7,13 @@ import Workspace from './Workspace'
 import './Sidebar.scss'
 import { SidebarContext } from '../Context/SidebarContext'
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   const [assetsModal, setAssetsModal] = useState(false)
   const [workSpaceModal, setWorkSpaceModal] = useState(true)
   const history = useHistory()
   const { handleClick, checked, setChecked } = useContext(SidebarContext)
 
-  const handleModals = () => {
+  const handleModals: () => void = () => {
     setChecked(!checked)
     if (checked) {
       setAssetsModal(false)
