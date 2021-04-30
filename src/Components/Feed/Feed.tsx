@@ -4,6 +4,7 @@ import { SidebarContext } from '../Context/SidebarContext'
 import AssetsPopin from './AssetsPopin'
 import WorkspacePopin from './WorkspacePopin'
 import BurgerMenu from '../Sidebar/BurgerMenu/BurgerMenu'
+import Navbar from './Navbar'
 
 const Feed: React.FC = () => {
   const {
@@ -14,6 +15,9 @@ const Feed: React.FC = () => {
   } = useContext(SidebarContext)
   return (
     <div className="feed_container">
+      <div className="feed_header">
+        <Navbar />
+      </div>
       <BurgerMenu />
       <p>Feed</p>
       {workspacePopin && (
