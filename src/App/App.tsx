@@ -1,6 +1,7 @@
 import React from 'react'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import Routes from '../Routes/Routes'
+import './App.scss'
 
 function App() {
   const { REACT_APP_API_URL } = process.env
