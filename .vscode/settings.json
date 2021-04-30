@@ -1,5 +1,5 @@
 {
-  "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${appName} ${separator} [Branch: dev]",
+  "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${appName} ${separator} [Branch: ds/51/sidebar-interface]",
   "eslint.validate": [
     "javascript",
     "javascriptreact",

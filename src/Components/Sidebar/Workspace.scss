@@ -1,0 +1,13 @@
+.workspace_container {
+  .title_container {
+    display: flex;
+    flex-direction: row;
+    .workspace_icon {
+      margin: 0 5px 0 10px;
+    }
+  }
+
+  .title_channel_container {
+    margin-left: 27px;
+  }
+}
