@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
+import React, { useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -7,7 +7,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useHistory } from 'react-router-dom'
+import { FcTrademark } from 'react-icons/fc'
 import './Navbar.scss'
+import Searchbar from './Searchbar'
 
 const StyledMenu = withStyles({
   paper: {
@@ -41,21 +43,22 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem)
 
 const Navbar: React.FC = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const history = useHistory()
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
+  const handleClick: (e: React.MouseEvent<HTMLElement>) => void = (e) => {
+    setAnchorEl(e.currentTarget)
   }
 
-  const handleClose = () => {
+  const handleClose: () => void = () => {
     setAnchorEl(null)
   }
 
   return (
     <div className="navbar_container">
-      <div onClick={handleClick} className="logo_user">
-        <h3>AB</h3>
+      <Searchbar />
+      <div onClick={handleClick}>
+        <FcTrademark className="logo_user" size={50} />
       </div>
       <StyledMenu
         id="customized-menu"

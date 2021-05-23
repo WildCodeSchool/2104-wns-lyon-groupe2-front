@@ -9,10 +9,6 @@ import './Assets.scss'
 const Assets: React.FC = () => {
   return (
     <div className="assets_container">
-      <ul className="favorites">
-        <FcLike className="favorite_icon" />
-        <li>Favorites</li>
-      </ul>
       <div className="title_container">
         <FcFolder className="assets_icon" />
         <p>Ressources</p>
@@ -20,6 +16,7 @@ const Assets: React.FC = () => {
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
+        className="treeview"
       >
         <TreeItem
           className="title_channel_container"
@@ -40,6 +37,10 @@ const Assets: React.FC = () => {
           <TreeItem nodeId="9" label="liens visio" />
         </TreeItem>
       </TreeView>
+      <ul className="favorites">
+        <FcLike className="favorite_icon" />
+        <li>Favorites</li>
+      </ul>
     </div>
   )
 }

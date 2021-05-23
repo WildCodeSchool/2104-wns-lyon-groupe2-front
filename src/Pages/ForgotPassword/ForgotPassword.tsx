@@ -1,4 +1,4 @@
-const ForgotPassword = () => {
+const ForgotPassword: React.FC = () => {
   return <>Forgot Password Page</>
 }
 

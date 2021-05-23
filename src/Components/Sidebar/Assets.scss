@@ -1,7 +1,12 @@
 .assets_container {
+  .treeview {
+    margin: 10px 0 10px 0;
+  }
   .title_container {
     display: flex;
     flex-direction: row;
+    font-size: 18px;
+    padding: 5px;
     .assets_icon {
       margin: 0 5px 0 10px;
     }
@@ -12,10 +17,12 @@
   .favorites {
     display: flex;
     flex-direction: row;
-    margin: 0 0 20px 10px;
+    margin: 0 0 20px 0px;
     list-style: none;
+    font-size: 18px;
+    padding: 5px;
     .favorite_icon {
-      margin-right: 5px;
+      margin: 0 5px 0 10px;
     }
   }
 }

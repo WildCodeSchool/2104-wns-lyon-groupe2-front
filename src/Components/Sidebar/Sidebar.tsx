@@ -8,8 +8,8 @@ import './Sidebar.scss'
 import { SidebarContext } from '../Context/SidebarContext'
 
 const Sidebar: React.FC = () => {
-  const [assetsModal, setAssetsModal] = useState(false)
-  const [workSpaceModal, setWorkSpaceModal] = useState(true)
+  const [assetsModal, setAssetsModal] = useState<boolean>(false)
+  const [workSpaceModal, setWorkSpaceModal] = useState<boolean>(true)
   const history = useHistory()
   const { handleClick, checked, setChecked } = useContext(SidebarContext)
 

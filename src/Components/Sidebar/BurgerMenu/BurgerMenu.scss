@@ -8,8 +8,8 @@
   /* Position and sizing of burger button */
   .bm-burger-button {
     position: fixed;
-    width: 36px;
-    height: 30px;
+    width: 30px;
+    height: 20px;
     left: 36px;
     top: 36px;
   }
@@ -40,14 +40,13 @@ Sidebar wrapper styles
 Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
 */
   .bm-menu-wrap {
-    position: fixed;
-    height: 100%;
+    position: absolute;
+    height: 100vh;
   }
 
   /* General sidebar styles */
   .bm-menu {
-    background: #373a47;
-    padding: 2.5em 1.5em 0;
+    background-color: #f8f9fa;
     font-size: 1.15em;
   }
 
@@ -58,11 +57,11 @@ Note: Beware of modifying this element as it can break the animations - you shou
 
   /* Wrapper for item list */
   .bm-item-list {
-    color: #b8b7ad;
-    padding: 0.8em;
     display: flex;
     flex-direction: column;
-    margin-left: 30px;
+    height: 100vh;
+    margin-top: 100px;
+    background-color: #f8f9fa;
   }
 
   /* Individual item */
@@ -74,28 +73,36 @@ Note: Beware of modifying this element as it can break the animations - you shou
   .bm-overlay {
     background: rgba(0, 0, 0, 0.3);
   }
-}
 
-.title_container {
-  display: flex !important;
-}
-
-.favorites {
-  display: flex !important;
-  padding: 5px;
-  /*   font-size: 25px; */
-  .favorite_icon {
-    margin-right: 10px;
+  .title_container {
+    display: flex !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 10px;
   }
-}
 
-.title_container {
-  padding: 5px;
-  /*   font-size: 25px; */
-  .workspace_icon {
-    margin-right: 10px;
+  .favorites {
+    display: flex !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 10px;
+
+    /*   font-size: 25px; */
+    .favorite_icon {
+      margin-right: 10px;
+    }
   }
-  .assets_icon {
-    margin-right: 10px;
+
+  .title_container {
+    .workspace_icon {
+      margin-right: 10px;
+    }
+    .assets_icon {
+      margin-right: 10px;
+    }
+  }
+
+  .treeview {
+    margin-top: 20px !important;
   }
 }
