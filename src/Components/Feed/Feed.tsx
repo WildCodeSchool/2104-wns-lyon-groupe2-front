@@ -1,9 +1,12 @@
 import { useContext } from 'react'
 import './Feed.scss'
 import { SidebarContext } from '../Context/SidebarContext'
-import AssetsPopin from './AssetsPopin'
-import WorkspacePopin from './WorkspacePopin'
+import AssetsPopin from './Popin/AssetsPopin'
+import WorkspacePopin from './Popin/WorkspacePopin'
 import BurgerMenu from '../Sidebar/BurgerMenu/BurgerMenu'
+import Navbar from './Navbar/Navbar'
+import SearchbarPopin from './Popin/SearchbarPopin'
+import { NavbarContext } from '../Context/NavbarContext'
 
 const Feed: React.FC = () => {
   const {
@@ -12,10 +15,18 @@ const Feed: React.FC = () => {
     assetsPopin,
     setAssetsPopin,
   } = useContext(SidebarContext)
+
+  const { popin } = useContext(NavbarContext)
+
   return (
     <div className="feed_container">
       <BurgerMenu />
-      <p>Feed</p>
+      <div className="feed_header">
+        <Navbar />
+      </div>
+
+      {popin && <SearchbarPopin />}
+
       {workspacePopin && (
         <div>
           <WorkspacePopin

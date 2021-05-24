@@ -16,6 +16,7 @@ const Workspace: React.FC = () => {
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
+        className="treeview"
       >
         <TreeItem
           className="title_channel_container"
@@ -44,6 +45,7 @@ const Workspace: React.FC = () => {
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
+        className="treeview"
       >
         <TreeItem
           className="title_channel_container"

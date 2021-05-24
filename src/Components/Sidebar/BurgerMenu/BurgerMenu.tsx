@@ -26,6 +26,7 @@ const BurgerMenu: React.FC = () => {
         <h3>Ecoles/Formations</h3>
       </div>
       <TreeView
+        className="treeview"
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
@@ -52,6 +53,7 @@ const BurgerMenu: React.FC = () => {
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
+        className="treeview"
       >
         <TreeItem className={classes.title} nodeId="11" label="General">
           <TreeItem nodeId="12" label="feed" />
@@ -76,6 +78,7 @@ const BurgerMenu: React.FC = () => {
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
+        className="treeview"
       >
         <TreeItem className={classes.title} nodeId="2" label="TypeScript">
           <TreeItem nodeId="3" label="Documents Vrac" />
