@@ -17,7 +17,6 @@ const UserProvider: React.FC = ({ children }) => {
     }
   }, [token])
 
-  console.log('userId', userId)
   return (
     <UserContext.Provider value={{ token, setToken, userId }}>
       {children}

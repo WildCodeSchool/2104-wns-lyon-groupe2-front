@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Avatar,
   Button,
@@ -13,18 +13,21 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import * as EmailValidator from 'email-validator'
 import { Link } from 'react-router-dom'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { useMutation, gql } from '@apollo/client'
 
-import axios from 'axios'
 import useStyles from './LoginStyle'
-import { UserContext } from '../Context/UserContext'
 
-interface ILogin {
-  email: string
-  password: string
-  remember: boolean
-}
 // Pour gérer la redirection avec TS
 type SomeComponentProps = RouteComponentProps
+
+// L'interface ici doit (??) être identique à l'interface ...Graphql coté back ?
+interface InputLogin {
+  input: {
+    email: string
+    password: string
+    remember: boolean
+  }
+}
 
 const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const classes = useStyles()
@@ -32,34 +35,37 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
 
-  // la variable d'environnement ne fonctionne pas chez moi...
-  const { REACT_APP_API_URL } = process.env
-
-  const onSubmit = (): void => {
-    const formData: ILogin = { email, password, remember }
-    // Token est redirection ok voir pour gestion du remember me en back
-    // Et maj requete en front
-    const crendentialsToSend = {
-      query: `
-      query {
-        login(input:{email:"${formData.email}", password: "${formData.password}"}){token}}
-      `,
+  // On écrit la mutation comme définit dans le back
+  // ici on envoie la variable input définit plus bas
+  // et onrécupère le token
+  const LOGIN_MUTATION = gql`
+    mutation login($input: InputLogin!) {
+      login(input: $input) {
+        token
+      }
     }
+  `
+  // utilisation de useMutation (ReactQuery) pour envoyer les data au back
+  // et la methode onCompleted check si retour des data, si oui on envoi
+  // le token au local storage
+  const [login] = useMutation(LOGIN_MUTATION, {
+    onCompleted(data) {
+      if (data) {
+        localStorage.setItem('token', data.login.token as string)
+      }
+    },
+  })
+  // On définit notre Objet input que l'on va envoyer
+  const input: InputLogin = { input: { email, password, remember } }
 
-    axios
-      .post(`http://localhost:4000/daddyStuddies`, crendentialsToSend)
-      .then((res) => {
-        // A voir pour modifier la res car pas dingue
-        if (res.data.data.login.token) {
-          localStorage.setItem('token', res.data.data.login.token)
-          history.push('/')
-        }
-      })
+  // La méthode onSubmit ajouter la variable à la useMutation login()
+  const onSubmit = (): void => {
+    login({ variables: input })
   }
+
   const validate = () => {
     return EmailValidator.validate(email) && password.length > 4
   }
-
   return (
     <Container maxWidth="xs">
       <CssBaseline />
