@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Avatar,
   Button,
@@ -11,40 +11,50 @@ import {
 } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import * as EmailValidator from 'email-validator'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router'
+
 import axios from 'axios'
-import { gql, useQuery } from '@apollo/client'
 import useStyles from './LoginStyle'
+import { UserContext } from '../Context/UserContext'
 
 interface ILogin {
   email: string
   password: string
   remember: boolean
 }
+// Pour gérer la redirection avec TS
+type SomeComponentProps = RouteComponentProps
 
-const LoginForm: React.FC = () => {
+const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
 
+  // la variable d'environnement ne fonctionne pas chez moi...
   const { REACT_APP_API_URL } = process.env
 
   const onSubmit = (): void => {
     const formData: ILogin = { email, password, remember }
-    // Ci-dessous envoi de la query en front, à definir les besoins
-    // du contenu du JWT.
-    // Pour le moment le booleen "remember" n'est pas envoyé au back.
+    // Token est redirection ok voir pour gestion du remember me en back
+    // Et maj requete en front
     const crendentialsToSend = {
       query: `
       query {
         login(input:{email:"${formData.email}", password: "${formData.password}"}){token}}
       `,
     }
+
     axios
-      .post(`${REACT_APP_API_URL}daddyStuddies`, crendentialsToSend)
-      .then((res) => console.log(res.data))
-    // Token dans la réponse, à envoyer dans un cookie en front ?
+      .post(`http://localhost:4000/daddyStuddies`, crendentialsToSend)
+      .then((res) => {
+        // A voir pour modifier la res car pas dingue
+        if (res.data.data.login.token) {
+          localStorage.setItem('token', res.data.data.login.token)
+          history.push('/')
+        }
+      })
   }
   const validate = () => {
     return EmailValidator.validate(email) && password.length > 4
@@ -112,4 +122,5 @@ const LoginForm: React.FC = () => {
   )
 }
 
-export default LoginForm
+// withRouter necessaire pour redirection
+export default withRouter(LoginForm)
