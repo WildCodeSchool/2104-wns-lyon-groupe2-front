@@ -35,6 +35,7 @@ const Feed: React.FC = () => {
           />
         </div>
       )}
+
       {assetsPopin && (
         <div>
           <AssetsPopin
