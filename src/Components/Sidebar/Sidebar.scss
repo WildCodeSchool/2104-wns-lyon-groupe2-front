@@ -34,6 +34,7 @@
     justify-content: space-around;
     align-items: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    height: 100px;
     .website_logo {
       width: 50px;
       border-radius: 50%;
@@ -82,6 +83,7 @@
     justify-content: space-around;
     align-items: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    height: 100px;
     .website_logo {
       width: 50px;
       border-radius: 50%;
@@ -89,6 +91,7 @@
     }
     .website_name {
       margin: 20px 0 20px 0;
+      font-weight: normal;
     }
   }
 }

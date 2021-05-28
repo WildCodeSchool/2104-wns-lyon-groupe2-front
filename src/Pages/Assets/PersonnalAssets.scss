@@ -1,0 +1,14 @@
+.container_assets_page {
+  display: flex;
+  .nav_assets {
+    width: 85%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container_assets_page {
+    .nav_assets {
+      width: 100%;
+    }
+  }
+}

@@ -11,16 +11,20 @@ const Sidebar: React.FC = () => {
   const [assetsModal, setAssetsModal] = useState<boolean>(false)
   const [workSpaceModal, setWorkSpaceModal] = useState<boolean>(true)
   const history = useHistory()
-  const { handleClick, checked, setChecked } = useContext(SidebarContext)
+  const { handleClick } = useContext(SidebarContext)
+
+  const [checked, setChecked] = useState<boolean>(false)
 
   const handleModals: () => void = () => {
     setChecked(!checked)
     if (checked) {
       setAssetsModal(false)
       setWorkSpaceModal(true)
+      history.push('/')
     } else if (!checked) {
       setWorkSpaceModal(false)
       setAssetsModal(true)
+      history.push('/assets')
     }
   }
 
