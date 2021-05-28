@@ -47,7 +47,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
       }
     }
   `
-  // utilisation de useMutation (ReactQuery) pour envoyer les data au back
+  // utilisation de useMutation pour envoyer les data au back
   // et la methode onCompleted check si retour des data, si oui on envoi
   // le token au local storage
   const [login, { data, error }] = useMutation(LOGIN_MUTATION, {
