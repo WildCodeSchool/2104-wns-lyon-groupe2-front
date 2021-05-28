@@ -53,6 +53,10 @@ const Navbar: React.FC = () => {
   const handleClose: () => void = () => {
     setAnchorEl(null)
   }
+  const handleLogout = (): void => {
+    localStorage.removeItem('token')
+    history.push('/login')
+  }
 
   return (
     <div className="navbar_container">
@@ -67,7 +71,7 @@ const Navbar: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem onClick={() => history.push('/login')}>
+        <StyledMenuItem onClick={handleLogout}>
           <ListItemIcon>
             <ExitToAppIcon fontSize="small" />
           </ListItemIcon>
