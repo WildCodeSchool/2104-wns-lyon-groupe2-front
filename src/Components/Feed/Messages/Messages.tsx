@@ -35,7 +35,7 @@ const Messages: React.FC = () => {
     },
     {
       name: 'Thomas',
-      message: "Tester c'est douté",
+      message: "Tester c'est douter",
       like: 13,
       dislike: 1,
       comments: [],
