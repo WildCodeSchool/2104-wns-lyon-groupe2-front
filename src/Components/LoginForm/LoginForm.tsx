@@ -11,45 +11,71 @@ import {
 } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import * as EmailValidator from 'email-validator'
-import { Link, Redirect } from 'react-router-dom'
-import axios from 'axios'
-import { gql, useQuery } from '@apollo/client'
+import { Link } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router'
+import { useMutation, gql } from '@apollo/client'
+import { useToasts } from 'react-toast-notifications'
+
 import useStyles from './LoginStyle'
 
-interface ILogin {
-  email: string
-  password: string
-  remember: boolean
+// Pour gérer la redirection avec TS
+type SomeComponentProps = RouteComponentProps
+
+// L'interface ici doit (??) être identique à l'interface ...Graphql coté back ?
+interface InputLogin {
+  input: {
+    email: string
+    password: string
+    remember: boolean
+  }
 }
 
-const LoginForm: React.FC = () => {
+const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
+  const { addToast } = useToasts()
 
-  const { REACT_APP_API_URL } = process.env
-
-  const onSubmit = (): void => {
-    const formData: ILogin = { email, password, remember }
-    // Ci-dessous envoi de la query en front, à definir les besoins
-    // du contenu du JWT.
-    // Pour le moment le booleen "remember" n'est pas envoyé au back.
-    const crendentialsToSend = {
-      query: `
-      query {
-        login(input:{email:"${formData.email}", password: "${formData.password}"}){token}}
-      `,
+  // On écrit la mutation comme définit dans le back
+  // ici on envoie la variable input définit plus bas
+  // et onrécupère le token
+  const LOGIN_MUTATION = gql`
+    mutation login($input: InputLogin!) {
+      login(input: $input) {
+        token
+      }
     }
-    axios
-      .post(`${REACT_APP_API_URL}daddyStuddies`, crendentialsToSend)
-      .then((res) => console.log(res.data))
-    // Token dans la réponse, à envoyer dans un cookie en front ?
+  `
+  // utilisation de useMutation pour envoyer les data au back
+  //  check si retour des data, si oui on envoi
+  // le token au local storage
+  const [login, { data, error }] = useMutation(LOGIN_MUTATION, {
+    errorPolicy: 'all',
+  })
+
+  // On définit notre Objet input que l'on va envoyer
+  const input: InputLogin = { input: { email, password, remember } }
+
+  // La méthode onSubmit ajoute la variable à la useMutation login()
+  const onSubmit = async (): Promise<void> => {
+    const response = await login({ variables: input })
+    // Ici une gestion d'erreur custom serait nécessaire
+    if (!response.data.login) {
+      const errorMessage = error?.graphQLErrors.map(({ message }) => message)[0]
+      addToast(`${errorMessage}`, {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    } else {
+      localStorage.setItem('token', response.data.login.token as string)
+      history.push('/')
+    }
   }
+
   const validate = () => {
     return EmailValidator.validate(email) && password.length > 4
   }
-
   return (
     <Container maxWidth="xs">
       <CssBaseline />
@@ -112,4 +138,5 @@ const LoginForm: React.FC = () => {
   )
 }
 
-export default LoginForm
+// withRouter necessaire pour redirection
+export default withRouter(LoginForm)
