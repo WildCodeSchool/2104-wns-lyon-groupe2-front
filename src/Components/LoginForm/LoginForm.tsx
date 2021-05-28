@@ -14,6 +14,7 @@ import * as EmailValidator from 'email-validator'
 import { Link } from 'react-router-dom'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useMutation, gql } from '@apollo/client'
+import { useToasts } from 'react-toast-notifications'
 
 import useStyles from './LoginStyle'
 
@@ -34,6 +35,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
+  const { addToast } = useToasts()
 
   // On écrit la mutation comme définit dans le back
   // ici on envoie la variable input définit plus bas
@@ -48,19 +50,27 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   // utilisation de useMutation (ReactQuery) pour envoyer les data au back
   // et la methode onCompleted check si retour des data, si oui on envoi
   // le token au local storage
-  const [login] = useMutation(LOGIN_MUTATION, {
-    onCompleted(data) {
-      if (data) {
-        localStorage.setItem('token', data.login.token as string)
-      }
-    },
+  const [login, { data, error }] = useMutation(LOGIN_MUTATION, {
+    errorPolicy: 'all',
   })
+
   // On définit notre Objet input que l'on va envoyer
   const input: InputLogin = { input: { email, password, remember } }
 
-  // La méthode onSubmit ajouter la variable à la useMutation login()
-  const onSubmit = (): void => {
-    login({ variables: input })
+  // La méthode onSubmit ajoute la variable à la useMutation login()
+  const onSubmit = async (): Promise<void> => {
+    const response = await login({ variables: input })
+    // Ici une gestion d'erreur custom serait nécessaire
+    if (!response.data.login) {
+      const errorMessage = error?.graphQLErrors.map(({ message }) => message)[0]
+      addToast(`${errorMessage}`, {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    } else {
+      localStorage.setItem('token', response.data.login.token as string)
+      history.push('/')
+    }
   }
 
   const validate = () => {
