@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useContext } from 'react'
 import './Feed.scss'
 import { SidebarContext } from '../Context/SidebarContext'
@@ -7,6 +9,7 @@ import BurgerMenu from '../Sidebar/BurgerMenu/BurgerMenu'
 import Navbar from './Navbar/Navbar'
 import SearchbarPopin from './Popin/SearchbarPopin'
 import { NavbarContext } from '../Context/NavbarContext'
+import Messages from './Messages/Messages'
 
 const Feed: React.FC = () => {
   const {
@@ -44,6 +47,9 @@ const Feed: React.FC = () => {
           />
         </div>
       )}
+      <div>
+        <Messages />
+      </div>
     </div>
   )
 }
