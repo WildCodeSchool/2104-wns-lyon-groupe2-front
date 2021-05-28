@@ -9,8 +9,12 @@ import SearchbarPopin from './Popin/SearchbarPopin'
 import { NavbarContext } from '../Context/NavbarContext'
 
 const Feed: React.FC = () => {
-  const { workspacePopin, setWorkspacePopin, assetsPopin, setAssetsPopin } =
-    useContext(SidebarContext)
+  const {
+    workspacePopin,
+    setWorkspacePopin,
+    assetsPopin,
+    setAssetsPopin,
+  } = useContext(SidebarContext)
 
   const { popin } = useContext(NavbarContext)
 
@@ -31,6 +35,7 @@ const Feed: React.FC = () => {
           />
         </div>
       )}
+
       {assetsPopin && (
         <div>
           <AssetsPopin

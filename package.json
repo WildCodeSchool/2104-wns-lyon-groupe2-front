@@ -15,6 +15,8 @@
     "@types/react": "^17.0.4",
     "@types/react-dom": "^17.0.3",
     "axios": "^0.21.1",
+    "chonky": "^2.1.0",
+    "chonky-icon-fontawesome": "^2.1.0",
     "email-validator": "^2.0.4",
     "graphql": "^15.5.0",
     "jwt-decode": "^3.1.2",
