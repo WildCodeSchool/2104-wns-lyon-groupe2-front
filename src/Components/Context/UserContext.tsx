@@ -9,11 +9,11 @@ const initialState = localStorage.getItem('token')
 
 const UserProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string | null>(null)
-  const [userId, setUderId] = useState<number | null>(null)
+  const [userId, setUserId] = useState<number | null>(null)
   useEffect(() => {
     setToken(initialState)
     if (token) {
-      setUderId(jwt_decode(token))
+      setUserId(jwt_decode(token))
     }
   }, [token])
 
