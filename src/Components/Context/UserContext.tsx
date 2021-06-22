@@ -15,8 +15,9 @@ const UserProvider: React.FC = ({ children }) => {
     if (token) {
       setUserId(jwt_decode(token))
     }
+    if (userId) {
+    }
   }, [token])
-
   return (
     <UserContext.Provider value={{ token, setToken, userId }}>
       {children}
