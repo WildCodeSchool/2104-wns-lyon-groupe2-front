@@ -35,14 +35,14 @@ const Sidebar: React.FC = () => {
       }
     >
       <div className="sidebar_header">
-        <div onClick={() => history.push('/')}>
+        <div>
           <img
             className="website_logo"
-            src="https://avatars.githubusercontent.com/u/67632677?v=4"
-            alt="Big daddy"
+            src="logo-ds.png"
+            alt="Daddy Studies"
+            onClick={() => history.push('/')}
           />
         </div>
-        <h3 className="website_name">Daddy Studies</h3>
       </div>
       <div className="btn_sidebar_top">
         <Switch
