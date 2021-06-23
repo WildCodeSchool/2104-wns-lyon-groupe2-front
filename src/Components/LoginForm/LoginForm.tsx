@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import * as EmailValidator from 'email-validator'
 import { Link } from 'react-router-dom'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useMutation, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
 
 import useStyles from './LoginStyle'
@@ -39,7 +39,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
 
   // On écrit la mutation comme définit dans le back
   // ici on envoie la variable input définit plus bas
-  // et onrécupère le token
+  // et on récupère le token
   const LOGIN_MUTATION = gql`
     mutation login($input: InputLogin!) {
       login(input: $input) {
@@ -47,6 +47,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
       }
     }
   `
+
   // utilisation de useMutation pour envoyer les data au back
   //  check si retour des data, si oui on envoi
   // le token au local storage
