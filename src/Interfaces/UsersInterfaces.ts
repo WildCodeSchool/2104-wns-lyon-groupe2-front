@@ -8,4 +8,6 @@ export interface iUsers {
   themeId?: string
   isSchoolAdmin?: boolean
   userType?: string
+  exp?: number
+  iat?: number
 }

@@ -1,6 +1,8 @@
 import React from 'react'
+
 import Feed from '../../Components/Feed/Feed'
 import Sidebar from '../../Components/Sidebar/Sidebar'
+
 import './Home.scss'
 
 const Home: React.FC = () => {
