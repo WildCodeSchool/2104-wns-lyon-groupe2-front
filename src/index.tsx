@@ -18,13 +18,11 @@ setChonkyDefaults({ iconComponent: ChonkyIconFA })
 ReactDOM.render(
   <React.StrictMode>
     <ToastProvider placement="bottom-center">
-      <UserProvider>
-        <NavbarProvider>
-          <SidebarContextProvider>
-            <App />
-          </SidebarContextProvider>
-        </NavbarProvider>
-      </UserProvider>
+      <NavbarProvider>
+        <SidebarContextProvider>
+          <App />
+        </SidebarContextProvider>
+      </NavbarProvider>
     </ToastProvider>
   </React.StrictMode>,
   document.getElementById('root'),
