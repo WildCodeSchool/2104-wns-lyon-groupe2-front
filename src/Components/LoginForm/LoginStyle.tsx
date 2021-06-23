@@ -7,11 +7,14 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  logo: {
     marginLeft: 'auto',
     marginRight: 'auto',
+    display: 'flex',
+    width: '270px',
+    [theme.breakpoints.up(768)]: {
+      width: '300px',
+    },
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -19,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  forgotPassword: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
   },
 }))
 

@@ -81,9 +81,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
     <Container maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <img className={classes.logo} src="logo-ds.png" alt="Daddy Studies" />
         <form className={classes.form}>
           <TextField
             variant="outlined"
@@ -130,7 +128,9 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="/forgotpassword">Mot de passe oublié ?</Link>
+              <Link className={classes.forgotPassword} to="/forgotpassword">
+                Mot de passe oublié ?
+              </Link>
             </Grid>
           </Grid>
         </form>

@@ -11,9 +11,9 @@ import { useQuery, gql } from '@apollo/client'
 import { Button } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import WorkspaceCustom from './WorkspaceCustom'
 
 const useStyles = makeStyles((theme) => ({
+  container: { marginTop: theme.spacing(1) },
   link: {
     color: 'black',
     textDecoration: 'none',
@@ -52,11 +52,11 @@ const GET_WORKSPACES = gql`
   }
 `
 
-const Workspace: React.FC = () => {
+const WorkspaceCustom: React.FC = () => {
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
-        isSchoolWorkspace: true,
+        isSchoolWorkspace: false,
         schoolId: '2',
       },
     },
@@ -73,44 +73,50 @@ const Workspace: React.FC = () => {
   if (error) return <p>Error :(</p>
 
   return (
-    <div className="workspace_container">
-      <div className="title_container">
-        <FcGraduationCap className="workspace_icon" />
-        <p>Ecoles/Formations</p>
-      </div>
-      <div>
-        <TreeView
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-          className="treeview"
-        >
-          {workspace.map((el: any) => (
-            <TreeItem
-              className="title_channel_container"
-              nodeId={el.id}
-              label={el.title}
-            >
-              <Link to={`/${el.id}`} className={classes.link}>
-                <TreeItem nodeId={el.feed[0].id} label={el.feed[0].feedName} />
-              </Link>
+    <div className={classes.container}>
+      {workspace ? (
+        <div className="workspace_container">
+          <div className="title_container">
+            <FcAssistant className="workspace_icon" />
+            <p>Espace de travail</p>
+          </div>
+          <TreeView
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+            className="treeview"
+          >
+            {workspace.map((el: any) => (
               <TreeItem
-                nodeId={el.assets[0].id}
-                label={el.assets[0].assetName}
-              />
-              {el.visio ? (
-                <a href={el.visio}>
-                  <TreeItem nodeId="5" label="Visio" />
-                </a>
-              ) : (
-                ''
-              )}
-            </TreeItem>
-          ))}
-        </TreeView>
-      </div>
-      <WorkspaceCustom />
+                className="title_channel_container"
+                nodeId={el.id}
+                label={el.title}
+              >
+                <Link to={`/${el.id}`} className={classes.link}>
+                  <TreeItem
+                    nodeId={el.feed[0].id}
+                    label={el.feed[0].feedName}
+                  />
+                </Link>
+                <TreeItem
+                  nodeId={el.assets[0].id}
+                  label={el.assets[0].assetName}
+                />
+                {el.visio ? (
+                  <a href={el.visio}>
+                    <TreeItem nodeId="5" label="Visio" />
+                  </a>
+                ) : (
+                  ''
+                )}
+              </TreeItem>
+            ))}
+          </TreeView>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   )
 }
 
-export default Workspace
+export default WorkspaceCustom
