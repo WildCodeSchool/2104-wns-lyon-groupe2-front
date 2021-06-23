@@ -18,9 +18,7 @@ const UserProvider = withRouter((props) => {
   useEffect(() => {
     setToken(initialState)
     if (token) {
-
       setUserInfos(jwt_decode(token))
-
     }
   }, [token])
   useEffect(() => {
