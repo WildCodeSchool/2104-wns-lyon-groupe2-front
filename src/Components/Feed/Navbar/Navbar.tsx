@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -11,6 +11,7 @@ import { FcTrademark } from 'react-icons/fc'
 import './Navbar.scss'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import Searchbar from './Searchbar'
+import { UserContext } from '../../Context/UserContext'
 
 const StyledMenu = withStyles({
   paper: {
@@ -44,8 +45,16 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem)
 
 const Navbar: React.FC = () => {
+  const { userInfos, removeUser } = useContext(UserContext)
+  const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const history = useHistory()
+
+  useEffect(() => {
+    if (userInfos) {
+      setIsUserAdmin(userInfos.isSchoolAdmin)
+    }
+  }, [userInfos])
 
   const handleClick: (e: React.MouseEvent<HTMLElement>) => void = (e) => {
     setAnchorEl(e.currentTarget)
@@ -54,8 +63,9 @@ const Navbar: React.FC = () => {
   const handleClose: () => void = () => {
     setAnchorEl(null)
   }
+
   const handleLogout = (): void => {
-    localStorage.removeItem('token')
+    removeUser()
     history.push('/login')
   }
 
@@ -82,12 +92,14 @@ const Navbar: React.FC = () => {
           </ListItemIcon>
           <ListItemText primary="Se déconnecter" />
         </StyledMenuItem>
-        <StyledMenuItem onClick={handleRedirectToRegisterNewUserPage}>
-          <ListItemIcon>
-            <PersonAddIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Ajouter un utilisateur" />
-        </StyledMenuItem>
+        {isUserAdmin && (
+          <StyledMenuItem onClick={handleRedirectToRegisterNewUserPage}>
+            <ListItemIcon>
+              <PersonAddIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Ajouter un utilisateur" />
+          </StyledMenuItem>
+        )}
       </StyledMenu>
     </div>
   )
