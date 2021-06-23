@@ -3,21 +3,22 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme) => ({
   paper: { width: '100%' },
   form: {
+    backgroundColor: '#f8f9fa',
     position: 'absolute',
     top: '92%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     display: 'flex',
-    width: '80%',
+    justifyContent: 'center',
+    width: '100%',
     [theme.breakpoints.up(768)]: {
-      width: '70%',
+      width: '85%',
       left: '58%',
     },
   },
   input: {
-    width: '100%',
-    marginLeft: '10px',
-    marginRight: '10px',
+    width: '70%',
+    position: 'relative',
   },
   submit: {},
   bubbleContainer: {
@@ -26,13 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
   messagesContainer: {
     overflow: 'auto',
-    height: '580px',
-    [theme.breakpoints.up(375)]: {
-      height: '520px',
-    },
-    [theme.breakpoints.up(375)]: {
-      height: '560px',
-    },
+    height: '73vh',
+    position: 'fixed',
   },
   bubble: {
     width: '80%',
