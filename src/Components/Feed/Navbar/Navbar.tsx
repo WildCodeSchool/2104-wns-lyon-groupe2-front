@@ -9,6 +9,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { useHistory } from 'react-router-dom'
 import { FcTrademark } from 'react-icons/fc'
 import './Navbar.scss'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import Searchbar from './Searchbar'
 
 const StyledMenu = withStyles({
@@ -58,6 +59,10 @@ const Navbar: React.FC = () => {
     history.push('/login')
   }
 
+  const handleRedirectToRegisterNewUserPage = () => {
+    history.push('/register-new-user')
+  }
+
   return (
     <div className="navbar_container">
       <Searchbar />
@@ -76,6 +81,12 @@ const Navbar: React.FC = () => {
             <ExitToAppIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Se déconnecter" />
+        </StyledMenuItem>
+        <StyledMenuItem onClick={handleRedirectToRegisterNewUserPage}>
+          <ListItemIcon>
+            <PersonAddIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Ajouter un utilisateur" />
         </StyledMenuItem>
       </StyledMenu>
     </div>
