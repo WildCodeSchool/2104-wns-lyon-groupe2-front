@@ -15,7 +15,9 @@ const UserProvider: React.FC = ({ children }) => {
   useEffect(() => {
     setToken(initialState)
     if (token) {
+
       setUserInfos(jwt_decode(token))
+
     }
   }, [token])
   return (
