@@ -8,7 +8,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import { FcGraduationCap, FcAssistant } from 'react-icons/fc'
 import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
-import { Button } from '@material-ui/core'
+import { Button, CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import WorkspaceCustom from './WorkspaceCustom'
@@ -18,6 +18,11 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: 'black',
     textDecoration: 'none',
+  },
+  loader: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '100px',
   },
 }))
 
@@ -70,7 +75,12 @@ const Workspace: React.FC = () => {
     }
   }, [data])
 
-  if (loading) return <p>Loading...</p>
+  if (loading)
+    return (
+      <div className={classes.loader}>
+        <CircularProgress />
+      </div>
+    )
   if (error) return <p>Error :(</p>
 
   return (
