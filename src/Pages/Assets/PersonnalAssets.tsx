@@ -7,9 +7,9 @@ const PersonnalAssets: React.FC = () => {
   return (
     <>
       <div className="container_assets_page">
-        {/*  <Sidebar /> */}
+        {/* <Sidebar /> */}
         <div className="nav_assets">
-          {/*     <Navbar /> */}
+          {/* <Navbar /> */}
           <div className="assets">
             <Assets />
           </div>

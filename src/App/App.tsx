@@ -10,7 +10,6 @@ import './App.scss'
 const App = (): JSX.Element => {
   const { REACT_APP_API_URL } = process.env
   // ici à voir pour le new InmemoryCache pour le Bearer Token
-
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     uri: REACT_APP_API_URL,
     cache: new InMemoryCache(),
