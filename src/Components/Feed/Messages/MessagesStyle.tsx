@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
   bubble: {
     width: '80%',
-    boxShadow: '5px 5px 5px grey',
+    boxShadow: '3px 3px 3px grey',
     marginTop: '5px',
     marginRight: '15px',
     marginBottom: '20px',
-    backgroundColor: 'whitesmoke',
-    borderRadius: '30px',
+    backgroundColor: 'white',
+    borderRadius: '23px',
     [theme.breakpoints.up(768)]: {
-      width: '70%',
+      width: '80%',
     },
   },
   paperContainer: { margin: '20px' },
