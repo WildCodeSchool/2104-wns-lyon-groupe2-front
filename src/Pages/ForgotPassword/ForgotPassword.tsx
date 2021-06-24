@@ -23,7 +23,9 @@ const ForgotPassword: React.FC = () => {
   `
   const [getMyPasswordBack, { loading, error, data }] =
     useLazyQuery(GET_PASSWORD_BY_MAIL)
-
+  const onSubmit = () => {
+    getMyPasswordBack({ variables: { email } })
+  }
   return (
     <Container
       data-testid="forgot_container"
@@ -49,7 +51,7 @@ const ForgotPassword: React.FC = () => {
           />
           <Button
             data-testid="send_mail_button"
-            onClick={() => getMyPasswordBack({ variables: { email } })}
+            onClick={onSubmit}
             fullWidth
             variant="contained"
             color="primary"
