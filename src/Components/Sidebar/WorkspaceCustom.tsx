@@ -11,6 +11,7 @@ import { useQuery, gql } from '@apollo/client'
 import { Button } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import { iWorkspace } from '../../Interfaces/Workspace'
 
 const useStyles = makeStyles((theme) => ({
   container: { marginTop: theme.spacing(1) },
@@ -85,20 +86,20 @@ const WorkspaceCustom: React.FC = () => {
             defaultExpandIcon={<ChevronRightIcon />}
             className="treeview"
           >
-            {workspace.map((el: any) => (
+            {workspace.map((el: iWorkspace) => (
               <TreeItem
                 className="title_channel_container"
-                nodeId={el.id}
+                nodeId={el.id as string}
                 label={el.title}
               >
                 <Link to={`/${el.id}`} className={classes.link}>
                   <TreeItem
-                    nodeId={el.feed[0].id}
+                    nodeId={el.feed[0].id as string}
                     label={el.feed[0].feedName}
                   />
                 </Link>
                 <TreeItem
-                  nodeId={el.assets[0].id}
+                  nodeId={el.assets[0].id as string}
                   label={el.assets[0].assetName}
                 />
                 {el.visio ? (
