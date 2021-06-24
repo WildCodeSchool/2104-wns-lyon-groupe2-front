@@ -81,6 +81,15 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const validate = () => {
     return EmailValidator.validate(email) && password.length > 4
   }
+
+  const handleKeyPress = (event: any) => {
+    if (validate()) {
+      if (event.key === 'Enter') {
+        onSubmit()
+      }
+    }
+  }
+
   return (
     <Container maxWidth="xs">
       <CssBaseline />
@@ -98,6 +107,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
             autoComplete="email"
             autoFocus
             onChange={(e) => setEmail(e.target.value)}
+            onKeyPress={(e) => handleKeyPress(e)}
           />
           <TextField
             variant="outlined"
@@ -109,6 +119,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
             type={showPassword ? 'text' : 'password'}
             id="password"
             onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={(e) => handleKeyPress(e)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
