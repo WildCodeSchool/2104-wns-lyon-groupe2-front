@@ -8,7 +8,10 @@ import {
   Checkbox,
   Grid,
   Container,
+  InputAdornment,
+  IconButton,
 } from '@material-ui/core'
+import { Visibility, VisibilityOff } from '@material-ui/icons'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import * as EmailValidator from 'email-validator'
 import { Link } from 'react-router-dom'
@@ -35,6 +38,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const { addToast } = useToasts()
 
   // On écrit la mutation comme définit dans le back
@@ -102,9 +106,22 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
             fullWidth
             name="password"
             label="Mot de passe"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             id="password"
             onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? (
+                      <Visibility color="primary" />
+                    ) : (
+                      <VisibilityOff color="primary" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <FormControlLabel
             control={
