@@ -1,123 +1,57 @@
 /* eslint-disable react/no-unused-prop-types */
 import React from 'react'
-import {
-  FileBrowser,
-  FileContextMenu,
-  FileList,
-  FileNavbar,
-  FileToolbar,
-  ChonkyActions,
-  FileActionHandler,
-} from 'chonky'
-import { useQuery, gql, DocumentNode } from '@apollo/client'
+
+import { useQuery } from '@apollo/client'
+import { useToasts } from 'react-toast-notifications'
+import Loader from 'react-loader-spinner'
+import styled from 'styled-components'
+import { FcFolder } from 'react-icons/fc'
+import { GET_ASSETS } from './queries'
+import './Assets.scss'
+/* import AddAssets from './AddAssets' */
+
+const FallBackContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+type TDataAssets = {
+  id: number
+  title: string
+  type: string
+  likes?: number
+}
 
 const Assets: React.FC = () => {
-  const files: any[] = [
-    null, // Loading animation will be shown for this file
-    null,
-    {
-      id: 'nTe',
-      name: 'Normal file.yml',
-      size: 890,
-      modDate: new Date('2012-01-01'),
-    },
-    {
-      id: 'zxc',
-      name: 'Hidden file.mp4',
-      isHidden: true,
-      size: 890,
-    },
-    {
-      id: 'bnm',
-      name: 'Normal folder',
-      isDir: true,
-      childrenCount: 12,
-    },
-    {
-      id: 'vfr',
-      name: 'Symlink folder',
-      isDir: true,
-      isSymlink: true,
-      childrenCount: 0,
-    },
-    {
-      id: '7zp',
-      name: 'Encrypted file.7z',
-      isEncrypted: true,
-    },
-    {
-      id: 'qwe',
-      name: 'Not selectable.tar.gz',
-      ext: '.tar.gz', // Custom extension
-      selectable: false, // Disable selection
-      size: 54300000000,
-      modDate: new Date(),
-    },
-    {
-      id: 'rty',
-      name: 'Not openable.pem',
-      openable: false, // Prevent opening
-      size: 100000000,
-    },
-    {
-      id: 'btj',
-      name: 'Not draggable.csv',
-      draggable: false, // Prevent this files from being dragged
-    },
-    {
-      id: 'upq',
-      name: 'Not droppable',
-      isDir: true,
-      droppable: false, // Prevent files from being dropped into this folder
-    },
-    {
-      id: 'mRw',
-      name: 'Unknown file name',
-    },
-    {
-      id: 'mEt',
-      name: 'Custom icon & color',
-      color: '#09f',
-    },
-  ]
+  const { loading, error, data } = useQuery(GET_ASSETS)
+  const { addToast } = useToasts()
 
-  const folderChain = [
-    { id: 'zxc', name: 'Home' },
-    null, // Will show loading placeholder
-    { id: 'fgh', name: 'My Documents' },
-  ]
+  if (error) {
+    return <p>error</p>
+  }
 
-  const myFileActions = [
-    ChonkyActions.UploadFiles,
-    ChonkyActions.DownloadFiles,
-    ChonkyActions.DeleteFiles,
-  ]
-
-  const handleAction = React.useCallback<FileActionHandler>((data) => {
-    console.log('File action data:', data)
-  }, [])
-
-  /* const handleAction: FileActionHandler = (data) => {
-if (data.id === ChonkyActions.OpenFiles.id) {
-// Open the files
-} else if (data.id === ChonkyActions.DeleteFiles.id) {
-// Delete the files
-}
-} */
+  if (loading) {
+    return (
+      <FallBackContainer>
+        <Loader type="BallTriangle" color="#000000" height={80} width={80} />
+      </FallBackContainer>
+    )
+  }
 
   return (
-    <div className="container_assets" style={{ height: 700 }}>
-      <FileBrowser
-        files={files}
-        folderChain={folderChain}
-        fileActions={myFileActions}
-        onFileAction={handleAction}
-      >
-        <FileNavbar />
-        <FileToolbar />
-        <FileList />
-        <FileContextMenu />
-      </FileBrowser>
+    <div className="container_assets">
+      {/*   <AddAssets /> */}
+      {data &&
+        data.allAssets.map((el: TDataAssets) => {
+          return (
+            <div key={el.id} className="container_asset">
+              <FcFolder size={150} />
+              <p>{el.title}</p>
+            </div>
+          )
+        })}
     </div>
   )
 }

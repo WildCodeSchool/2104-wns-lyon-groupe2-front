@@ -1,0 +1,11 @@
+.container_assets {
+  display: flex;
+  flex-wrap: wrap;
+  .container_asset {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+  }
+}
