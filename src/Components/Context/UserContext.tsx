@@ -29,7 +29,7 @@ const UserProvider = withRouter((props) => {
       }
     }
   }, [userInfos])
-
+  console.log(userInfos)
   return (
     <UserContext.Provider value={{ token, setToken, userInfos }}>
       {children}
