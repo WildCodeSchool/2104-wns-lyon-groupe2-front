@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  title: {
+    fontSize: '1.8rem',
+  },
 }))
 
 export default useStyles

@@ -39,6 +39,7 @@ const UserProvider = withRouter((props) => {
         return history.push('/login')
       }
     }
+
     return setUserInfos(userData)
   }
 

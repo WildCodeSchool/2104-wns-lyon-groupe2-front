@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import * as EmailValidator from 'email-validator'
 import { Link } from 'react-router-dom'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
 import { UserContext } from '../Context/UserContext'
 
