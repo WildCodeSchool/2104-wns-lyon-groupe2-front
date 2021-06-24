@@ -2,13 +2,13 @@
 import { createContext, useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
 import { withRouter } from 'react-router-dom'
-
-import { iUsers } from '../../Interfaces/UsersInterfaces'
+import { iUsers, iTokenDecrypted } from '../../Interfaces/UsersInterfaces'
 
 export const UserContext: any = createContext(null)
-const initialState = localStorage.getItem('token')
+
+const tokenInLocalStorage = localStorage.getItem('token')
   ? localStorage.getItem('token')
-  : ''
+  : null
 
 const UserProvider = withRouter((props) => {
   const { history, children } = props
@@ -16,22 +16,36 @@ const UserProvider = withRouter((props) => {
   const [userInfos, setUserInfos] = useState<iUsers | null>(null)
 
   useEffect(() => {
-    setToken(initialState)
-    if (token) {
-      setUserInfos(jwt_decode(token))
+    if (tokenInLocalStorage) {
+      setUserInfos(jwt_decode(tokenInLocalStorage))
     }
-  }, [token])
-  useEffect(() => {
-    if (token && userInfos && userInfos.exp) {
+  }, [])
+
+  const removeUser = () => {
+    localStorage.removeItem('token')
+    setUserInfos(null)
+    setToken(null)
+  }
+
+  const addUser = (userToken: string) => {
+    history.push('/')
+    localStorage.setItem('token', userToken)
+    setToken(userToken)
+    const userData: iTokenDecrypted = jwt_decode(userToken)
+    // check if the token isn't expired
+    if (userData && userData.exp) {
       const now = Date.now()
-      if (now > userInfos.exp * 1000) {
-        history.push('/login')
+      if (now > userData.exp * 1000) {
+        return history.push('/login')
       }
     }
-  }, [userInfos])
+    return setUserInfos(userData)
+  }
 
   return (
-    <UserContext.Provider value={{ token, setToken, userInfos }}>
+    <UserContext.Provider
+      value={{ token, setToken, userInfos, removeUser, addUser }}
+    >
       {children}
     </UserContext.Provider>
   )
