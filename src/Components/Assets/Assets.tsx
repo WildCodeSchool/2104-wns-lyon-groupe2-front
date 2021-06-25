@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unused-prop-types */
-import React, { useState } from 'react'
+import React from 'react'
 
 import { useMutation, useQuery } from '@apollo/client'
 import Loader from 'react-loader-spinner'
@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { FcFolder } from 'react-icons/fc'
 import { GET_ASSETS } from '../../graphql/queries'
 import './Assets.scss'
-
 import AddAssets from './AddAssets'
 import { DELETE_ASSETS, UPDATE_ASSETS } from '../../graphql/mutations'
 
