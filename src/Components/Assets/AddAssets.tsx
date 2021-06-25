@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 import React from 'react'
-/* import { useMutation, gql } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 
 export const CREATE_ASSETS = gql`
   mutation createAsset($input: InputAsset!) {
@@ -10,17 +10,17 @@ export const CREATE_ASSETS = gql`
       likes
     }
   }
-` */
+`
 
-/* interface InputAsset {
+interface InputAsset {
   input: {
     title: string
     type: string
     likes: number
   }
-} */
+}
 
-/* const AddAssets: React.FC = () => {
+const AddAssets: React.FC = () => {
   let input: any
   const [addAssets, { data, error, loading }] = useMutation(CREATE_ASSETS)
 
@@ -43,4 +43,3 @@ export const CREATE_ASSETS = gql`
 }
 
 export default AddAssets
- */
