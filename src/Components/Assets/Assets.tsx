@@ -9,7 +9,7 @@ import { GET_ASSETS } from '../../graphql/queries'
 import './Assets.scss'
 
 import AddAssets from './AddAssets'
-import { DELETE_ASSETS } from '../../graphql/mutations'
+import { DELETE_ASSETS, UPDATE_ASSETS } from '../../graphql/mutations'
 
 const FallBackContainer = styled.div`
   position: fixed;
@@ -22,11 +22,12 @@ type TDataAssets = {
   id: number
   title: string
   type: string
-  likes?: number
+  likes: number
 }
 
 const Assets: React.FC = () => {
   const { loading, error, data } = useQuery(GET_ASSETS)
+  const [updateAssets] = useMutation(UPDATE_ASSETS)
   const [deleteAssets] = useMutation(DELETE_ASSETS, {
     refetchQueries: [
       {
@@ -55,12 +56,29 @@ const Assets: React.FC = () => {
     <div className="container_assets">
       <AddAssets />
       {data &&
-        data.allAssets.map((el: TDataAssets) => {
+        data.allAssets.map(({ id, title }: TDataAssets) => {
+          let input: any
           return (
-            <div key={el.id} className="container_asset">
+            <div key={id} className="container_asset">
               <FcFolder size={150} />
-              <p>{el.title}</p>
-              <button type="button" onClick={() => onDelete(el.id)}>
+              <p>{title}</p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  updateAssets({
+                    variables: { input: { id, title: input.value } },
+                  })
+                  input.value = ''
+                }}
+              >
+                <input
+                  ref={(node) => {
+                    input = node
+                  }}
+                />
+                <button type="submit">Update Assets</button>
+              </form>
+              <button type="button" onClick={() => onDelete(id)}>
                 x
               </button>
             </div>
