@@ -7,6 +7,7 @@ export const GET_ASSETS = gql`
       title
       type
       likes
+      createdAt
     }
   }
 `

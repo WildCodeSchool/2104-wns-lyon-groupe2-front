@@ -12,12 +12,8 @@ import { NavbarContext } from '../Context/NavbarContext'
 import Messages from './Messages/Messages'
 
 const Feed: React.FC = () => {
-  const {
-    workspacePopin,
-    setWorkspacePopin,
-    assetsPopin,
-    setAssetsPopin,
-  } = useContext(SidebarContext)
+  const { workspacePopin, setWorkspacePopin, assetsPopin, setAssetsPopin } =
+    useContext(SidebarContext)
 
   const { popin } = useContext(NavbarContext)
 

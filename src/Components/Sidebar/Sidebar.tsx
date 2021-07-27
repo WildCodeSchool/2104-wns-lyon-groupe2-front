@@ -5,13 +5,11 @@ import { useHistory } from 'react-router-dom'
 import Assets from './Assets'
 import Workspace from './Workspace'
 import './Sidebar.scss'
-import { SidebarContext } from '../Context/SidebarContext'
 
 const Sidebar: React.FC = () => {
   const [assetsModal, setAssetsModal] = useState<boolean>(false)
   const [workSpaceModal, setWorkSpaceModal] = useState<boolean>(true)
   const history = useHistory()
-  const { handleClick } = useContext(SidebarContext)
 
   const [checked, setChecked] = useState<boolean>(false)
 
@@ -51,7 +49,7 @@ const Sidebar: React.FC = () => {
           name="checkedA"
           inputProps={{ 'aria-label': 'secondary checkbox' }}
         />
-        <FcPlus className="plus_icon" onClick={handleClick} />
+        <FcPlus className="plus_icon" />
       </div>
       {assetsModal && <Assets />}
       {workSpaceModal && <Workspace />}
