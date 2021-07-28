@@ -12,6 +12,7 @@ import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded'
 import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded'
 import { useQuery, gql } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
+import Loader from 'react-loader-spinner'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
 import { iFeed } from '../../../Interfaces/Workspace'
@@ -48,7 +49,7 @@ const Messages: React.FC = () => {
   const params: any = location.state
 
   const scrollToBottom = (node: any) => {
-    if (messages.length >= 4 && node !== null) {
+    if (messages.length >= 1000000 && node !== null) {
       node?.current.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
@@ -70,11 +71,23 @@ const Messages: React.FC = () => {
     }
     scrollToBottom(bottomRef)
   }, [data, messages])
+
+  if (loading)
+    return (
+      <div className={classes.loader}>
+        <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} />
+      </div>
+    )
+
+  if (error) {
+    // TODO: Toast ou page type 404
+  }
+
   return (
     <div>
       <Grid item xs={12} className={classes.paper}>
         <div className={classes.messagesContainer}>
-          {messages.map((el: any) => (
+          {messages.map((el: iFeed) => (
             <Grid
               key={el.id}
               style={{

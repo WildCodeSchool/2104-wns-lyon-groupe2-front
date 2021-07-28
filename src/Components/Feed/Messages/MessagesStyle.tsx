@@ -65,6 +65,15 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '5px',
     marginRight: '5px',
   },
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    [theme.breakpoints.up(768)]: {
+      left: '56%',
+    },
+  },
 }))
 
 export default useStyles
