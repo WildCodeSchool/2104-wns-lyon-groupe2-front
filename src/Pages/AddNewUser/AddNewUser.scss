@@ -1,0 +1,23 @@
+.new-user-form-wrapper {
+  h1 {
+    margin-top: 30px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .new-user-input {
+    margin-top: 30px;
+    width: 40%;
+  }
+  .new-user-submit-button {
+    margin-top: 30px;
+  }
+  .new-user-radio-wrapper {
+    margin-top: 30px;
+  }
+  .new-user-radio {
+    display: flex;
+  }
+}

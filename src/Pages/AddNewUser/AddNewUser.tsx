@@ -1,43 +1,44 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useEffect } from 'react'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
+import { useForm, Controller } from 'react-hook-form'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import './AddNewUser.scss'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
+import { gql, useMutation } from '@apollo/client'
 import { UserContext } from '../../Components/Context/UserContext'
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}))
+import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 
 const AddNewUser: React.FC = () => {
+  const {
+    clearErrors,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm()
   const history = useHistory()
-  const classes = useStyles()
   const { userInfos } = useContext(UserContext)
   const { addToast } = useToasts()
+  const ADD_USER = gql`
+    mutation registerUser($input: InputUser!) {
+      registerUser(input: $input) {
+        email
+        lastname
+        firstname
+      }
+    }
+  `
+
+  const [addUser, { data, error }] = useMutation(ADD_USER, {
+    errorPolicy: 'all',
+  })
 
   useEffect(() => {
     if (userInfos && !userInfos.isSchoolAdmin) {
@@ -49,66 +50,102 @@ const AddNewUser: React.FC = () => {
     }
   }, [userInfos])
 
-  const submitForm = () => {
-    console.log('submitting form')
+  const onSubmit = async (datas: any) => {
+    const input = { input: { ...datas, schoolId: '1', isSchoolAdmin: false } }
+    try {
+      const response = await addUser({ variables: input })
+      if (response.errors && response.errors.length > 0) {
+        let errorCode = ''
+        // manage the error thrown by mongodb (if the user already exist)
+        if (response.errors[0].message?.includes('E11000')) {
+          errorCode = '100'
+        } else if (response.errors[0].message) {
+          errorCode = response.errors[0].message
+        }
+        const errorMessage = returnMessageForAnErrorCode(errorCode)
+        addToast(errorMessage, {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      } else if (!response.errors) {
+        addToast("L'utilisateur a été créé avec succès", {
+          appearance: 'success',
+          autoDismiss: true,
+        })
+      }
+    } catch (err) {
+      addToast("Une erreur s'est produite, veuillez rééssayer", {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Ajouter un nouvel utilisateur
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={submitForm}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="Prénom"
-                autoFocus
+    <div className="new-user-form-wrapper">
+      <form className="n" onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="">Inscrire un nouvel utilisateur</h1>
+        <TextField
+          helperText={errors.firstname ? "Merci d'indiquer un prénom" : false}
+          error={!!errors.firstname}
+          className="new-user-input"
+          label="Prénom"
+          variant="outlined"
+          {...register('firstname', { required: true })}
+        />
+        <TextField
+          helperText={errors.lastname ? "Merci d'indiquer un nom" : false}
+          error={!!errors.lastname}
+          className="new-user-input"
+          label="Nom"
+          variant="outlined"
+          {...register('lastname', { required: true })}
+        />
+        <TextField
+          helperText={errors.email ? "Merci d'indiquer un email" : false}
+          error={!!errors.email}
+          className="new-user-input"
+          label="Email"
+          variant="outlined"
+          {...register('email', { required: true })}
+        />
+        {/* include validation with required or other standard HTML validation rules */}
+        {/* <input {...register("exampleRequired", { required: true })} /> */}
+        {/* errors will return when field validation fails  */}
+        {/* {errors.firstname && <span>This field is required</span>}
+		{errors.message && <span>This field is required</span>} */}
+        <FormControl className="new-user-radio-wrapper" component="fieldset">
+          <FormLabel component="legend">L&apos;utilisateur est-il</FormLabel>
+          <RadioGroup aria-label="userType" {...register('userType')}>
+            <div className="new-user-radio">
+              <FormControlLabel
+                value="STUDENT"
+                control={<Radio />}
+                label="un elève ?"
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Nom"
-                name="lastName"
-                autoComplete="lname"
+              <FormControlLabel
+                value="TEACHER"
+                control={<Radio />}
+                label="un enseignant ?"
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Adresse email"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Créer l&apos;utilisateur
-          </Button>
-        </form>
-      </div>
-    </Container>
+            </div>
+          </RadioGroup>
+        </FormControl>
+        <Button
+          className="new-user-submit-button"
+          type="submit"
+          variant="contained"
+        >
+          C&apos;est parti !
+        </Button>
+      </form>
+      <input
+        type="file"
+        id="fileUploader"
+        name="fileUploader"
+        accept=".xls, .xlsx"
+      />
+    </div>
   )
 }
 
