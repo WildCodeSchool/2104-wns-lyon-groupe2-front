@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
 import {
   TextField,
   Button,
@@ -11,11 +11,11 @@ import {
 import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded'
 import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded'
 import { useQuery, gql } from '@apollo/client'
-import { RouteProps } from 'react-router'
 import { useLocation } from 'react-router-dom'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
 import { iFeed } from '../../../Interfaces/Workspace'
+import { SidebarContext } from '../../Context/SidebarContext'
 
 const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
@@ -41,9 +41,12 @@ const GET_WORKSPACES = gql`
 const Messages: React.FC<any> = (props) => {
   const classes = useStyles()
   const [messages, setMessages] = useState<iFeed[]>([])
+  const { firstFeedOnHomePage } = useContext(SidebarContext)
   const location = useLocation()
   const bottomRef: any = useRef()
   const params: any = location.state
+  console.log(params)
+
   const scrollToBottom = (node: any) => {
     if (messages.length > 6 && node !== null) {
       node?.current.scrollIntoView({
@@ -56,12 +59,13 @@ const Messages: React.FC<any> = (props) => {
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
-        id: params.id,
+        id: params ? params.id : firstFeedOnHomePage,
       },
     },
   })
   useEffect(() => {
     if (data) {
+      console.log(data)
       setMessages(data.getWorkspaceById.feed[0].messages)
     }
     scrollToBottom(bottomRef)

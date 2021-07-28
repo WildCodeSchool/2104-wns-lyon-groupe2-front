@@ -1,6 +1,6 @@
 // eslint-disable
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import WorkspaceCustom from './WorkspaceCustom'
 import { iWorkspace } from '../../Interfaces/Workspace'
+import { SidebarContext } from '../Context/SidebarContext'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -59,6 +60,7 @@ const GET_WORKSPACES = gql`
 `
 
 const Workspace: React.FC = () => {
+  const { setFirstFeedOnHomePage } = useContext(SidebarContext)
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
@@ -72,6 +74,7 @@ const Workspace: React.FC = () => {
   useEffect(() => {
     if (data) {
       setWorkspace(data.allWorkspaces)
+      setFirstFeedOnHomePage(data.allWorkspaces[0].id)
     }
   }, [data])
 
