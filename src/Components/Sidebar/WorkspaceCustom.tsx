@@ -107,7 +107,15 @@ const WorkspaceCustom: React.FC = () => {
                 nodeId={el.id as string}
                 label={el.title}
               >
-                <Link to={`/${el.id}`} className={classes.link}>
+                <Link
+                  to={{
+                    pathname: `/${el.id}`,
+                    state: {
+                      id: el.id,
+                    },
+                  }}
+                  className={classes.link}
+                >
                   <TreeItem
                     nodeId={el.feed[0].id as string}
                     label={el.feed[0].feedName}

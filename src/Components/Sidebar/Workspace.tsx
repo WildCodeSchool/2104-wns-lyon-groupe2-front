@@ -75,13 +75,13 @@ const Workspace: React.FC = () => {
     }
   }, [data])
 
-  if (loading)
-    return (
-      <div className={classes.loader}>
-        <CircularProgress />
-      </div>
-    )
-  if (error) return <p>Error :(</p>
+  // if (loading)
+  //   return (
+  //     <div className={classes.loader}>
+  //       <CircularProgress />
+  //     </div>
+  //   )
+  // if (error) return <p>Error :(</p>
 
   return (
     <div className="workspace_container">
@@ -101,7 +101,15 @@ const Workspace: React.FC = () => {
               nodeId={el.id as string}
               label={el.title}
             >
-              <Link to={`/${el.id}`} className={classes.link}>
+              <Link
+                to={{
+                  pathname: `/${el.id}`,
+                  state: {
+                    id: el.id,
+                  },
+                }}
+                className={classes.link}
+              >
                 <TreeItem
                   nodeId={el.feed[0].id as string}
                   label={el.feed[0].feedName}
