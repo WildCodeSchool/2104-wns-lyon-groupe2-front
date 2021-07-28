@@ -103,6 +103,7 @@ const Workspace: React.FC = () => {
               className="title_channel_container"
               nodeId={el.id as string}
               label={el.title}
+              key={el.id}
             >
               <Link
                 to={{

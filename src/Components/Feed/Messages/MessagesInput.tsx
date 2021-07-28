@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { Grid, TextField, Button } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
+import { useMutation, gql } from '@apollo/client'
 import { iFeed } from '../../../Interfaces/Workspace'
 import useStyles from './MessagesStyle'
 
@@ -9,27 +10,52 @@ export interface MessagesInputProps {
   messages: iFeed[]
   setMessages: any
   bottomRef: any
+  workspaceId: string
+  feedId: string
 }
+
+const ADD_WORKSPACE = gql`
+  mutation createMessageInFeed($input: InputMessages!) {
+    createMessageInFeed(input: $input) {
+      id
+      title
+      isSchoolWorkspace
+      feed {
+        id
+        feedName
+        messages {
+          id
+          content
+        }
+      }
+      assets {
+        id
+        assetName
+      }
+    }
+  }
+`
 
 const MessagesInput: React.FC<MessagesInputProps> = ({
   messages,
   setMessages,
-  bottomRef,
+  workspaceId,
+  feedId,
 }: MessagesInputProps) => {
   const [userMessage, setUserMessage] = useState('')
   const classes = useStyles()
-
+  const [addWorkspace] = useMutation(ADD_WORKSPACE)
   const onSubmit = () => {
-    setMessages([
-      ...messages,
-      {
-        name: 'Thomas',
-        message: userMessage,
-        like: 0,
-        dislike: 0,
-        comments: [],
+    addWorkspace({
+      variables: {
+        input: {
+          parentWorkspaceId: workspaceId,
+          // eslint-disable-next-line object-shorthand
+          feedId: feedId,
+          messageContent: userMessage,
+        },
       },
-    ])
+    })
   }
 
   const handleMessage = (text: string) => {

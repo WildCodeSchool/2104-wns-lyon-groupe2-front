@@ -38,17 +38,17 @@ const GET_WORKSPACES = gql`
   }
 `
 
-const Messages: React.FC<any> = (props) => {
+const Messages: React.FC = () => {
   const classes = useStyles()
   const [messages, setMessages] = useState<iFeed[]>([])
+  const [feedId, setFeedId] = useState<string>('')
   const { firstFeedOnHomePage } = useContext(SidebarContext)
   const location = useLocation()
   const bottomRef: any = useRef()
   const params: any = location.state
-  console.log(params)
 
   const scrollToBottom = (node: any) => {
-    if (messages.length > 6 && node !== null) {
+    if (messages.length >= 4 && node !== null) {
       node?.current.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
@@ -65,12 +65,11 @@ const Messages: React.FC<any> = (props) => {
   })
   useEffect(() => {
     if (data) {
-      console.log(data)
       setMessages(data.getWorkspaceById.feed[0].messages)
+      setFeedId(data.getWorkspaceById.feed[0].id)
     }
     scrollToBottom(bottomRef)
   }, [data, messages])
-
   return (
     <div>
       <Grid item xs={12} className={classes.paper}>
@@ -118,6 +117,8 @@ const Messages: React.FC<any> = (props) => {
           bottomRef={bottomRef}
           messages={messages}
           setMessages={setMessages}
+          workspaceId={params ? params.id : firstFeedOnHomePage}
+          feedId={feedId}
         />
       </Grid>
     </div>
