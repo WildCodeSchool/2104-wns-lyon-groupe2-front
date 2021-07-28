@@ -128,7 +128,7 @@ const WorkspaceCustom: React.FC = () => {
                 />
                 {el.visio ? (
                   <a href={el.visio}>
-                    <TreeItem nodeId="5" label="Visio" />
+                    <TreeItem nodeId={el.visio as string} label="Visio" />
                   </a>
                 ) : (
                   ''

@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
-  paper: { width: '100%' },
+  paper: { width: '100%', overflow: 'hidden' },
   form: {
     backgroundColor: '#f8f9fa',
     position: 'absolute',
@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     width: '100%',
+    overflow: 'hidden',
     [theme.breakpoints.up(768)]: {
       width: '85%',
       left: '58%',
@@ -22,27 +23,27 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {},
   bubbleContainer: {
-    float: 'right',
     marginBottom: '20px',
   },
   messagesContainer: {
     overflow: 'auto',
     height: '73vh',
-    position: 'fixed',
+    width: '100%',
+    margin: 10,
   },
   bubble: {
-    width: '80%',
-    boxShadow: '3px 3px 3px grey',
+    boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
     marginTop: '5px',
-    marginRight: '15px',
+    marginRight: 20,
     marginBottom: '20px',
     backgroundColor: 'white',
     borderRadius: '23px',
+    width: '80%',
     [theme.breakpoints.up(768)]: {
       width: '80%',
     },
   },
-  paperContainer: { margin: '20px' },
+  paperContainer: { margin: 10 },
   purple: {
     backgroundColor: 'purple',
     float: 'left',
