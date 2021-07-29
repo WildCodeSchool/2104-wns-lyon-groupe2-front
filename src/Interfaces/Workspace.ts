@@ -10,8 +10,8 @@ export interface iFeed {
   id?: string
   feedName?: string
   content?: string
-  likes?: number
-  dislikes?: number
+  likes?: string[]
+  dislikes?: string[]
   comments?: iComments[]
 }
 

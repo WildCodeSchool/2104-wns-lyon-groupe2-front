@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {},
   bubbleContainer: {
-    marginBottom: '20px',
+    marginBottom: 20,
   },
   messagesContainer: {
     overflow: 'auto',
@@ -33,11 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
   bubble: {
     boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
-    marginTop: '5px',
+    marginTop: 5,
     marginRight: 20,
-    marginBottom: '20px',
+    marginBottom: 20,
     backgroundColor: 'white',
-    borderRadius: '23px',
+    borderRadius: 23,
     width: '80%',
     [theme.breakpoints.up(768)]: {
       width: '80%',
@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
     float: 'left',
   },
   text: {
-    fontSize: '17px',
-    marginLeft: '20px',
+    fontSize: 17,
+    marginLeft: 20,
   },
   icons: {
     float: 'right',
@@ -61,9 +61,20 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    fontSize: '10px',
-    marginLeft: '5px',
-    marginRight: '5px',
+    fontSize: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 2,
+  },
+  likes: {
+    fontSize: 12,
+    color: theme.palette.primary.main,
+    fontWeight: 'bold',
+  },
+  dislikes: {
+    fontSize: 12,
+    color: '#ab1620',
+    fontWeight: 'bold',
   },
   loader: {
     position: 'absolute',

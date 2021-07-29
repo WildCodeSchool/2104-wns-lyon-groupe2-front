@@ -8,6 +8,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import { FcGraduationCap, FcAssistant } from 'react-icons/fc'
 import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
+import Loader from 'react-loader-spinner'
 import { Button, CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
@@ -39,8 +40,6 @@ const GET_WORKSPACES = gql`
           id
           content
           userId
-          likes
-          dislikes
           comments {
             id
             content
@@ -77,16 +76,14 @@ const WorkspaceCustom: React.FC = () => {
 
   if (loading)
     return (
-      <div>
-        <CircularProgress />
-      </div>
-    )
-  if (error)
-    return (
       <div className={classes.loader}>
-        <CircularProgress />
+        <Loader type="ThreeDots" color="#00BFFF" height={40} width={40} />
       </div>
     )
+
+  if (error) {
+    // TODO: Toast ou page type 404
+  }
 
   return (
     <div className={classes.container}>

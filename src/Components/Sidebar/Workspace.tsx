@@ -5,7 +5,7 @@ import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { FcGraduationCap, FcAssistant } from 'react-icons/fc'
+import { FcGraduationCap } from 'react-icons/fc'
 import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
 import { Button, CircularProgress } from '@material-ui/core'
@@ -40,8 +40,6 @@ const GET_WORKSPACES = gql`
           id
           content
           userId
-          likes
-          dislikes
           comments {
             id
             content

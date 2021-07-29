@@ -30,8 +30,6 @@ const GET_WORKSPACES = gql`
         messages {
           id
           content
-          likes
-          dislikes
           userId
         }
       }
@@ -49,7 +47,7 @@ const Messages: React.FC = () => {
   const params: any = location.state
 
   const scrollToBottom = (node: any) => {
-    if (messages.length >= 1000000 && node !== null) {
+    if (messages.length >= 4 && node !== null) {
       node?.current.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
@@ -69,8 +67,10 @@ const Messages: React.FC = () => {
       setMessages(data.getWorkspaceById.feed[0].messages)
       setFeedId(data.getWorkspaceById.feed[0].id)
     }
-    scrollToBottom(bottomRef)
-  }, [data, messages])
+    if (bottomRef.current) {
+      scrollToBottom(bottomRef)
+    }
+  }, [data, messages, bottomRef.current])
 
   if (loading)
     return (
@@ -111,14 +111,14 @@ const Messages: React.FC = () => {
                 <div className={classes.icons}>
                   <div className={classes.icon}>
                     <ThumbUpAltRoundedIcon color="primary" />
-                    <Typography style={{ fontSize: '12px' }}>
-                      {el.likes}
+                    <Typography className={classes.likes}>
+                      {el.likes ? el.likes.length : null}
                     </Typography>
                   </div>
                   <div className={classes.icon}>
                     <ThumbDownAltRoundedIcon style={{ color: '#ab1620' }} />
-                    <Typography style={{ fontSize: '12px' }}>
-                      {el.dislikes}
+                    <Typography className={classes.dislikes}>
+                      {el.dislikes ? el.dislikes.length : null}
                     </Typography>
                   </div>
                 </div>
