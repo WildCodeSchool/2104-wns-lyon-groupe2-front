@@ -12,6 +12,15 @@ export interface iUsers {
   iat?: number
 }
 
+export interface iNewUser {
+  email: string
+  firstname: string
+  isSchoolAdmin: boolean
+  lastname: string
+  schoolId: string
+  userType?: string
+}
+
 export interface iTokenDecrypted {
   email: string
   exp: number

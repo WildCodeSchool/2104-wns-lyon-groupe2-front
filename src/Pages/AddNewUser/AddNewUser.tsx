@@ -21,7 +21,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { green } from '@material-ui/core/colors'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 import { UserContext } from '../../Components/Context/UserContext'
-import { iXLSXUser } from '../../Interfaces/UsersInterfaces'
+import { iXLSXUser, iNewUser } from '../../Interfaces/UsersInterfaces'
 
 const AddNewUser: React.FC = () => {
   const {
@@ -60,8 +60,12 @@ const AddNewUser: React.FC = () => {
     }
   }, [userInfos])
 
-  const onSubmit = async (datas: any) => {
-    const input = { input: { ...datas, schoolId: '1', isSchoolAdmin: false } }
+  const createUser = async (datas: iNewUser) => {
+    console.log(datas)
+    const { schoolId } = userInfos
+    const input = {
+      input: { ...datas, schoolId, isSchoolAdmin: false },
+    }
     try {
       const response = await addUser({ variables: input })
       if (response.errors && response.errors.length > 0) {
@@ -147,13 +151,14 @@ const AddNewUser: React.FC = () => {
   }
 
   const createMultipleUsers = () => {
+    const { schoolId } = userInfos
     const errorMessages: string[] = []
-    spreadSheetJSON.forEach(async (user: any) => {
-      const userData: any = {
+    spreadSheetJSON.forEach(async (user: iXLSXUser) => {
+      const userData: iNewUser = {
         firstname: user.Prénom,
         lastname: user.Nom,
         email: user.Email,
-        schoolId: '1',
+        schoolId,
         isSchoolAdmin: false,
       }
       if (user.Catégorie && user.Catégorie === 'Etudiant') {
@@ -213,7 +218,7 @@ const AddNewUser: React.FC = () => {
 
   return (
     <div className="new-user-form-wrapper">
-      <form className="" onSubmit={handleSubmit(onSubmit)}>
+      <form className="" onSubmit={handleSubmit(createUser)}>
         <h1 className="">Inscrire un nouvel utilisateur</h1>
         <TextField
           helperText={errors.firstname ? "Merci d'indiquer un prénom" : false}
