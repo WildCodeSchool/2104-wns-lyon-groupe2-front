@@ -5,11 +5,10 @@ import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { FcGraduationCap, FcAssistant } from 'react-icons/fc'
+import { FcAssistant } from 'react-icons/fc'
 import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
 import Loader from 'react-loader-spinner'
-import { Button, CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { iWorkspace } from '../../Interfaces/Workspace'
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const GET_WORKSPACES = gql`
+export const GET_WORKSPACES = gql`
   query allWorkspaces($input: InputWorkspaceGet!) {
     allWorkspaces(input: $input) {
       id
