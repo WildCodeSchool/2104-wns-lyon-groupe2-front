@@ -4,6 +4,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client'
+
 import Routes from '../Routes/Routes'
 import './App.scss'
 
