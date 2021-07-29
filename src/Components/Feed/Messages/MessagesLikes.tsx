@@ -2,12 +2,12 @@ import { useContext } from 'react'
 import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded'
 import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded'
 import { Typography } from '@material-ui/core'
-import { iFeed } from '../../../Interfaces/Workspace'
+import { IMessage } from '../../../Interfaces/Workspace'
 import useStyles from './MessagesStyle'
 import { UserContext } from '../../Context/UserContext'
 
 export interface MessagesLikesProps {
-  message: iFeed
+  message: IMessage
 }
 
 const MessagesLikes: React.FC<MessagesLikesProps> = ({ message }) => {

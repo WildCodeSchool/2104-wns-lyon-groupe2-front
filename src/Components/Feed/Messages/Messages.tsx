@@ -1,23 +1,14 @@
 import { useState, useRef, useEffect, useContext } from 'react'
-import {
-  TextField,
-  Button,
-  Grid,
-  Container,
-  Paper,
-  Avatar,
-  Typography,
-} from '@material-ui/core'
-import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded'
-import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded'
+import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
-import { iFeed } from '../../../Interfaces/Workspace'
+import { iFeed, IMessage } from '../../../Interfaces/Workspace'
 import { SidebarContext } from '../../Context/SidebarContext'
 import MessagesLikes from './MessagesLikes'
+import Comments from './Comments/Comments'
 
 const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
@@ -32,7 +23,14 @@ const GET_WORKSPACES = gql`
           id
           content
           userId
-          likes
+          likes {
+            userId
+          }
+          comments {
+            id
+            content
+            userId
+          }
         }
       }
     }
@@ -73,7 +71,7 @@ const Messages: React.FC = () => {
       scrollToBottom(bottomRef)
     }
   }, [data, messages, bottomRef.current])
-
+  console.log(messages)
   if (loading)
     return (
       <div className={classes.loader}>
@@ -89,7 +87,7 @@ const Messages: React.FC = () => {
     <div>
       <Grid item xs={12} className={classes.paper}>
         <div className={classes.messagesContainer}>
-          {messages.map((el: iFeed) => (
+          {messages.map((el: IMessage) => (
             <Grid
               key={el.id}
               style={{
@@ -110,7 +108,10 @@ const Messages: React.FC = () => {
                   <Avatar className={classes.purple}>AB</Avatar>
                   <Typography className={classes.text}>{el.content}</Typography>
                 </Grid>
-                <MessagesLikes message={el} />
+                <Grid className={classes.iconsContainer}>
+                  <Comments message={el} />
+                  <MessagesLikes message={el} />
+                </Grid>
               </Paper>
             </Grid>
           ))}

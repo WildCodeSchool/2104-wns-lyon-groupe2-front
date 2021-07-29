@@ -52,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 17,
     marginLeft: 20,
   },
+  iconsContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   icons: {
     float: 'right',
     display: 'flex',
