@@ -24,6 +24,13 @@
   }
 }
 
+.add_asset_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 20px 0;
+}
+
 @media screen and (min-width: 992px) {
   .assets_container {
     .folders_container {

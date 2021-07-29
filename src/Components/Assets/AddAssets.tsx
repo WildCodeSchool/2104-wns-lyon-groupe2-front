@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { Button, Popover, TextField } from '@material-ui/core'
-import { CREATE_ASSETS } from '../../graphql/mutations'
-import { GET_ASSETS } from '../../graphql/queries'
-import './AddAssets.scss'
+import { CREATE_FOLDER } from '../../graphql/mutations'
+import { GET_FOLDERS } from '../../graphql/queries'
 
 const AddAssets: React.FC = () => {
-  let input: any
-  const [addAssets] = useMutation(CREATE_ASSETS, {
+  let input: HTMLInputElement
+  const [addFolder] = useMutation(CREATE_FOLDER, {
     refetchQueries: [
       {
-        query: GET_ASSETS,
+        query: GET_FOLDERS,
       },
     ],
   })
@@ -57,8 +56,14 @@ const AddAssets: React.FC = () => {
           className="form_add_asset"
           onSubmit={(e) => {
             e.preventDefault()
-            addAssets({
-              variables: { input: { title: input.value } },
+            addFolder({
+              variables: {
+                input: {
+                  name: input.value,
+                  children: [],
+                  isRootDirectory: false,
+                },
+              },
             })
             input.value = ''
           }}

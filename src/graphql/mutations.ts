@@ -1,28 +1,28 @@
 import { gql } from '@apollo/client'
 
-export const CREATE_ASSETS = gql`
-  mutation createAsset($input: InputAsset!) {
-    createAsset(input: $input) {
-      title
-      type
-      likes
+export const CREATE_FOLDER = gql`
+  mutation createFolder($input: InputFolder!) {
+    createFolder(input: $input) {
+      name
+      children
+      isRootDirectory
     }
   }
 `
 
-export const UPDATE_ASSETS = gql`
-  mutation updateAsset($input: UpdateAsset!) {
-    updateAsset(input: $input) {
+export const UPDATE_FOLDER = gql`
+  mutation updateFolder($input: UpdateFolder!) {
+    updateFolder(input: $input) {
       id
-      title
-      type
-      likes
+      name
+      children
+      isRootDirectory
     }
   }
 `
 
-export const DELETE_ASSETS = gql`
-  mutation deleteAsset($input: AssetId!) {
-    deleteAsset(input: $input)
+export const DELETE_FOLDER = gql`
+  mutation deleteFolder($input: FolderId!) {
+    deleteFolder(input: $input)
   }
 `

@@ -1,13 +1,14 @@
 import { gql } from '@apollo/client'
 
-export const GET_ASSETS = gql`
-  query allAssets {
-    allAssets {
+export const GET_FOLDERS = gql`
+  query allFolders {
+    allFolders {
       id
-      title
-      type
-      likes
+      userId
       createdAt
+      name
+      children
+      isRootDirectory
     }
   }
 `

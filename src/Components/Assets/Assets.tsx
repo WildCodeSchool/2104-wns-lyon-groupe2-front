@@ -1,21 +1,26 @@
-/* eslint-disable */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import Loader from 'react-loader-spinner'
 import styled from 'styled-components'
 import { FcFolder } from 'react-icons/fc'
 import { BiPencil } from 'react-icons/bi'
-import { MdDelete } from 'react-icons/md'
 import 'react-contexify/dist/ReactContexify.min.css'
 import { ContextMenu, ContextMenuTrigger } from 'react-contextmenu'
 import { Link } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd'
 
-import { GET_ASSETS } from '../../graphql/queries'
 import './Assets.scss'
 import AddAssets from './AddAssets'
-import { DELETE_ASSETS, UPDATE_ASSETS } from '../../graphql/mutations'
+import { GET_FOLDERS } from '../../graphql/queries'
+import DeleteAssets from './DeleteAssets'
+import UpdateAssets from './UpdateAssets'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -24,29 +29,25 @@ const LoadingContainer = styled.div`
   transform: translate(-50%, -50%);
 `
 
-type TDataAssets = {
-  id: any
-  title: string
-  type: string
-  likes?: number
-  createdAt?: string
+type TDataFolders = {
+  id: string
+  userId: string
+  createdAt: string
+  name: string
+  children: number[]
+  isRootDirectory?: boolean
 }
 
 const Assets: React.FC = () => {
-  let input: any
-  const { loading, error, data } = useQuery(GET_ASSETS)
-  const [updateAssets] = useMutation(UPDATE_ASSETS)
-  const [deleteAssets] = useMutation(DELETE_ASSETS, {
-    refetchQueries: [
-      {
-        query: GET_ASSETS,
-      },
-    ],
-  })
+  const { loading, error, data } = useQuery(GET_FOLDERS)
+  const [folder, setFolder] = useState([])
+  console.log(data)
 
-  const onDelete = (id: number) => {
-    deleteAssets({ variables: { input: { id } } })
-  }
+  useEffect(() => {
+    if (data) {
+      setFolder(data.allFolders)
+    }
+  }, [data])
 
   if (error) {
     return <Alert severity="error">Problème de connexion au serveur</Alert>
@@ -60,59 +61,70 @@ const Assets: React.FC = () => {
     )
   }
 
+  const handleOnDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+    if (
+      result.destination.index === result.source.index &&
+      result.destination.droppableId === result.source.droppableId
+    ) {
+      return
+    }
+    const items = Array.from(folder)
+    const [reorderedItem] = items.splice(result.source.index, 1)
+    items.splice(result.destination.index, 0, reorderedItem)
+
+    setFolder(items)
+  }
+
   return (
     <div className="assets_container">
       <AddAssets />
       <div className="folders_container">
-        {data.allAssets.length > 0 ? (
-          data.allAssets.map(({ id, title }: TDataAssets) => {
-            return (
-              <div key={id} className="folder">
-                <ContextMenuTrigger id={id}>
-                  <Link to={`assets/${id}`}>
-                    <FcFolder className="folder_icon" />
-                  </Link>
-                </ContextMenuTrigger>
-                <ContextMenu id={id} className="item_menu">
-                  <div id="context-menu">
-                    <div className="item">
-                      <BiPencil className="icon_menu" />
-                      rename
-                    </div>
-                    <hr />
-                    <div className="item" onClick={() => onDelete(id)}>
-                      <MdDelete className="icon_menu" />
-                      delete
-                    </div>
-                  </div>
-                </ContextMenu>
-
-                <p className="asset_title">{title}</p>
-
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    updateAssets({
-                      variables: { input: { id, title: input.value } },
-                    })
-                    input.value = ''
-                  }}
-                >
-                  <input
-                    ref={(node) => {
-                      input = node
-                    }}
-                  />
-                  <button type="submit">Update Assets</button>
-                </form>
-              </div>
-            )
-          })
-        ) : (
-          <Alert variant="outlined" severity="info">
-            Vous n'avez aucun dossier dans votre espace de ressources
-          </Alert>
-        )}
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="folders_container" direction="horizontal">
+            {(provid) => (
+              <ul
+                className="folders_container"
+                {...provid.droppableProps}
+                ref={provid.innerRef}
+              >
+                {folder &&
+                  folder.map(({ id, name }: TDataFolders, index: number) => {
+                    return (
+                      <Draggable key={id} draggableId={id} index={index}>
+                        {(provided) => (
+                          <li
+                            className="folder"
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            <ContextMenuTrigger id={id}>
+                              <Link to={`assets/${id}`}>
+                                <FcFolder className="folder_icon" />
+                              </Link>
+                            </ContextMenuTrigger>
+                            <ContextMenu id={id} className="item_menu">
+                              <div id="context-menu">
+                                <div className="item">
+                                  <BiPencil className="icon_menu" />
+                                  rename
+                                </div>
+                                <hr />
+                                <DeleteAssets id={id} />
+                              </div>
+                            </ContextMenu>
+                            <UpdateAssets id={id} name={name} />
+                          </li>
+                        )}
+                      </Draggable>
+                    )
+                  })}
+                {provid.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   )
