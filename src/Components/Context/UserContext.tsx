@@ -40,8 +40,10 @@ const UserProvider = withRouter((props) => {
       }
     }
 
+
     return setUserInfos(userData)
   }
+
 
   return (
     <UserContext.Provider

@@ -10,7 +10,6 @@ import reportWebVitals from './reportWebVitals'
 
 import SidebarContextProvider from './Components/Context/SidebarContext'
 import NavbarProvider from './Components/Context/NavbarContext'
-import UserProvider from './Components/Context/UserContext'
 
 // Somewhere in your `index.ts`:
 setChonkyDefaults({ iconComponent: ChonkyIconFA })
