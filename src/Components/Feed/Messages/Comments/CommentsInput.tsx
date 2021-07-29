@@ -1,23 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from 'react'
-import { useState, useEffect } from 'react'
-import { Grid, TextField, Button } from '@material-ui/core'
-import SendIcon from '@material-ui/icons/Send'
+import { useState } from 'react'
+import { Button, TextField } from '@material-ui/core'
 import { useMutation, gql } from '@apollo/client'
-import { iFeed } from '../../../Interfaces/Workspace'
-import useStyles from './MessagesStyle'
+import SendIcon from '@material-ui/icons/Send'
+import { IMessage } from '../../../../Interfaces/Workspace'
+import useStyles from './CommentsStyle'
 
-export interface MessagesInputProps {
-  messages: iFeed[]
-  setMessages: any
-  bottomRef: any
+export interface CommentsInputProps {
+  message: IMessage
   workspaceId: string
   feedId: string
 }
 
-const ADD_WORKSPACE = gql`
-  mutation createMessageInFeed($input: InputMessages!) {
-    createMessageInFeed(input: $input) {
+const ADD_COMMENT = gql`
+  mutation createCommentInMessage($input: InputComments!) {
+    createCommentInMessage(input: $input) {
       id
       title
       isSchoolWorkspace
@@ -27,6 +24,10 @@ const ADD_WORKSPACE = gql`
         messages {
           id
           content
+          comments {
+            id
+            content
+          }
         }
       }
       assets {
@@ -37,30 +38,30 @@ const ADD_WORKSPACE = gql`
   }
 `
 
-const MessagesInput: React.FC<MessagesInputProps> = ({
-  messages,
-  setMessages,
+const CommentsInput: React.FC<CommentsInputProps> = ({
+  message,
   workspaceId,
   feedId,
-}: MessagesInputProps) => {
-  const [userMessage, setUserMessage] = useState('')
+}) => {
   const classes = useStyles()
-  const [addWorkspace] = useMutation(ADD_WORKSPACE)
+  const [userComment, setUserComment] = useState('')
+  const [addComment] = useMutation(ADD_COMMENT)
   const onSubmit = () => {
-    addWorkspace({
+    addComment({
       variables: {
         input: {
           parentWorkspaceId: workspaceId,
           // eslint-disable-next-line object-shorthand
           feedId: feedId,
-          messageContent: userMessage,
+          messageId: message.id,
+          commentContent: userComment,
         },
       },
     })
   }
 
   const handleMessage = (text: string) => {
-    setUserMessage(text)
+    setUserComment(text)
   }
 
   const handleKeyPress = (event: any) => {
@@ -68,9 +69,8 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
       onSubmit()
     }
   }
-
   return (
-    <Grid item xs={12} className={classes.form}>
+    <div className={classes.form}>
       <TextField
         className={classes.input}
         variant="outlined"
@@ -85,10 +85,10 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
         onKeyPress={handleKeyPress}
       />
       <Button>
-        <SendIcon className={classes.submit} onClick={onSubmit} />
+        <SendIcon onClick={onSubmit} />
       </Button>
-    </Grid>
+    </div>
   )
 }
 
-export default MessagesInput
+export default CommentsInput

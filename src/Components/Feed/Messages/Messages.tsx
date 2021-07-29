@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect, useContext } from 'react'
 import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
@@ -71,7 +72,6 @@ const Messages: React.FC = () => {
       scrollToBottom(bottomRef)
     }
   }, [data, messages, bottomRef.current])
-  console.log(messages)
   if (loading)
     return (
       <div className={classes.loader}>
@@ -109,7 +109,11 @@ const Messages: React.FC = () => {
                   <Typography className={classes.text}>{el.content}</Typography>
                 </Grid>
                 <Grid className={classes.iconsContainer}>
-                  <Comments message={el} />
+                  <Comments
+                    message={el}
+                    workspaceId={params ? params.id : firstFeedOnHomePage}
+                    feedId={feedId}
+                  />
                   <MessagesLikes message={el} />
                 </Grid>
               </Paper>

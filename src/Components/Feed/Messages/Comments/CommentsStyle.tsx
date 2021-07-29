@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
-  container: { width: 700 },
+  container: {},
   bubbleContainer: {
     marginBottom: 20,
   },
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
     marginTop: 5,
     marginRight: 20,
-    marginBottom: 20,
+    marginBottom: 30,
     backgroundColor: 'white',
     borderRadius: 23,
     width: '80%',
@@ -37,14 +37,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
   },
   form: {
-    position: 'absolute',
-    top: '89%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
     display: 'flex',
     justifyContent: 'center',
     width: '100%',
     overflow: 'hidden',
+    alignItems: 'center',
+    marginTop: 10,
   },
   input: {
     width: '70%',
