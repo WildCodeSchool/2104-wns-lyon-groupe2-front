@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import './AddNewUser.scss'
 import { gql, useMutation } from '@apollo/client'
 import XLSX from 'xlsx'
@@ -16,8 +16,12 @@ import {
   TextField,
   Button,
 } from '@material-ui/core'
-import { UserContext } from '../../Components/Context/UserContext'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import { withStyles } from '@material-ui/core/styles'
+import { green } from '@material-ui/core/colors'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
+import { UserContext } from '../../Components/Context/UserContext'
+import { iXLSXUser } from '../../Interfaces/UsersInterfaces'
 
 const AddNewUser: React.FC = () => {
   const {
@@ -103,13 +107,38 @@ const AddNewUser: React.FC = () => {
               const XLRowObject: any = XLSX.utils.sheet_to_json(
                 workbook.Sheets[sheetName],
               )
-              console.log(XLRowObject)
-              setSpreadSheetJSON(XLRowObject)
+              const importError = []
+              XLRowObject.forEach((row: iXLSXUser) => {
+                const keys = Object.keys(row)
+                if (
+                  keys[0] !== 'Nom' ||
+                  keys[1] !== 'Prénom' ||
+                  keys[2] !== 'Email' ||
+                  keys[3] !== 'Catégorie'
+                ) {
+                  importError.push(row)
+                }
+              })
+              if (importError.length > 0) {
+                addToast(
+                  "Le fichier importé n'est pas valide, merci de le vérifier.",
+                  {
+                    appearance: 'error',
+                    autoDismiss: true,
+                  },
+                )
+              } else {
+                setSpreadSheetJSON(XLRowObject)
+              }
             })
           }
         }
         reader.onerror = function (ex) {
           console.log(ex)
+          addToast("Une erreur s'est produite, veuillez rééssayer", {
+            appearance: 'error',
+            autoDismiss: true,
+          })
         }
 
         reader.readAsBinaryString(spreadSheet)
@@ -120,13 +149,17 @@ const AddNewUser: React.FC = () => {
   const createMultipleUsers = () => {
     const errorMessages: string[] = []
     spreadSheetJSON.forEach(async (user: any) => {
-      const userData = {
+      const userData: any = {
         firstname: user.Prénom,
         lastname: user.Nom,
         email: user.Email,
-        userType: user.Catégorie,
         schoolId: '1',
         isSchoolAdmin: false,
+      }
+      if (user.Catégorie && user.Catégorie === 'Etudiant') {
+        userData.userType = 'STUDENT'
+      } else if (user.Catégorie && user.Catégorie === 'Enseignant') {
+        userData.userType = 'TEACHER'
       }
       try {
         const response = await addUser({ variables: { input: userData } })
@@ -141,12 +174,6 @@ const AddNewUser: React.FC = () => {
           const errorMessage = returnMessageForAnErrorCode(errorCode)
           errorMessages.push(errorMessage)
         }
-        if (!response.errors) {
-          addToast("L'utilisateur a été créé avec succès", {
-            appearance: 'success',
-            autoDismiss: true,
-          })
-        }
       } catch (err) {
         addToast("Une erreur s'est produite, veuillez rééssayer", {
           appearance: 'error',
@@ -155,18 +182,34 @@ const AddNewUser: React.FC = () => {
       }
     })
     setTimeout(() => {
-      console.log(errorMessages)
       if (errorMessages.length > 0) {
         addToast(
-          `Une erreur s'est produite pour ${errorMessages.length} utilisateurs, veuillez vérifier le fichier et réessayer.`,
+          `Une erreur s'est produite pour ${errorMessages.length} utilisateur${
+            errorMessages.length === 1 ? '' : 's'
+          }, veuillez vérifier le fichier et réessayer.`,
           {
             appearance: 'error',
             autoDismiss: true,
           },
         )
+      } else {
+        addToast(`Les utilisateurs ont été créés avec succès`, {
+          appearance: 'success',
+          autoDismiss: true,
+        })
       }
     }, 500)
+    setSpreadSheetJSON([])
   }
+
+  const ColorButton = withStyles((theme) => ({
+    root: {
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+  }))(Button)
 
   return (
     <div className="new-user-form-wrapper">
@@ -196,11 +239,6 @@ const AddNewUser: React.FC = () => {
           variant="outlined"
           {...register('email', { required: true })}
         />
-        {/* include validation with required or other standard HTML validation rules */}
-        {/* <input {...register("exampleRequired", { required: true })} /> */}
-        {/* errors will return when field validation fails  */}
-        {/* {errors.firstname && <span>This field is required</span>}
-		{errors.message && <span>This field is required</span>} */}
         <FormControl className="new-user-radio-wrapper" component="fieldset">
           <FormLabel component="legend">L&apos;utilisateur est-il</FormLabel>
           <RadioGroup aria-label="userType" {...register('userType')}>
@@ -218,18 +256,24 @@ const AddNewUser: React.FC = () => {
             </div>
           </RadioGroup>
         </FormControl>
-        <Button
+        <ColorButton
           className="new-user-submit-button"
           type="submit"
           variant="contained"
         >
           C&apos;est parti !
-        </Button>
-        <Paper className="import-xlsx-file-wrapper">
+        </ColorButton>
+        <Paper className="import-xlsx-file-wrapper" elevation={5}>
           <h2>Importer un fichier pour créer plusieurs utilisateurs</h2>
           <p>
             Afin de faciliter la création de multiples utilisateurs, vous pouvez
-            importer un fichier de type xlsx (modèle disponible ici)
+            importer un fichier de type xlsx.
+            <br /> Attention le fichier devra impérativement posséder les
+            entêtes de colonnes suivantes : Nom, Prénom, Email, Catégorie
+            (Etudiant ou Enseignant). Modèle disponible{' '}
+            <Link to="/files/Modèle.xlsx" target="_blank" download>
+              ici
+            </Link>
           </p>
 
           <Button
@@ -242,15 +286,26 @@ const AddNewUser: React.FC = () => {
               type="file"
               id="fileUploader"
               name="fileUploader"
-              accept=".xls, .xlsx"
-              onChange={(e) => parseExcel(e)}
+              accept=".xlsx"
+              onChange={(e) => {
+                parseExcel(e)
+              }}
+              onClick={(event) => {
+                // eslint-disable-next-line no-param-reassign
+                event.currentTarget.value = ''
+              }}
             />{' '}
             Importer un fichier XLSX
           </Button>
           {spreadSheetJSON && spreadSheetJSON.length > 0 && (
-            <Button onClick={() => createMultipleUsers()} variant="contained">
+            <ColorButton
+              className="import-xlsx-create-multiple-users-button"
+              onClick={() => createMultipleUsers()}
+              variant="contained"
+            >
+              <CheckCircleOutlineIcon className="import-xlsx-create-multiple-users-icon-button" />
               Créer les utilisateurs
-            </Button>
+            </ColorButton>
           )}
         </Paper>
       </form>

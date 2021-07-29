@@ -23,3 +23,10 @@ export interface iTokenDecrypted {
   userId: string
   userType: string
 }
+
+export interface iXLSXUser {
+  Prénom: string
+  Nom: string
+  Email: string
+  Catégorie: string
+}
