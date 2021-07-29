@@ -23,11 +23,8 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: '1.8rem',
   },
-  formError: {
+  error: {
     color: 'red',
-  },
-  forgot: {
-    textAlign: 'center',
   },
 }))
 
