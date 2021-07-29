@@ -189,11 +189,13 @@ const AddNewUser: React.FC = () => {
     setTimeout(() => {
       if (errorMessages.length > 0) {
         addToast(
-          `Une erreur s'est produite pour ${errorMessages.length} utilisateur${
+          `Tous les utilisateurs n'ont pas été créés. Une erreur s'est produite pour ${
+            errorMessages.length
+          } utilisateur${
             errorMessages.length === 1 ? '' : 's'
           }, veuillez vérifier le fichier et réessayer.`,
           {
-            appearance: 'error',
+            appearance: 'info',
             autoDismiss: true,
           },
         )
