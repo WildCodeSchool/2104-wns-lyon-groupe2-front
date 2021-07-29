@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Avatar,
   Button,
@@ -16,8 +16,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import * as EmailValidator from 'email-validator'
 import { Link } from 'react-router-dom'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
+import { UserContext } from '../Context/UserContext'
 
 import useStyles from './LoginStyle'
 
@@ -40,6 +41,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [remember, setRemember] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const { addToast } = useToasts()
+  const { addUser } = useContext(UserContext)
 
   // On écrit la mutation comme définit dans le back
   // ici on envoie la variable input définit plus bas
@@ -73,8 +75,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
         autoDismiss: true,
       })
     } else {
-      localStorage.setItem('token', response.data.login.token as string)
-      history.push('/')
+      addUser(response.data.login.token)
     }
   }
 

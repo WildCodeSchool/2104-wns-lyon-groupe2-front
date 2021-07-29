@@ -3,6 +3,7 @@ import { createBrowserHistory } from 'history'
 import UserProvider from '../Components/Context/UserContext'
 import PersonnalAssets from '../Pages/Assets/PersonnalAssets'
 import ForgotPassword from '../Pages/ForgotPassword/ForgotPassword'
+import AddNewUser from '../Pages/AddNewUser/AddNewUser'
 import Home from '../Pages/Home/Home'
 import Login from '../Pages/Login/Login'
 
@@ -19,6 +20,7 @@ const Routes: React.FC = () => {
             <Route exact path="/" component={Home} />
             <Route exact path="/:id" component={Home} />
             <Route exact path="/assets" component={PersonnalAssets} />
+            <Route exact path="/register-new-user" component={AddNewUser} />
           </Switch>
         </UserProvider>
       </Router>

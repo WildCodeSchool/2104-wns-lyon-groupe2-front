@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     textDecoration: 'none',
   },
+  title: {
+    fontSize: '1.8rem',
+  },
 }))
 
 export default useStyles
