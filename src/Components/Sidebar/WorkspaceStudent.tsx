@@ -57,7 +57,7 @@ const GET_WORKSPACES = gql`
   }
 `
 
-const WorkspaceCustom: React.FC = () => {
+const WorkspaceStudent: React.FC = () => {
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
@@ -141,4 +141,4 @@ const WorkspaceCustom: React.FC = () => {
   )
 }
 
-export default WorkspaceCustom
+export default WorkspaceStudent

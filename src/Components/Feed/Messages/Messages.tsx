@@ -17,6 +17,7 @@ import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
 import { iFeed } from '../../../Interfaces/Workspace'
 import { SidebarContext } from '../../Context/SidebarContext'
+import MessagesLikes from './MessagesLikes'
 
 const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
@@ -31,6 +32,7 @@ const GET_WORKSPACES = gql`
           id
           content
           userId
+          likes
         }
       }
     }
@@ -108,20 +110,7 @@ const Messages: React.FC = () => {
                   <Avatar className={classes.purple}>AB</Avatar>
                   <Typography className={classes.text}>{el.content}</Typography>
                 </Grid>
-                <div className={classes.icons}>
-                  <div className={classes.icon}>
-                    <ThumbUpAltRoundedIcon color="primary" />
-                    <Typography className={classes.likes}>
-                      {el.likes ? el.likes.length : null}
-                    </Typography>
-                  </div>
-                  <div className={classes.icon}>
-                    <ThumbDownAltRoundedIcon style={{ color: '#ab1620' }} />
-                    <Typography className={classes.dislikes}>
-                      {el.dislikes ? el.dislikes.length : null}
-                    </Typography>
-                  </div>
-                </div>
+                <MessagesLikes message={el} />
               </Paper>
             </Grid>
           ))}

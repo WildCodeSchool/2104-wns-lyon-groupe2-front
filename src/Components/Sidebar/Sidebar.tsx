@@ -3,7 +3,7 @@ import Switch from '@material-ui/core/Switch'
 import { FcPlus, FcSettings } from 'react-icons/fc'
 import { useHistory } from 'react-router-dom'
 import Assets from './Assets'
-import Workspace from './Workspace'
+import WorkspaceSchool from './WorkspaceSchool'
 import './Sidebar.scss'
 import { SidebarContext } from '../Context/SidebarContext'
 
@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
         <FcPlus className="plus_icon" onClick={handleClick} />
       </div>
       {assetsModal && <Assets />}
-      {workSpaceModal && <Workspace />}
+      {workSpaceModal && <WorkspaceSchool />}
       <div className="btn_sidebar_bottom">
         <p className="pseudo">pseudo</p>
         <FcSettings className="params_icon" />

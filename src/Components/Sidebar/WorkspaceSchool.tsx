@@ -11,7 +11,7 @@ import { useQuery, gql } from '@apollo/client'
 import { Button, CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import WorkspaceCustom from './WorkspaceCustom'
+import WorkspaceStudent from './WorkspaceStudent'
 import { iWorkspace } from '../../Interfaces/Workspace'
 import { SidebarContext } from '../Context/SidebarContext'
 
@@ -57,7 +57,7 @@ const GET_WORKSPACES = gql`
   }
 `
 
-const Workspace: React.FC = () => {
+const WorkspaceSchool: React.FC = () => {
   const { setFirstFeedOnHomePage } = useContext(SidebarContext)
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {
@@ -132,9 +132,9 @@ const Workspace: React.FC = () => {
           ))}
         </TreeView>
       </div>
-      <WorkspaceCustom />
+      <WorkspaceStudent />
     </div>
   )
 }
 
-export default Workspace
+export default WorkspaceSchool
