@@ -69,6 +69,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     marginRight: 5,
     marginBottom: 2,
+    cursor: 'pointer',
+    '&:hover': {
+      transform: 'scale(0.97)',
+    },
   },
   likes: {
     fontSize: 12,

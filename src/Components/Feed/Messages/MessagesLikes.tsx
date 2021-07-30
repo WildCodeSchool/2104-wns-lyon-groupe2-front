@@ -24,7 +24,7 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({ message }) => {
       <div className={classes.icon}>
         <ThumbDownAltRoundedIcon style={{ color: '#ab1620' }} />
         <Typography className={classes.dislikes}>
-          {message.dislikes ? message.dislikes.length : null}
+          {message.dislikes ? message.dislikes.length : 0}
         </Typography>
       </div>
     </div>

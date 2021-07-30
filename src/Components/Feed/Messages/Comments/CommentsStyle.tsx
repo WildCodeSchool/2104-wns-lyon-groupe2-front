@@ -48,6 +48,29 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
     position: 'relative',
   },
+  icon: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    fontSize: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 2,
+    cursor: 'pointer',
+    '&:hover': {
+      transform: 'scale(0.97)',
+    },
+  },
+  likes: {
+    fontSize: 12,
+    color: theme.palette.primary.main,
+    fontWeight: 'bold',
+  },
+  commentIcon: {
+    color: '#508c63',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
 }))
 
 export default useStyles
