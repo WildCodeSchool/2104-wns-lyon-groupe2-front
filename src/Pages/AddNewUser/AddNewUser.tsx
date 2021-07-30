@@ -15,6 +15,7 @@ import {
   Radio,
   TextField,
   Button,
+  CircularProgress,
 } from '@material-ui/core'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import { withStyles } from '@material-ui/core/styles'
@@ -49,6 +50,8 @@ const AddNewUser: React.FC = () => {
   })
 
   const [spreadSheetJSON, setSpreadSheetJSON] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorEmails, setErrorEmails] = useState([])
 
   useEffect(() => {
     if (userInfos && !userInfos.isSchoolAdmin) {
@@ -61,7 +64,6 @@ const AddNewUser: React.FC = () => {
   }, [userInfos])
 
   const createUser = async (datas: iNewUser) => {
-    console.log(datas)
     const { schoolId } = userInfos
     const input = {
       input: { ...datas, schoolId, isSchoolAdmin: false },
@@ -96,6 +98,7 @@ const AddNewUser: React.FC = () => {
   }
 
   const parseExcel = function (event: React.FormEvent<HTMLInputElement>) {
+    setErrorEmails([])
     const input = event.target as HTMLInputElement
     if (input.files) {
       const spreadSheet = input?.files[0]
@@ -151,8 +154,9 @@ const AddNewUser: React.FC = () => {
   }
 
   const createMultipleUsers = () => {
+    setIsLoading(true)
     const { schoolId } = userInfos
-    const errorMessages: string[] = []
+    const errorMessages: any = []
     spreadSheetJSON.forEach(async (user: iXLSXUser) => {
       const userData: iNewUser = {
         firstname: user.Prénom,
@@ -176,8 +180,10 @@ const AddNewUser: React.FC = () => {
           } else if (response.errors[0].message) {
             errorCode = response.errors[0].message
           }
-          const errorMessage = returnMessageForAnErrorCode(errorCode)
-          errorMessages.push(errorMessage)
+          // const errorMessage = returnMessageForAnErrorCode(errorCode)
+          errorMessages.push(
+            response.errors[0].extensions?.exception?.keyValue?.email,
+          )
         }
       } catch (err) {
         addToast("Une erreur s'est produite, veuillez rééssayer", {
@@ -188,14 +194,13 @@ const AddNewUser: React.FC = () => {
     })
     setTimeout(() => {
       if (errorMessages.length > 0) {
+        setIsLoading(false)
+        setErrorEmails(errorMessages)
+        console.log(errorMessages)
         addToast(
-          `Tous les utilisateurs n'ont pas été créés. Une erreur s'est produite pour ${
-            errorMessages.length
-          } utilisateur${
-            errorMessages.length === 1 ? '' : 's'
-          }, veuillez vérifier le fichier et réessayer.`,
+          `Tous les utilisateurs n'ont pas été créés. Une erreur s'est produite pour les utilisateurs listés. Ceux qui n'apparaissent pas ont été créés avec succès.`,
           {
-            appearance: 'info',
+            appearance: 'warning',
             autoDismiss: true,
           },
         )
@@ -313,6 +318,19 @@ const AddNewUser: React.FC = () => {
               <CheckCircleOutlineIcon className="import-xlsx-create-multiple-users-icon-button" />
               Créer les utilisateurs
             </ColorButton>
+          )}
+          {isLoading && <CircularProgress />}
+          {errorEmails && errorEmails.length > 0 && (
+            <div className="import-xlsx-emails-errors-wrapper">
+              <h5>
+                Une erreur s&apos;est produite pour les comptes suivants:{' '}
+              </h5>
+              <div>
+                {errorEmails.map((msg) => {
+                  return <p>{msg}</p>
+                })}
+              </div>
+            </div>
           )}
         </Paper>
       </form>

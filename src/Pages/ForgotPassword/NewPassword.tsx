@@ -1,6 +1,8 @@
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { Container, TextField, Button } from '@material-ui/core'
 import React, { useState } from 'react'
+import { useToasts } from 'react-toast-notifications'
+
 import useStyles from './NewPasswordStyle'
 
 interface InputPasswordRecovery {
@@ -13,6 +15,7 @@ interface InputToChangePassword {
 }
 
 const NewPassword: React.FC = (props: any) => {
+  const { addToast } = useToasts()
   const { history } = props
   const classes = useStyles()
   const [ShowErrorMessage, setShowErrorMessage] = useState(false)
@@ -115,6 +118,10 @@ const NewPassword: React.FC = (props: any) => {
       response.data.updatePassword.message &&
       response.data.updatePassword.message === 'updated'
     ) {
+      addToast('Mot de passe modifié avec succès, merci de vous identifier.', {
+        appearance: 'success',
+        autoDismiss: true,
+      })
       history.push('/login')
     } else if (response.errors) {
       setShowErrorMessage(true)
