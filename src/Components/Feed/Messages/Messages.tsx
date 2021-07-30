@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect, useContext } from 'react'
-import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
+import {
+  Grid,
+  Paper,
+  Avatar,
+  Typography,
+  StylesProvider,
+} from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
@@ -86,40 +92,49 @@ const Messages: React.FC = () => {
   return (
     <div>
       <Grid item xs={12} className={classes.paper}>
-        <div className={classes.messagesContainer}>
-          {messages.map((el: IMessage) => (
-            <Grid
-              key={el.id}
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-              }}
-              ref={bottomRef}
-            >
-              <Paper className={classes.bubble}>
-                <Grid
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  className={classes.paperContainer}
-                >
-                  <Avatar className={classes.purple}>AB</Avatar>
-                  <Typography className={classes.text}>{el.content}</Typography>
-                </Grid>
-                <Grid className={classes.iconsContainer}>
-                  <Comments
-                    message={el}
-                    workspaceId={params ? params.id : firstFeedOnHomePage}
-                    feedId={feedId}
-                  />
-                  <MessagesLikes message={el} />
-                </Grid>
-              </Paper>
-            </Grid>
-          ))}
-        </div>
+        {messages.length > 0 ? (
+          <div className={classes.messagesContainer}>
+            {messages.map((el: IMessage) => (
+              <Grid
+                key={el.id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                }}
+                ref={bottomRef}
+              >
+                <Paper className={classes.bubble}>
+                  <Grid
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                    className={classes.paperContainer}
+                  >
+                    <Avatar className={classes.purple}>AB</Avatar>
+                    <Typography className={classes.text}>
+                      {el.content}
+                    </Typography>
+                  </Grid>
+                  <Grid className={classes.iconsContainer}>
+                    <Comments
+                      message={el}
+                      workspaceId={params ? params.id : firstFeedOnHomePage}
+                      feedId={feedId}
+                    />
+                    <MessagesLikes message={el} />
+                  </Grid>
+                </Paper>
+              </Grid>
+            ))}
+          </div>
+        ) : (
+          <i className={classes.notMessages}>
+            Soyez le premier à écrire sur ce channel
+          </i>
+        )}
+
         <MessagesInput
           bottomRef={bottomRef}
           messages={messages}

@@ -93,6 +93,12 @@ const useStyles = makeStyles((theme) => ({
       left: '56%',
     },
   },
+  notMessages: {
+    position: 'absolute',
+    top: '40%',
+    left: '55%',
+    transform: 'translate(-50%, -50%)',
+  },
 }))
 
 export default useStyles
