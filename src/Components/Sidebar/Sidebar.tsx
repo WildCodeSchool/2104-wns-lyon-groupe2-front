@@ -1,11 +1,12 @@
 import { useState, useContext } from 'react'
 import Switch from '@material-ui/core/Switch'
-import { FcPlus, FcSettings } from 'react-icons/fc'
+import { FcSettings } from 'react-icons/fc'
 import { useHistory } from 'react-router-dom'
 import Assets from './Assets'
-import Workspace from './Workspace'
+import WorkspaceSchool from './WorkspaceSchool'
 import './Sidebar.scss'
 import { SidebarContext } from '../Context/SidebarContext'
+import AddWorkspace from './AddWorskpace'
 
 const Sidebar: React.FC = () => {
   const [assetsModal, setAssetsModal] = useState<boolean>(false)
@@ -51,10 +52,10 @@ const Sidebar: React.FC = () => {
           name="checkedA"
           inputProps={{ 'aria-label': 'secondary checkbox' }}
         />
-        <FcPlus className="plus_icon" onClick={handleClick} />
+        <AddWorkspace />
       </div>
       {assetsModal && <Assets />}
-      {workSpaceModal && <Workspace />}
+      {workSpaceModal && <WorkspaceSchool />}
       <div className="btn_sidebar_bottom">
         <p className="pseudo">pseudo</p>
         <FcSettings className="params_icon" />

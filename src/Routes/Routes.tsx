@@ -30,6 +30,7 @@ const Routes: React.FC = () => {
             />
 
             <Route exact path="/" component={Home} />
+            <Route exact path="/:id" component={Home} />
             <Route exact path="/assets" component={PersonnalAssets} />
             <Route exact path="/register-new-user" component={AddNewUser} />
           </Switch>

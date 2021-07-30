@@ -6,6 +6,7 @@ const SidebarProvider: React.FC = ({ children }) => {
   const [workspacePopin, setWorkspacePopin] = useState<boolean>(false)
   const [checked, setChecked] = useState<boolean>(false)
   const [assetsPopin, setAssetsPopin] = useState<boolean>(false)
+  const [firstFeedOnHomePage, setFirstFeedOnHomePage] = useState('')
 
   const handleClick: () => void = () => {
     if (!checked) {
@@ -26,6 +27,8 @@ const SidebarProvider: React.FC = ({ children }) => {
         setChecked,
         assetsPopin,
         setAssetsPopin,
+        firstFeedOnHomePage,
+        setFirstFeedOnHomePage,
       }}
     >
       {children}

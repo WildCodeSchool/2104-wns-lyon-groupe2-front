@@ -114,7 +114,7 @@ const AddNewUser: React.FC = () => {
               const XLRowObject: any = XLSX.utils.sheet_to_json(
                 workbook.Sheets[sheetName],
               )
-              const importError = []
+              const importError: iXLSXUser[] = []
               XLRowObject.forEach((row: iXLSXUser) => {
                 const keys = Object.keys(row)
                 if (
