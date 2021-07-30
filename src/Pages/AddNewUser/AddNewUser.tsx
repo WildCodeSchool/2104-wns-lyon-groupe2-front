@@ -1,43 +1,54 @@
-import React, { useContext, useEffect } from 'react'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import { useHistory } from 'react-router-dom'
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useContext, useEffect, useState } from 'react'
+import { useHistory, Link } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
+import { useForm } from 'react-hook-form'
+import './AddNewUser.scss'
+import { gql, useMutation } from '@apollo/client'
+import XLSX from 'xlsx'
+import {
+  Paper,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  TextField,
+  Button,
+} from '@material-ui/core'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import { withStyles } from '@material-ui/core/styles'
+import { green } from '@material-ui/core/colors'
+import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 import { UserContext } from '../../Components/Context/UserContext'
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}))
+import { iXLSXUser, iNewUser } from '../../Interfaces/UsersInterfaces'
 
 const AddNewUser: React.FC = () => {
+  const {
+    clearErrors,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm()
   const history = useHistory()
-  const classes = useStyles()
   const { userInfos } = useContext(UserContext)
   const { addToast } = useToasts()
+  const ADD_USER = gql`
+    mutation registerUser($input: InputUser!) {
+      registerUser(input: $input) {
+        email
+        lastname
+        firstname
+      }
+    }
+  `
+
+  const [addUser, { data, error }] = useMutation(ADD_USER, {
+    errorPolicy: 'all',
+  })
+
+  const [spreadSheetJSON, setSpreadSheetJSON] = useState([])
 
   useEffect(() => {
     if (userInfos && !userInfos.isSchoolAdmin) {
@@ -49,66 +60,263 @@ const AddNewUser: React.FC = () => {
     }
   }, [userInfos])
 
-  const submitForm = () => {
-    console.log('submitting form')
+  const createUser = async (datas: iNewUser) => {
+    console.log(datas)
+    const { schoolId } = userInfos
+    const input = {
+      input: { ...datas, schoolId, isSchoolAdmin: false },
+    }
+    try {
+      const response = await addUser({ variables: input })
+      if (response.errors && response.errors.length > 0) {
+        let errorCode = ''
+        // manage the error thrown by mongodb (if the user already exist)
+        if (response.errors[0].message?.includes('E11000')) {
+          errorCode = '100'
+        } else if (response.errors[0].message) {
+          errorCode = response.errors[0].message
+        }
+        const errorMessage = returnMessageForAnErrorCode(errorCode)
+        addToast(errorMessage, {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      } else if (!response.errors) {
+        addToast("L'utilisateur a été créé avec succès", {
+          appearance: 'success',
+          autoDismiss: true,
+        })
+      }
+    } catch (err) {
+      addToast("Une erreur s'est produite, veuillez rééssayer", {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }
   }
 
+  const parseExcel = function (event: React.FormEvent<HTMLInputElement>) {
+    const input = event.target as HTMLInputElement
+    if (input.files) {
+      const spreadSheet = input?.files[0]
+      if (spreadSheet) {
+        const reader = new FileReader()
+        reader.onload = function (e) {
+          const datas = e?.target?.result
+          if (datas) {
+            const workbook = XLSX.read(datas, {
+              type: 'binary',
+            })
+            workbook.SheetNames.forEach(function (sheetName) {
+              const XLRowObject: any = XLSX.utils.sheet_to_json(
+                workbook.Sheets[sheetName],
+              )
+              const importError: iXLSXUser[] = []
+              XLRowObject.forEach((row: iXLSXUser) => {
+                const keys = Object.keys(row)
+                if (
+                  keys[0] !== 'Nom' ||
+                  keys[1] !== 'Prénom' ||
+                  keys[2] !== 'Email' ||
+                  keys[3] !== 'Catégorie'
+                ) {
+                  importError.push(row)
+                }
+              })
+              if (importError.length > 0) {
+                addToast(
+                  "Le fichier importé n'est pas valide, merci de le vérifier.",
+                  {
+                    appearance: 'error',
+                    autoDismiss: true,
+                  },
+                )
+              } else {
+                setSpreadSheetJSON(XLRowObject)
+              }
+            })
+          }
+        }
+        reader.onerror = function (ex) {
+          console.log(ex)
+          addToast("Une erreur s'est produite, veuillez rééssayer", {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        }
+
+        reader.readAsBinaryString(spreadSheet)
+      }
+    }
+  }
+
+  const createMultipleUsers = () => {
+    const { schoolId } = userInfos
+    const errorMessages: string[] = []
+    spreadSheetJSON.forEach(async (user: iXLSXUser) => {
+      const userData: iNewUser = {
+        firstname: user.Prénom,
+        lastname: user.Nom,
+        email: user.Email,
+        schoolId,
+        isSchoolAdmin: false,
+      }
+      if (user.Catégorie && user.Catégorie === 'Etudiant') {
+        userData.userType = 'STUDENT'
+      } else if (user.Catégorie && user.Catégorie === 'Enseignant') {
+        userData.userType = 'TEACHER'
+      }
+      try {
+        const response = await addUser({ variables: { input: userData } })
+        if (response.errors && response.errors.length > 0) {
+          let errorCode = ''
+          // manage the error thrown by mongodb (if the user already exist)
+          if (response.errors[0].message?.includes('E11000')) {
+            errorCode = '100'
+          } else if (response.errors[0].message) {
+            errorCode = response.errors[0].message
+          }
+          const errorMessage = returnMessageForAnErrorCode(errorCode)
+          errorMessages.push(errorMessage)
+        }
+      } catch (err) {
+        addToast("Une erreur s'est produite, veuillez rééssayer", {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      }
+    })
+    setTimeout(() => {
+      if (errorMessages.length > 0) {
+        addToast(
+          `Tous les utilisateurs n'ont pas été créés. Une erreur s'est produite pour ${
+            errorMessages.length
+          } utilisateur${
+            errorMessages.length === 1 ? '' : 's'
+          }, veuillez vérifier le fichier et réessayer.`,
+          {
+            appearance: 'info',
+            autoDismiss: true,
+          },
+        )
+      } else {
+        addToast(`Les utilisateurs ont été créés avec succès`, {
+          appearance: 'success',
+          autoDismiss: true,
+        })
+      }
+    }, 500)
+    setSpreadSheetJSON([])
+  }
+
+  const ColorButton = withStyles((theme) => ({
+    root: {
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+  }))(Button)
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Ajouter un nouvel utilisateur
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={submitForm}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="Prénom"
-                autoFocus
+    <div className="new-user-form-wrapper">
+      <form className="" onSubmit={handleSubmit(createUser)}>
+        <h1 className="">Inscrire un nouvel utilisateur</h1>
+        <TextField
+          helperText={errors.firstname ? "Merci d'indiquer un prénom" : false}
+          error={!!errors.firstname}
+          className="new-user-input"
+          label="Prénom"
+          variant="outlined"
+          {...register('firstname', { required: true })}
+        />
+        <TextField
+          helperText={errors.lastname ? "Merci d'indiquer un nom" : false}
+          error={!!errors.lastname}
+          className="new-user-input"
+          label="Nom"
+          variant="outlined"
+          {...register('lastname', { required: true })}
+        />
+        <TextField
+          helperText={errors.email ? "Merci d'indiquer un email" : false}
+          error={!!errors.email}
+          className="new-user-input"
+          label="Email"
+          variant="outlined"
+          {...register('email', { required: true })}
+        />
+        <FormControl className="new-user-radio-wrapper" component="fieldset">
+          <FormLabel component="legend">L&apos;utilisateur est-il</FormLabel>
+          <RadioGroup aria-label="userType" {...register('userType')}>
+            <div className="new-user-radio">
+              <FormControlLabel
+                value="STUDENT"
+                control={<Radio />}
+                label="un elève ?"
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Nom"
-                name="lastName"
-                autoComplete="lname"
+              <FormControlLabel
+                value="TEACHER"
+                control={<Radio />}
+                label="un enseignant ?"
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Adresse email"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-          </Grid>
+            </div>
+          </RadioGroup>
+        </FormControl>
+        <ColorButton
+          className="new-user-submit-button"
+          type="submit"
+          variant="contained"
+        >
+          C&apos;est parti !
+        </ColorButton>
+        <Paper className="import-xlsx-file-wrapper" elevation={5}>
+          <h2>Importer un fichier pour créer plusieurs utilisateurs</h2>
+          <p>
+            Afin de faciliter la création de multiples utilisateurs, vous pouvez
+            importer un fichier de type xlsx.
+            <br /> Attention le fichier devra impérativement posséder les
+            entêtes de colonnes suivantes : Nom, Prénom, Email, Catégorie
+            (Etudiant ou Enseignant). Modèle disponible{' '}
+            <Link to="/files/Modèle.xlsx" target="_blank" download>
+              ici
+            </Link>
+          </p>
+
           <Button
-            type="submit"
-            fullWidth
+            component="label"
             variant="contained"
-            color="primary"
-            className={classes.submit}
+            className="import-xlsx-file-button"
           >
-            Créer l&apos;utilisateur
+            <input
+              hidden
+              type="file"
+              id="fileUploader"
+              name="fileUploader"
+              accept=".xlsx"
+              onChange={(e) => {
+                parseExcel(e)
+              }}
+              onClick={(event) => {
+                // eslint-disable-next-line no-param-reassign
+                event.currentTarget.value = ''
+              }}
+            />{' '}
+            Importer un fichier XLSX
           </Button>
-        </form>
-      </div>
-    </Container>
+          {spreadSheetJSON && spreadSheetJSON.length > 0 && (
+            <ColorButton
+              className="import-xlsx-create-multiple-users-button"
+              onClick={() => createMultipleUsers()}
+              variant="contained"
+            >
+              <CheckCircleOutlineIcon className="import-xlsx-create-multiple-users-icon-button" />
+              Créer les utilisateurs
+            </ColorButton>
+          )}
+        </Paper>
+      </form>
+    </div>
   )
 }
 

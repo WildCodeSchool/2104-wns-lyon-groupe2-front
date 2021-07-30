@@ -157,8 +157,8 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link className={classes.forgotPassword} to="/forgotpassword">
-                Mot de passe oublié ?
+              <Link to="/forgotpassword">
+                <p className={classes.forgot}>Mot de passe oublié ?</p>
               </Link>
             </Grid>
           </Grid>
