@@ -47,7 +47,9 @@ const GET_WORKSPACES = gql`
 const Messages: React.FC = () => {
   const classes = useStyles()
   const [messages, setMessages] = useState<iFeed[]>([])
+  const [userMessage, setUserMessage] = useState('')
   const [feedId, setFeedId] = useState<string>('')
+  const [refresh, setRefresh] = useState<boolean>(false)
   const { firstFeedOnHomePage } = useContext(SidebarContext)
   const location = useLocation()
   const bottomRef: any = useRef()
@@ -71,13 +73,15 @@ const Messages: React.FC = () => {
   })
   useEffect(() => {
     if (data) {
+      setUserMessage('')
       setMessages(data.getWorkspaceById.feed[0].messages)
       setFeedId(data.getWorkspaceById.feed[0].id)
     }
     if (bottomRef.current) {
       scrollToBottom(bottomRef)
     }
-  }, [data, messages, bottomRef.current])
+    setRefresh(false)
+  }, [data, bottomRef.current, messages, refresh])
   if (loading)
     return (
       <div className={classes.loader}>
@@ -105,14 +109,13 @@ const Messages: React.FC = () => {
                 ref={bottomRef}
               >
                 <Paper className={classes.bubble}>
-                  <Grid
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                    className={classes.paperContainer}
-                  >
+                  <Grid className={classes.userNameContainer}>
                     <Avatar className={classes.purple}>AB</Avatar>
+                    <Typography className={classes.userName}>
+                      Aymeric Bouault
+                    </Typography>
+                  </Grid>
+                  <Grid className={classes.paperContainer}>
                     <Typography className={classes.text}>
                       {el.content}
                     </Typography>
@@ -137,10 +140,12 @@ const Messages: React.FC = () => {
 
         <MessagesInput
           bottomRef={bottomRef}
-          messages={messages}
-          setMessages={setMessages}
+          userMessage={userMessage}
+          setUserMessage={setUserMessage}
           workspaceId={params ? params.id : firstFeedOnHomePage}
           feedId={feedId}
+          refresh={refresh}
+          setRefresh={setRefresh}
         />
       </Grid>
     </div>

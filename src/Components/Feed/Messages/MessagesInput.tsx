@@ -8,11 +8,13 @@ import { iFeed } from '../../../Interfaces/Workspace'
 import useStyles from './MessagesStyle'
 
 export interface MessagesInputProps {
-  messages: iFeed[]
-  setMessages: any
+  userMessage: string
+  setUserMessage: any
   bottomRef: any
   workspaceId: string
   feedId: string
+  refresh: boolean
+  setRefresh: any
 }
 
 const ADD_WORKSPACE = gql`
@@ -38,15 +40,17 @@ const ADD_WORKSPACE = gql`
 `
 
 const MessagesInput: React.FC<MessagesInputProps> = ({
-  messages,
-  setMessages,
+  userMessage,
+  setUserMessage,
   workspaceId,
   feedId,
+  refresh,
+  setRefresh,
 }: MessagesInputProps) => {
-  const [userMessage, setUserMessage] = useState('')
   const classes = useStyles()
   const [addWorkspace] = useMutation(ADD_WORKSPACE)
   const onSubmit = () => {
+    setRefresh(true)
     addWorkspace({
       variables: {
         input: {
@@ -65,6 +69,7 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
 
   const handleKeyPress = (event: any) => {
     if (event.key === 'Enter') {
+      setRefresh(true)
       onSubmit()
     }
   }

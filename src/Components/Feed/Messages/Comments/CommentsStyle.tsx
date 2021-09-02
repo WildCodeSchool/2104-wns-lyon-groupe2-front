@@ -48,18 +48,23 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
     position: 'relative',
   },
+  icons: {
+    display: 'flex',
+    width: '50%',
+  },
   icon: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center',
     fontSize: 10,
-    marginLeft: 5,
-    marginRight: 5,
     marginBottom: 2,
     cursor: 'pointer',
+    flexDirection: 'row',
     '&:hover': {
       transform: 'scale(0.97)',
     },
+    marginLeft: 5,
+    marginRight: 5,
   },
   likes: {
     fontSize: 12,
@@ -67,9 +72,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   commentIcon: {
-    color: '#508c63',
-    fontSize: 12,
+    color: '#3b3b3b',
+    fontSize: 16,
     fontWeight: 'bold',
+    marginLeft: 5,
   },
 }))
 
