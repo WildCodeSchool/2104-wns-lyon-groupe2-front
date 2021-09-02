@@ -22,17 +22,16 @@ const Routes: React.FC = () => {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
+            <Route exact path="/register-new-user" component={AddNewUser} />
             <Route exact path="/mailsent" component={MailSent} />
             <Route
               exact
               path="/password_recovery/:token/:id"
               component={NewPassword}
             />
-
             <Route exact path="/" component={Home} />
-            <Route exact path="/:id" component={Home} />
             <Route exact path="/assets" component={PersonnalAssets} />
-            <Route exact path="/register-new-user" component={AddNewUser} />
+            <Route exact path="/:id" component={Home} />
           </Switch>
         </UserProvider>
       </Router>
