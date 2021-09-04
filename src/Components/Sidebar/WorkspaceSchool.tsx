@@ -69,7 +69,7 @@ const WorkspaceSchool: React.FC = () => {
   const [workspace, setWorkspace] = useState([])
   const classes = useStyles()
   useEffect(() => {
-    if (data) {
+    if (data?.allWorkspaces.length) {
       setWorkspace(data.allWorkspaces)
       setFirstFeedOnHomePage(data.allWorkspaces[0].id)
     }

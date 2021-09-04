@@ -5,7 +5,7 @@ import { MockedProvider } from '@apollo/client/testing'
 import {
   ForgotPassword,
   GET_PASSWORD_BY_MAIL,
-} from '../Pages/ForgotPassword/ForgotPassword'
+} from '../Pages/Password/ForgotPassword'
 
 const mocks = [
   {

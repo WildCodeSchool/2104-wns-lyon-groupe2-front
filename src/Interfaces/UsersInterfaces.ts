@@ -22,6 +22,8 @@ export interface iNewUser {
 }
 
 export interface iTokenDecrypted {
+  // eslint-disable-next-line camelcase
+  first_connection: boolean
   email: string
   exp: number
   firstname: string
