@@ -31,13 +31,20 @@ const GET_WORKSPACES = gql`
           id
           content
           userId
-          likes {
-            userId
-          }
+          userName
           comments {
             id
             content
             userId
+            userName
+          }
+          likes {
+            userId
+            userName
+          }
+          dislikes {
+            userId
+            userName
           }
         }
       }
@@ -76,6 +83,7 @@ const Messages: React.FC = () => {
     if (data) {
       setUserMessage('')
       setMessages(data.getWorkspaceById.feed[0].messages)
+      console.log(data.getWorkspaceById.feed[0].messages)
       setFeedId(data.getWorkspaceById.feed[0].id)
     }
     if (bottomRef.current) {
@@ -111,9 +119,13 @@ const Messages: React.FC = () => {
               >
                 <Paper className={classes.bubble}>
                   <Grid className={classes.userNameContainer}>
-                    <Avatar className={classes.purple}>AB</Avatar>
+                    <Avatar className={classes.purple}>
+                      {el.userName &&
+                        el.userName.split(' ')[0].slice(0, 1).toUpperCase() +
+                          el.userName.split(' ')[1].slice(0, 1).toUpperCase()}
+                    </Avatar>
                     <Typography className={classes.userName}>
-                      Aymeric Bouault
+                      {el.userName}
                     </Typography>
                   </Grid>
                   <Grid className={classes.paperContainer}>

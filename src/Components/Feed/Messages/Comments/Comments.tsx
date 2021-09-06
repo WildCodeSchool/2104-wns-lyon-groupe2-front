@@ -90,11 +90,31 @@ const Comments: React.FC<CommentsProps> = ({
                       }}
                       className={classes.paperContainer}
                     >
-                      <Avatar className={classes.purple}>AB</Avatar>
+                      <Avatar className={classes.purple}>
+                        {comment.userName &&
+                          comment.userName
+                            .split(' ')[0]
+                            .slice(0, 1)
+                            .toUpperCase() +
+                            comment.userName
+                              .split(' ')[1]
+                              .slice(0, 1)
+                              .toUpperCase()}
+                      </Avatar>
+                      <Typography className={classes.text}>
+                        {comment.userName}
+                      </Typography>
+                    </Grid>
+                    <div
+                      style={{
+                        paddingBottom: '20px',
+                      }}
+                      className={classes.paperContainer}
+                    >
                       <Typography className={classes.text}>
                         {comment.content}
                       </Typography>
-                    </Grid>
+                    </div>
                   </Paper>
                 </Grid>
               ))}
