@@ -9,12 +9,12 @@ import useStyles from './MessagesStyle'
 
 export interface MessagesInputProps {
   userMessage: string
-  setUserMessage: any
+  setUserMessage: (userMessage: string) => void
   bottomRef: any
   workspaceId: string
   feedId: string
   refresh: boolean
-  setRefresh: any
+  setRefresh: (refresh: boolean) => void
 }
 
 const ADD_WORKSPACE = gql`

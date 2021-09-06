@@ -7,15 +7,8 @@ import { IMessage } from '../../../Interfaces/Workspace'
 import useStyles from './MessagesStyle'
 import { UserContext } from '../../Context/UserContext'
 
-export interface MessagesLikesProps {
-  message: IMessage
-  workspaceId: string
-  feedId: string
-  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const ADD_LIKE = gql`
-  mutation addLikeToMessage($input: LikeMessage!) {
+const ADD_DISLIKE = gql`
+  mutation addDislikeToMessage($input: DisLikeMessage!) {
     addLikeToMessage(input: $input) {
       id
       title
@@ -35,17 +28,23 @@ const ADD_LIKE = gql`
     }
   }
 `
+export interface MessagesLikesProps {
+  message: IMessage
+  workspaceId: string
+  feedId: string
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const MessagesLikes: React.FC<MessagesLikesProps> = ({
+const MessagesDislikes: React.FC<MessagesLikesProps> = ({
   message,
   workspaceId,
   feedId,
   setRefresh,
 }) => {
-  const [addLike] = useMutation(ADD_LIKE)
-  const addLikes = () => {
+  const [addDislike] = useMutation(ADD_DISLIKE)
+  const addDislikes = () => {
     setRefresh(true)
-    addLike({
+    addDislike({
       variables: {
         input: {
           parentWorkspaceId: workspaceId,
@@ -61,16 +60,13 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({
   return (
     <div className={classes.icons}>
       <Button className={classes.icon}>
-        <ThumbUpAltRoundedIcon
-          style={{ color: '#3b3b3b' }}
-          onClick={() => addLike()}
-        />
-        <Typography className={classes.likes}>
-          {message.likes ? message.likes.length : null}
+        <ThumbDownAltRoundedIcon style={{ color: '#3b3b3b' }} />
+        <Typography className={classes.dislikes}>
+          {message.dislikes ? message.dislikes.length : 0}
         </Typography>
       </Button>
     </div>
   )
 }
 
-export default MessagesLikes
+export default MessagesDislikes

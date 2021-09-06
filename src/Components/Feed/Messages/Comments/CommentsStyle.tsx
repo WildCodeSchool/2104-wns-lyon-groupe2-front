@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icons: {
     display: 'flex',
-    width: '50%',
+    width: '100%',
   },
   icon: {
     display: 'flex',

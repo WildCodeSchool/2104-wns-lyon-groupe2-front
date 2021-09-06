@@ -16,6 +16,7 @@ import { iFeed, IMessage } from '../../../Interfaces/Workspace'
 import { SidebarContext } from '../../Context/SidebarContext'
 import MessagesLikes from './MessagesLikes'
 import Comments from './Comments/Comments'
+import MessagesDislikes from './MessagesDislikes'
 
 const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
@@ -126,7 +127,18 @@ const Messages: React.FC = () => {
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
                     />
-                    <MessagesLikes message={el} />
+                    <MessagesLikes
+                      message={el}
+                      workspaceId={params ? params.id : firstFeedOnHomePage}
+                      feedId={feedId}
+                      setRefresh={setRefresh}
+                    />
+                    <MessagesDislikes
+                      message={el}
+                      workspaceId={params ? params.id : firstFeedOnHomePage}
+                      feedId={feedId}
+                      setRefresh={setRefresh}
+                    />
                   </Grid>
                 </Paper>
               </Grid>
