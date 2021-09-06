@@ -12,6 +12,8 @@ interface InputPasswordRecovery {
 interface InputToChangePassword {
   userId: string
   password: string
+  // eslint-disable-next-line camelcase
+  first_connection: boolean
 }
 
 const NewPassword: React.FC = (props: any) => {
@@ -39,6 +41,7 @@ const NewPassword: React.FC = (props: any) => {
   const inputToChangePassword: InputToChangePassword = {
     userId: params.id,
     password,
+    first_connection: false,
   }
   // this is the query to verify that token and userid combinaison works
   const CHECK_INFOS_FOR_PWD_RECOVERY = gql`

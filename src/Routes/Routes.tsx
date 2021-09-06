@@ -5,9 +5,10 @@ import PersonnalAssets from '../Pages/Assets/PersonnalAssets'
 
 import AddNewUser from '../Pages/AddNewUser/AddNewUser'
 
-import { ForgotPassword } from '../Pages/ForgotPassword/ForgotPassword'
-import MailSent from '../Pages/ForgotPassword/MailSent'
-import NewPassword from '../Pages/ForgotPassword/NewPassword'
+import { ForgotPassword } from '../Pages/Password/ForgotPassword'
+
+import MailSent from '../Pages/Password/MailSent'
+import NewPassword from '../Pages/Password/NewPassword'
 
 import Home from '../Pages/Home/Home'
 import Login from '../Pages/Login/Login'
@@ -25,7 +26,7 @@ const Routes: React.FC = () => {
             <Route exact path="/mailsent" component={MailSent} />
             <Route
               exact
-              path="/password_recovery/:token/:id"
+              path="/password_management/:token/:id"
               component={NewPassword}
             />
 
