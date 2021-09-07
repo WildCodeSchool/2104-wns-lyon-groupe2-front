@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { Button, Popover, TextField } from '@material-ui/core'
 import { CREATE_FOLDER } from '../../graphql/mutations'
-import { GET_FOLDERS } from '../../graphql/queries'
+import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 
 const AddAssets: React.FC = () => {
   let input: HTMLInputElement
   const [addFolder] = useMutation(CREATE_FOLDER, {
     refetchQueries: [
       {
-        query: GET_FOLDERS,
+        query: GET_FOLDERS_BY_CURRENT_USER_ID,
       },
     ],
   })

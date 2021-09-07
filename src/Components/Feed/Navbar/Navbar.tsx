@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { FcTrademark } from 'react-icons/fc'
 import './Navbar.scss'
 import Searchbar from './Searchbar'
+import { UserContext } from '../../Context/UserContext'
 
 const StyledMenu = withStyles({
   paper: {
@@ -45,6 +46,7 @@ const StyledMenuItem = withStyles((theme) => ({
 const Navbar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const history = useHistory()
+  const { setToken } = useContext(UserContext)
 
   const handleClick: (e: React.MouseEvent<HTMLElement>) => void = (e) => {
     setAnchorEl(e.currentTarget)
@@ -54,7 +56,7 @@ const Navbar: React.FC = () => {
     setAnchorEl(null)
   }
   const handleLogout = (): void => {
-    localStorage.removeItem('token')
+    setToken(null)
     history.push('/login')
   }
 

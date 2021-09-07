@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Avatar,
   Button,
@@ -17,6 +17,7 @@ import { useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
 
 import useStyles from './LoginStyle'
+import { UserContext } from '../Context/UserContext'
 
 // Pour gérer la redirection avec TS
 type SomeComponentProps = RouteComponentProps
@@ -36,6 +37,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
   const { addToast } = useToasts()
+  const { setToken } = useContext(UserContext)
 
   // On écrit la mutation comme définit dans le back
   // ici on envoie la variable input définit plus bas
@@ -68,7 +70,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
         autoDismiss: true,
       })
     } else {
-      localStorage.setItem('token', response.data.login.token as string)
+      setToken(response.data.login.token)
       history.push('/')
     }
   }

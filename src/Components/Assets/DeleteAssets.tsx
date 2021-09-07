@@ -1,7 +1,7 @@
 import { MdDelete } from 'react-icons/md'
 import { useMutation } from '@apollo/client'
 import './Assets.scss'
-import { GET_FOLDERS } from '../../graphql/queries'
+import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { DELETE_FOLDER } from '../../graphql/mutations'
 
 type TDeleteAssetsProps = {
@@ -12,7 +12,7 @@ const DeleteAssets: React.FC<TDeleteAssetsProps> = ({ id }) => {
   const [deleteFolder] = useMutation(DELETE_FOLDER, {
     refetchQueries: [
       {
-        query: GET_FOLDERS,
+        query: GET_FOLDERS_BY_CURRENT_USER_ID,
       },
     ],
   })
