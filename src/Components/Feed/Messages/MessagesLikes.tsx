@@ -1,6 +1,5 @@
-import { useCallback, useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded'
-import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded'
 import { Button, Typography } from '@material-ui/core'
 import { useMutation, gql } from '@apollo/client'
 import { IMessage } from '../../../Interfaces/Workspace'
@@ -50,6 +49,8 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({
   feedId,
   refetch,
 }) => {
+  const { userInfos } = useContext(UserContext)
+  const [active, setActive] = useState(false)
   const [addLike] = useMutation(ADD_LIKE)
   const addLikes = async () => {
     await addLike({
@@ -63,14 +64,26 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({
       },
     })
     await refetch()
+
+    setActive(!active)
+    await refetch()
   }
+  useEffect(() => {
+    if (message.likes) {
+      for (let i = 0; i < message.likes.length; i += 1) {
+        if (message.likes[i].userId === userInfos.userId) {
+          setActive(true)
+        }
+      }
+    }
+  }, [message])
+
   const classes = useStyles()
   return (
     <div className={classes.icons}>
-      <Button className={classes.icon}>
+      <Button className={classes.icon} onClick={() => addLikes()}>
         <ThumbUpAltRoundedIcon
-          style={{ color: '#3b3b3b' }}
-          onClick={() => addLikes()}
+          style={active ? { color: 'green' } : { color: '#3b3b3b' }}
         />
         <Typography className={classes.likes}>
           {message.likes ? message.likes.length : null}

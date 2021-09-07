@@ -13,6 +13,7 @@ import { IComment, IMessage } from '../../../../Interfaces/Workspace'
 import useStyles from './CommentsStyle'
 import CommentsInput from './CommentsInput'
 import Messages from '../Messages'
+import useNickname from '../../../Hooks/useNickname'
 
 export interface CommentsProps {
   message: IMessage
@@ -56,12 +57,8 @@ const Comments: React.FC<CommentsProps> = ({
 
   return (
     <div className={classes.icons}>
-      <Button className={classes.icon}>
-        <CommentIcon
-          color="primary"
-          onClick={handleClickOpen}
-          style={{ color: '#3b3b3b' }}
-        />
+      <Button className={classes.icon} onClick={handleClickOpen}>
+        <CommentIcon color="primary" style={{ color: '#3b3b3b' }} />
         <Typography className={classes.commentIcon}>
           {message.comments ? message.comments.length : null}
         </Typography>
@@ -91,15 +88,7 @@ const Comments: React.FC<CommentsProps> = ({
                       className={classes.paperContainer}
                     >
                       <Avatar className={classes.purple}>
-                        {comment.userName &&
-                          comment.userName
-                            .split(' ')[0]
-                            .slice(0, 1)
-                            .toUpperCase() +
-                            comment.userName
-                              .split(' ')[1]
-                              .slice(0, 1)
-                              .toUpperCase()}
+                        {useNickname(comment.userName)}
                       </Avatar>
                       <Typography className={classes.text}>
                         {comment.userName}
