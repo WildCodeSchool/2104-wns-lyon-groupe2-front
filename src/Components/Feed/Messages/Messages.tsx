@@ -17,6 +17,7 @@ import { SidebarContext } from '../../Context/SidebarContext'
 import MessagesLikes from './MessagesLikes'
 import Comments from './Comments/Comments'
 import MessagesDislikes from './MessagesDislikes'
+import useNickname from '../../Hooks/useNickname'
 
 const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
@@ -31,13 +32,20 @@ const GET_WORKSPACES = gql`
           id
           content
           userId
-          likes {
-            userId
-          }
+          userName
           comments {
             id
             content
             userId
+            userName
+          }
+          likes {
+            userId
+            userName
+          }
+          dislikes {
+            userId
+            userName
           }
         }
       }
@@ -51,6 +59,7 @@ const Messages: React.FC = () => {
   const [userMessage, setUserMessage] = useState('')
   const [feedId, setFeedId] = useState<string>('')
   const [refresh, setRefresh] = useState<boolean>(false)
+
   const { firstFeedOnHomePage } = useContext(SidebarContext)
   const location = useLocation()
   const bottomRef: any = useRef()
@@ -65,15 +74,27 @@ const Messages: React.FC = () => {
       })
     }
   }
-  const { loading, error, data } = useQuery(GET_WORKSPACES, {
+
+  const { loading, error, data, refetch } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
         id: params ? params.id : firstFeedOnHomePage,
       },
     },
+    pollInterval: 500,
   })
+
+  // const { loading, error, data, refetch } = useQuery(GET_WORKSPACES, {
+  //   variables: {
+  //     input: {
+  //       id: params ? params.id : firstFeedOnHomePage,
+  //     },
+  //   },
+  // },       pollInterval: 500,
+  // )
+
   useEffect(() => {
-    if (data) {
+    if (loading === false && data) {
       setUserMessage('')
       setMessages(data.getWorkspaceById.feed[0].messages)
       setFeedId(data.getWorkspaceById.feed[0].id)
@@ -83,6 +104,7 @@ const Messages: React.FC = () => {
     }
     setRefresh(false)
   }, [data, bottomRef.current, messages, refresh])
+
   if (loading)
     return (
       <div className={classes.loader}>
@@ -111,9 +133,11 @@ const Messages: React.FC = () => {
               >
                 <Paper className={classes.bubble}>
                   <Grid className={classes.userNameContainer}>
-                    <Avatar className={classes.purple}>AB</Avatar>
+                    <Avatar className={classes.purple}>
+                      {useNickname(el.userName)}
+                    </Avatar>
                     <Typography className={classes.userName}>
-                      Aymeric Bouault
+                      {el.userName}
                     </Typography>
                   </Grid>
                   <Grid className={classes.paperContainer}>
@@ -131,13 +155,13 @@ const Messages: React.FC = () => {
                       message={el}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
-                      setRefresh={setRefresh}
+                      refetch={refetch}
                     />
                     <MessagesDislikes
                       message={el}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
-                      setRefresh={setRefresh}
+                      refetch={refetch}
                     />
                   </Grid>
                 </Paper>
@@ -156,8 +180,7 @@ const Messages: React.FC = () => {
           setUserMessage={setUserMessage}
           workspaceId={params ? params.id : firstFeedOnHomePage}
           feedId={feedId}
-          refresh={refresh}
-          setRefresh={setRefresh}
+          refetch={refetch}
         />
       </Grid>
     </div>

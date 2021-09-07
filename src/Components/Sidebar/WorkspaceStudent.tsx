@@ -1,6 +1,6 @@
 // eslint-disable
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -12,6 +12,7 @@ import Loader from 'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { iWorkspace } from '../../Interfaces/Workspace'
+import { UserContext } from '../Context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   container: { marginTop: theme.spacing(1) },
@@ -57,11 +58,13 @@ export const GET_WORKSPACES = gql`
 `
 
 const WorkspaceStudent: React.FC = () => {
+  const { userInfos } = useContext(UserContext)
+
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
         isSchoolWorkspace: false,
-        schoolId: '2',
+        schoolId: '1',
       },
     },
   })
