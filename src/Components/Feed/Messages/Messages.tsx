@@ -72,7 +72,7 @@ const Messages: React.FC = () => {
       })
     }
   }
-  const { loading, error, data } = useQuery(GET_WORKSPACES, {
+  const { loading, error, data, refetch } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
         id: params ? params.id : firstFeedOnHomePage,
@@ -83,7 +83,6 @@ const Messages: React.FC = () => {
     if (data) {
       setUserMessage('')
       setMessages(data.getWorkspaceById.feed[0].messages)
-      console.log(data.getWorkspaceById.feed[0].messages)
       setFeedId(data.getWorkspaceById.feed[0].id)
     }
     if (bottomRef.current) {
@@ -143,13 +142,13 @@ const Messages: React.FC = () => {
                       message={el}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
-                      setRefresh={setRefresh}
+                      refetch={refetch}
                     />
                     <MessagesDislikes
                       message={el}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
-                      setRefresh={setRefresh}
+                      refetch={refetch}
                     />
                   </Grid>
                 </Paper>

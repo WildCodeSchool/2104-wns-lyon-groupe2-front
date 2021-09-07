@@ -7,9 +7,16 @@ import { IMessage } from '../../../Interfaces/Workspace'
 import useStyles from './MessagesStyle'
 import { UserContext } from '../../Context/UserContext'
 
+export interface MessagesLikesProps {
+  message: IMessage
+  workspaceId: string
+  feedId: string
+  refetch: any
+}
+
 const ADD_DISLIKE = gql`
-  mutation addDislikeToMessage($input: DisLikeMessage!) {
-    addLikeToMessage(input: $input) {
+  mutation addDislikeToMessage($input: InputDislikeMessage!) {
+    addDislikeToMessage(input: $input) {
       id
       title
       isSchoolWorkspace
@@ -18,6 +25,10 @@ const ADD_DISLIKE = gql`
         feedName
         messages {
           id
+          likes {
+            userId
+          }
+          id
           content
           comments {
             id
@@ -25,26 +36,23 @@ const ADD_DISLIKE = gql`
           }
         }
       }
+      assets {
+        id
+        assetName
+      }
     }
   }
 `
-export interface MessagesLikesProps {
-  message: IMessage
-  workspaceId: string
-  feedId: string
-  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
-}
 
 const MessagesDislikes: React.FC<MessagesLikesProps> = ({
   message,
   workspaceId,
   feedId,
-  setRefresh,
+  refetch,
 }) => {
   const [addDislike] = useMutation(ADD_DISLIKE)
-  const addDislikes = () => {
-    setRefresh(true)
-    addDislike({
+  const addDislikes = async () => {
+    await addDislike({
       variables: {
         input: {
           parentWorkspaceId: workspaceId,
@@ -54,15 +62,18 @@ const MessagesDislikes: React.FC<MessagesLikesProps> = ({
         },
       },
     })
+    await refetch()
   }
-  const { userInfos } = useContext(UserContext)
   const classes = useStyles()
   return (
     <div className={classes.icons}>
       <Button className={classes.icon}>
-        <ThumbDownAltRoundedIcon style={{ color: '#3b3b3b' }} />
+        <ThumbDownAltRoundedIcon
+          style={{ color: '#3b3b3b' }}
+          onClick={() => addDislikes()}
+        />
         <Typography className={classes.dislikes}>
-          {message.dislikes ? message.dislikes.length : 0}
+          {message.dislikes ? message.dislikes.length : null}
         </Typography>
       </Button>
     </div>
