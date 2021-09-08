@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import {
   ApolloProvider,
   ApolloClient,
@@ -5,11 +6,12 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
-
+import { UserContext } from '../Components/Context/UserContext'
 import Routes from '../Routes/Routes'
 import './App.scss'
 
 const App = (): JSX.Element => {
+  const { token } = useContext(UserContext)
   const { REACT_APP_API_URL } = process.env
   // ici à voir pour le new InmemoryCache pour le Bearer Token
 
@@ -19,7 +21,7 @@ const App = (): JSX.Element => {
     }),
     cache: new InMemoryCache(),
     headers: {
-      authorization: localStorage.getItem('token') || '',
+      authorization: token || '',
     },
   })
 

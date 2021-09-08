@@ -24,9 +24,14 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "react/require-default-props": "off",
+    "no-extra-semi": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/no-unescaped-entities": 0,
+    "@typescript-eslint/ban-ts-comment": "off",
     "import/prefer-default-export": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "react/prop-types": 0,
+    "react/prop-types": "off",
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/no-static-element-interactions": "off",
     "react/react-in-jsx-scope": "off",

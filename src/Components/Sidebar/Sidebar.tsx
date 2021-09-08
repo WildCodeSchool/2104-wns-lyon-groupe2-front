@@ -52,6 +52,7 @@ const Sidebar: React.FC = () => {
           name="checkedA"
           inputProps={{ 'aria-label': 'secondary checkbox' }}
         />
+
         <AddWorkspace />
       </div>
       {assetsModal && <Assets />}

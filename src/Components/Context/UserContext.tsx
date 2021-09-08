@@ -1,13 +1,12 @@
 /* eslint-disable camelcase */
-import { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
 import { withRouter } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import { iUsers, iTokenDecrypted } from '../../Interfaces/UsersInterfaces'
 
-export const UserContext: any = createContext(null)
-
-const tokenInLocalStorage = localStorage.getItem('token')
+export const UserContext: any = createContext('')
+const initialState = localStorage.getItem('token')
   ? localStorage.getItem('token')
   : null
 
@@ -18,8 +17,8 @@ const UserProvider = withRouter((props) => {
   const { addToast } = useToasts()
 
   useEffect(() => {
-    if (tokenInLocalStorage) {
-      setUserInfos(jwt_decode(tokenInLocalStorage))
+    if (initialState) {
+      setUserInfos(jwt_decode(initialState))
     }
   }, [])
 

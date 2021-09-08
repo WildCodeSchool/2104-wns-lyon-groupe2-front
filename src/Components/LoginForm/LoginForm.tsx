@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, ContextType } from 'react'
 import {
   Avatar,
   Button,
@@ -18,21 +18,14 @@ import { Link } from 'react-router-dom'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
+import { iInputLogin } from '../../Interfaces/Auth'
 import { UserContext } from '../Context/UserContext'
-
 import useStyles from './LoginStyle'
 
 // Pour gérer la redirection avec TS
 type SomeComponentProps = RouteComponentProps
 
 // L'interface ici doit (??) être identique à l'interface ...Graphql coté back ?
-interface InputLogin {
-  input: {
-    email: string
-    password: string
-    remember: boolean
-  }
-}
 
 const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const classes = useStyles()
@@ -42,6 +35,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [showPassword, setShowPassword] = useState(false)
   const { addToast } = useToasts()
   const { addUser } = useContext(UserContext)
+  const { setToken } = useContext(UserContext)
 
   // On écrit la mutation comme définit dans le back
   // ici on envoie la variable input définit plus bas
@@ -62,7 +56,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   })
 
   // On définit notre Objet input que l'on va envoyer
-  const input: InputLogin = { input: { email, password, remember } }
+  const input: iInputLogin = { input: { email, password, remember } }
 
   // La méthode onSubmit ajoute la variable à la useMutation login()
   const onSubmit = async (): Promise<void> => {
@@ -76,6 +70,8 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
       })
     } else {
       addUser(response.data.login.token)
+      setToken(response.data.login.token)
+      history.push('/')
     }
   }
 

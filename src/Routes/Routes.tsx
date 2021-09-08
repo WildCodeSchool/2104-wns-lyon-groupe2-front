@@ -1,6 +1,9 @@
 import { Router, Switch, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import UserProvider from '../Components/Context/UserContext'
+
+import AssetDetails from '../Components/Assets/AssetDetails'
+
 import PersonnalAssets from '../Pages/Assets/PersonnalAssets'
 
 import AddNewUser from '../Pages/AddNewUser/AddNewUser'

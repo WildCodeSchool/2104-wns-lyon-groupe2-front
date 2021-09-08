@@ -1,4 +1,3 @@
-import Ressources from '../../Components/Assets/Assets'
 import FileUpload from '../../Components/FileUPload/FileUpload'
 import Sidebar from '../../Components/Sidebar/Sidebar'
 

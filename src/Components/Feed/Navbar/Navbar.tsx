@@ -49,6 +49,7 @@ const Navbar: React.FC = () => {
   const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const history = useHistory()
+  const { setToken } = useContext(UserContext)
 
   useEffect(() => {
     if (userInfos) {
@@ -66,6 +67,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = (): void => {
     removeUser()
+    setToken(null)
     history.push('/login')
   }
 
