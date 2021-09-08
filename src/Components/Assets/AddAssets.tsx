@@ -60,7 +60,7 @@ const AddAssets: React.FC = () => {
               variables: {
                 input: {
                   name: input.value,
-                  children: [],
+                  parentDirectory: '',
                   isRootDirectory: false,
                 },
               },

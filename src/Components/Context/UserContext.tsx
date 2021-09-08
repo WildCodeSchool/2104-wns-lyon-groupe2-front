@@ -3,9 +3,7 @@ import { createContext, useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
 
 export const UserContext: any = createContext(null)
-const initialState = localStorage.getItem('token')
-  ? localStorage.getItem('token')
-  : null
+const initialState = localStorage.getItem('token') ? localStorage.getItem('token') : null
 
 const UserProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string | null>(null)
@@ -24,11 +22,7 @@ const UserProvider: React.FC = ({ children }) => {
       setUserId(null)
     }
   }, [token])
-  return (
-    <UserContext.Provider value={{ token, setToken, userId }}>
-      {children}
-    </UserContext.Provider>
-  )
+  return <UserContext.Provider value={{ token, setToken, userId }}>{children}</UserContext.Provider>
 }
 
 export default UserProvider

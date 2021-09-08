@@ -7,8 +7,9 @@ export const GET_FOLDERS_BY_CURRENT_USER_ID = gql`
       userId
       createdAt
       name
-      children
+      parentDirectory
       isRootDirectory
+      sequence
     }
   }
 `
