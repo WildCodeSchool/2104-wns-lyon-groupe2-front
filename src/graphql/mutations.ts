@@ -27,3 +27,11 @@ export const DELETE_FOLDER = gql`
     deleteFolder(input: $input)
   }
 `
+
+export const UPLOAD_FILE = gql`
+  mutation uploadFile($data: Upload!) {
+    uploadFile(data: $data) {
+      url
+    }
+  }
+`

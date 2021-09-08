@@ -8,7 +8,10 @@ const PersonnalAssets: React.FC = () => {
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar />
-      <Assets />
+      <div style={{ marginLeft: '100px' }}>
+        <Assets />
+        <FileUpload />
+      </div>
     </div>
   )
 }
