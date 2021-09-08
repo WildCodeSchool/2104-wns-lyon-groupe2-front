@@ -23,11 +23,36 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paperContainer: { margin: 10 },
-  purple: {
-    backgroundColor: 'purple',
+  userNameContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     float: 'left',
-    margin: 10,
+    margin: 5,
+    width: '100%',
+    borderRadius: 20,
+    height: 60,
   },
+  nickName: {
+    backgroundColor: '#4aa0bd',
+    float: 'left',
+    color: 'white',
+  },
+  userName: {
+    fontSize: 17,
+    margin: 10,
+    marginLeft: 50,
+    color: '#3b3b3b',
+    alignItems: 'center',
+  },
+  date: {
+    fontSize: 17,
+    margin: 10,
+    marginRight: 25,
+    color: '#3b3b3b',
+    alignItems: 'center',
+  },
+
   text: {
     fontSize: 17,
     marginLeft: 20,
@@ -62,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     '&:hover': {
       transform: 'scale(0.97)',
+      backgroundColor: '#3b3b5',
     },
     marginLeft: 5,
     marginRight: 5,

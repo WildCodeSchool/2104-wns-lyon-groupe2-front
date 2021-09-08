@@ -80,19 +80,22 @@ const Comments: React.FC<CommentsProps> = ({
               {message.comments?.map((comment: IComment) => (
                 <Grid ref={bottomRef}>
                   <Paper className={classes.bubble}>
-                    <Grid
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                      className={classes.paperContainer}
-                    >
-                      <Avatar className={classes.purple}>
-                        {useNickname(comment.userName)}
-                      </Avatar>
-                      <Typography className={classes.text}>
-                        {comment.userName}
-                      </Typography>
+                    <Grid className={classes.userNameContainer}>
+                      <div style={{ width: '50%', marginLeft: '20' }}>
+                        <Avatar className={classes.nickName}>
+                          {useNickname(comment.userName)}
+                        </Avatar>
+                        <Typography className={classes.userName}>
+                          {comment.userName}
+                        </Typography>
+                      </div>
+                      <div className={classes.date}>
+                        {comment.createdAt
+                          ? new Date(
+                              parseInt(comment.createdAt, 10),
+                            ).toLocaleString()
+                          : null}
+                      </div>
                     </Grid>
                     <div
                       style={{
