@@ -1,22 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect, useContext } from 'react'
-import {
-  Grid,
-  Paper,
-  Avatar,
-  Typography,
-  StylesProvider,
-} from '@material-ui/core'
+import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
-import { iFeed, IMessage } from '../../../Interfaces/Workspace'
+import { IMessage } from '../../../Interfaces/Workspace'
 import { SidebarContext } from '../../Context/SidebarContext'
 import MessagesLikes from './MessagesLikes'
 import Comments from './Comments/Comments'
 import MessagesDislikes from './MessagesDislikes'
+import useNickname from '../../Hooks/useNickname'
 
 export const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
@@ -31,13 +26,22 @@ export const GET_WORKSPACES = gql`
           id
           content
           userId
-          likes {
-            userId
-          }
+          userName
+          createdAt
           comments {
             id
             content
             userId
+            userName
+            createdAt
+          }
+          likes {
+            userId
+            userName
+          }
+          dislikes {
+            userId
+            userName
           }
         }
       }
@@ -47,10 +51,11 @@ export const GET_WORKSPACES = gql`
 
 const Messages: React.FC = () => {
   const classes = useStyles()
-  const [messages, setMessages] = useState<iFeed[]>([])
+  const [messages, setMessages] = useState<IMessage[]>([])
   const [userMessage, setUserMessage] = useState('')
   const [feedId, setFeedId] = useState<string>('')
   const [refresh, setRefresh] = useState<boolean>(false)
+
   const { firstFeedOnHomePage } = useContext(SidebarContext)
   const location = useLocation()
   const bottomRef: any = useRef()
@@ -65,15 +70,18 @@ const Messages: React.FC = () => {
       })
     }
   }
-  const { loading, error, data } = useQuery(GET_WORKSPACES, {
+
+  const { loading, error, data, refetch } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
         id: params ? params.id : firstFeedOnHomePage,
       },
     },
+    pollInterval: 10000,
   })
+
   useEffect(() => {
-    if (data) {
+    if (loading === false && data) {
       setUserMessage('')
       setMessages(data.getWorkspaceById.feed[0].messages)
       setFeedId(data.getWorkspaceById.feed[0].id)
@@ -83,6 +91,7 @@ const Messages: React.FC = () => {
     }
     setRefresh(false)
   }, [data, bottomRef.current, messages, refresh])
+
   if (loading)
     return (
       <div className={classes.loader}>
@@ -99,45 +108,48 @@ const Messages: React.FC = () => {
       <Grid item xs={12} className={classes.paper}>
         {messages.length > 0 ? (
           <div className={classes.messagesContainer}>
-            {messages.map((el: IMessage) => (
-              <Grid
-                key={el.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-end',
-                }}
-                ref={bottomRef}
-              >
+            {messages.map((message: IMessage) => (
+              <Grid key={message.id} ref={bottomRef}>
                 <Paper className={classes.bubble}>
                   <Grid className={classes.userNameContainer}>
-                    <Avatar className={classes.purple}>AB</Avatar>
-                    <Typography className={classes.userName}>
-                      Aymeric Bouault
-                    </Typography>
+                    <div style={{ width: '50%', marginLeft: '20' }}>
+                      <Avatar className={classes.nickName}>
+                        {useNickname(message.userName)}
+                      </Avatar>
+                      <Typography className={classes.userName}>
+                        {message.userName}
+                      </Typography>
+                    </div>
+                    <div className={classes.date}>
+                      {message.createdAt
+                        ? new Date(
+                            parseInt(message.createdAt, 10),
+                          ).toLocaleString()
+                        : null}
+                    </div>
                   </Grid>
                   <Grid className={classes.paperContainer}>
                     <Typography className={classes.text}>
-                      {el.content}
+                      {message.content}
                     </Typography>
                   </Grid>
                   <Grid className={classes.iconsContainer}>
                     <Comments
-                      message={el}
+                      message={message}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
                     />
                     <MessagesLikes
-                      message={el}
+                      message={message}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
-                      setRefresh={setRefresh}
+                      refetch={refetch}
                     />
                     <MessagesDislikes
-                      message={el}
+                      message={message}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
-                      setRefresh={setRefresh}
+                      refetch={refetch}
                     />
                   </Grid>
                 </Paper>
@@ -156,8 +168,7 @@ const Messages: React.FC = () => {
           setUserMessage={setUserMessage}
           workspaceId={params ? params.id : firstFeedOnHomePage}
           feedId={feedId}
-          refresh={refresh}
-          setRefresh={setRefresh}
+          refetch={refetch}
         />
       </Grid>
     </div>

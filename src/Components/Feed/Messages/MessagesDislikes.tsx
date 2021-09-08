@@ -1,5 +1,4 @@
-import { useContext } from 'react'
-import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded'
+import { useContext, useState, useEffect } from 'react'
 import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded'
 import { Button, Typography } from '@material-ui/core'
 import { useMutation, gql } from '@apollo/client'
@@ -7,9 +6,16 @@ import { IMessage } from '../../../Interfaces/Workspace'
 import useStyles from './MessagesStyle'
 import { UserContext } from '../../Context/UserContext'
 
+export interface MessagesLikesProps {
+  message: IMessage
+  workspaceId: string
+  feedId: string
+  refetch: any
+}
+
 const ADD_DISLIKE = gql`
-  mutation addDislikeToMessage($input: DisLikeMessage!) {
-    addLikeToMessage(input: $input) {
+  mutation addDislikeToMessage($input: InputDislikeMessage!) {
+    addDislikeToMessage(input: $input) {
       id
       title
       isSchoolWorkspace
@@ -18,6 +24,10 @@ const ADD_DISLIKE = gql`
         feedName
         messages {
           id
+          likes {
+            userId
+          }
+          id
           content
           comments {
             id
@@ -25,26 +35,25 @@ const ADD_DISLIKE = gql`
           }
         }
       }
+      assets {
+        id
+        assetName
+      }
     }
   }
 `
-export interface MessagesLikesProps {
-  message: IMessage
-  workspaceId: string
-  feedId: string
-  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
-}
 
 const MessagesDislikes: React.FC<MessagesLikesProps> = ({
   message,
   workspaceId,
   feedId,
-  setRefresh,
+  refetch,
 }) => {
+  const { userInfos } = useContext(UserContext)
+  const [active, setActive] = useState(false)
   const [addDislike] = useMutation(ADD_DISLIKE)
-  const addDislikes = () => {
-    setRefresh(true)
-    addDislike({
+  const addDislikes = async () => {
+    await addDislike({
       variables: {
         input: {
           parentWorkspaceId: workspaceId,
@@ -54,15 +63,30 @@ const MessagesDislikes: React.FC<MessagesLikesProps> = ({
         },
       },
     })
+    await refetch()
+
+    setActive(!active)
+    await refetch()
   }
-  const { userInfos } = useContext(UserContext)
+  useEffect(() => {
+    if (message.dislikes) {
+      for (let i = 0; i < message.dislikes.length; i += 1) {
+        if (message.dislikes[i].userId === userInfos.userId) {
+          setActive(true)
+        }
+      }
+    }
+  }, [message])
+
   const classes = useStyles()
   return (
     <div className={classes.icons}>
-      <Button className={classes.icon}>
-        <ThumbDownAltRoundedIcon style={{ color: '#3b3b3b' }} />
+      <Button className={classes.icon} onClick={() => addDislikes()}>
+        <ThumbDownAltRoundedIcon
+          style={active ? { color: 'red' } : { color: '#3b3b3b' }}
+        />
         <Typography className={classes.dislikes}>
-          {message.dislikes ? message.dislikes.length : 0}
+          {message.dislikes ? message.dislikes.length : null}
         </Typography>
       </Button>
     </div>
