@@ -1,6 +1,5 @@
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded'
-import ThumbDownAltRoundedIcon from '@material-ui/icons/ThumbDownAltRounded'
 import { Button, Typography } from '@material-ui/core'
 import { useMutation, gql } from '@apollo/client'
 import { IMessage } from '../../../Interfaces/Workspace'
@@ -11,11 +10,11 @@ export interface MessagesLikesProps {
   message: IMessage
   workspaceId: string
   feedId: string
-  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
+  refetch: any
 }
 
 const ADD_LIKE = gql`
-  mutation addLikeToMessage($input: LikeMessage!) {
+  mutation addLikeToMessage($input: InputLikeMessage!) {
     addLikeToMessage(input: $input) {
       id
       title
@@ -25,12 +24,20 @@ const ADD_LIKE = gql`
         feedName
         messages {
           id
+          likes {
+            userId
+          }
+          id
           content
           comments {
             id
             content
           }
         }
+      }
+      assets {
+        id
+        assetName
       }
     }
   }
@@ -40,12 +47,13 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({
   message,
   workspaceId,
   feedId,
-  setRefresh,
+  refetch,
 }) => {
+  const { userInfos } = useContext(UserContext)
+  const [active, setActive] = useState(false)
   const [addLike] = useMutation(ADD_LIKE)
-  const addLikes = () => {
-    setRefresh(true)
-    addLike({
+  const addLikes = async () => {
+    await addLike({
       variables: {
         input: {
           parentWorkspaceId: workspaceId,
@@ -55,15 +63,27 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({
         },
       },
     })
+    await refetch()
+
+    setActive(!active)
+    await refetch()
   }
-  const { userInfos } = useContext(UserContext)
+  useEffect(() => {
+    if (message.likes) {
+      for (let i = 0; i < message.likes.length; i += 1) {
+        if (message.likes[i].userId === userInfos.userId) {
+          setActive(true)
+        }
+      }
+    }
+  }, [message])
+
   const classes = useStyles()
   return (
     <div className={classes.icons}>
-      <Button className={classes.icon}>
+      <Button className={classes.icon} onClick={() => addLikes()}>
         <ThumbUpAltRoundedIcon
-          style={{ color: '#3b3b3b' }}
-          onClick={() => addLike()}
+          style={active ? { color: 'green' } : { color: '#3b3b3b' }}
         />
         <Typography className={classes.likes}>
           {message.likes ? message.likes.length : null}

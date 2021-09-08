@@ -13,8 +13,7 @@ export interface MessagesInputProps {
   bottomRef: any
   workspaceId: string
   feedId: string
-  refresh: boolean
-  setRefresh: (refresh: boolean) => void
+  refetch: any
 }
 
 const ADD_WORKSPACE = gql`
@@ -44,14 +43,12 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
   setUserMessage,
   workspaceId,
   feedId,
-  refresh,
-  setRefresh,
+  refetch,
 }: MessagesInputProps) => {
   const classes = useStyles()
   const [addWorkspace] = useMutation(ADD_WORKSPACE)
-  const onSubmit = () => {
-    setRefresh(true)
-    addWorkspace({
+  const onSubmit = async () => {
+    await addWorkspace({
       variables: {
         input: {
           parentWorkspaceId: workspaceId,
@@ -61,6 +58,7 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
         },
       },
     })
+    await refetch()
   }
 
   const handleMessage = (text: string) => {
@@ -69,7 +67,7 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
 
   const handleKeyPress = (event: any) => {
     if (event.key === 'Enter') {
-      setRefresh(true)
+      refetch()
       onSubmit()
     }
   }
