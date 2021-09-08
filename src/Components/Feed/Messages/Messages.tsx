@@ -1,18 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect, useContext } from 'react'
-import {
-  Grid,
-  Paper,
-  Avatar,
-  Typography,
-  StylesProvider,
-} from '@material-ui/core'
+import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
-import { iFeed, IMessage } from '../../../Interfaces/Workspace'
+import { IMessage } from '../../../Interfaces/Workspace'
 import { SidebarContext } from '../../Context/SidebarContext'
 import MessagesLikes from './MessagesLikes'
 import Comments from './Comments/Comments'
@@ -33,11 +27,13 @@ const GET_WORKSPACES = gql`
           content
           userId
           userName
+          createdAt
           comments {
             id
             content
             userId
             userName
+            createdAt
           }
           likes {
             userId
@@ -55,7 +51,7 @@ const GET_WORKSPACES = gql`
 
 const Messages: React.FC = () => {
   const classes = useStyles()
-  const [messages, setMessages] = useState<iFeed[]>([])
+  const [messages, setMessages] = useState<IMessage[]>([])
   const [userMessage, setUserMessage] = useState('')
   const [feedId, setFeedId] = useState<string>('')
   const [refresh, setRefresh] = useState<boolean>(false)
@@ -81,17 +77,8 @@ const Messages: React.FC = () => {
         id: params ? params.id : firstFeedOnHomePage,
       },
     },
-    pollInterval: 500,
+    pollInterval: 10000,
   })
-
-  // const { loading, error, data, refetch } = useQuery(GET_WORKSPACES, {
-  //   variables: {
-  //     input: {
-  //       id: params ? params.id : firstFeedOnHomePage,
-  //     },
-  //   },
-  // },       pollInterval: 500,
-  // )
 
   useEffect(() => {
     if (loading === false && data) {
@@ -121,44 +108,45 @@ const Messages: React.FC = () => {
       <Grid item xs={12} className={classes.paper}>
         {messages.length > 0 ? (
           <div className={classes.messagesContainer}>
-            {messages.map((el: IMessage) => (
-              <Grid
-                key={el.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-end',
-                }}
-                ref={bottomRef}
-              >
+            {messages.map((message: IMessage) => (
+              <Grid key={message.id} ref={bottomRef}>
                 <Paper className={classes.bubble}>
                   <Grid className={classes.userNameContainer}>
-                    <Avatar className={classes.purple}>
-                      {useNickname(el.userName)}
-                    </Avatar>
-                    <Typography className={classes.userName}>
-                      {el.userName}
-                    </Typography>
+                    <div style={{ width: '50%', marginLeft: '20' }}>
+                      <Avatar className={classes.nickName}>
+                        {useNickname(message.userName)}
+                      </Avatar>
+                      <Typography className={classes.userName}>
+                        {message.userName}
+                      </Typography>
+                    </div>
+                    <div className={classes.date}>
+                      {message.createdAt
+                        ? new Date(
+                            parseInt(message.createdAt, 10),
+                          ).toLocaleString()
+                        : null}
+                    </div>
                   </Grid>
                   <Grid className={classes.paperContainer}>
                     <Typography className={classes.text}>
-                      {el.content}
+                      {message.content}
                     </Typography>
                   </Grid>
                   <Grid className={classes.iconsContainer}>
                     <Comments
-                      message={el}
+                      message={message}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
                     />
                     <MessagesLikes
-                      message={el}
+                      message={message}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
                       refetch={refetch}
                     />
                     <MessagesDislikes
-                      message={el}
+                      message={message}
                       workspaceId={params ? params.id : firstFeedOnHomePage}
                       feedId={feedId}
                       refetch={refetch}
