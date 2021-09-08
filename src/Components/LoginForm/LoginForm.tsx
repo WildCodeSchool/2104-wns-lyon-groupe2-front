@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, ContextType } from 'react'
 import {
   Avatar,
   Button,
@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
+import { iInputLogin } from '../../Interfaces/Auth'
 import { UserContext } from '../Context/UserContext'
 import useStyles from './LoginStyle'
 
@@ -25,13 +26,6 @@ import useStyles from './LoginStyle'
 type SomeComponentProps = RouteComponentProps
 
 // L'interface ici doit (??) être identique à l'interface ...Graphql coté back ?
-interface InputLogin {
-  input: {
-    email: string
-    password: string
-    remember: boolean
-  }
-}
 
 const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const classes = useStyles()
@@ -61,7 +55,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   })
 
   // On définit notre Objet input que l'on va envoyer
-  const input: InputLogin = { input: { email, password, remember } }
+  const input: iInputLogin = { input: { email, password, remember } }
 
   // La méthode onSubmit ajoute la variable à la useMutation login()
   const onSubmit = async (): Promise<void> => {

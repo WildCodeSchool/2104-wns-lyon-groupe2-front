@@ -1,25 +1,40 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import {
   ApolloProvider,
   ApolloClient,
   InMemoryCache,
   NormalizedCacheObject,
+  createHttpLink,
 } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
+import { setContext } from '@apollo/client/link/context'
 import { UserContext } from '../Components/Context/UserContext'
 import Routes from '../Routes/Routes'
 import './App.scss'
 
 const App = (): JSX.Element => {
-  const token: any = useContext(UserContext)
   const { REACT_APP_API_URL } = process.env
+  const httpLink = createHttpLink({
+    uri: `${REACT_APP_API_URL}graphql`,
+  })
+  const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = localStorage.getItem('token')
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        authorization: token || '',
+      },
+    }
+  })
+  const uploadLink = createUploadLink({ uri: `${REACT_APP_API_URL}graphql` })
+
   // ici à voir pour le new InmemoryCache pour le Bearer Token
 
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-    uri: REACT_APP_API_URL,
+    link: authLink.concat(uploadLink),
     cache: new InMemoryCache(),
-    headers: {
-      authorization: token || '',
-    },
   })
 
   return (
