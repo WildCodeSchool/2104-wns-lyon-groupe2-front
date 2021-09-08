@@ -19,9 +19,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
 import { UserContext } from '../Context/UserContext'
-
 import useStyles from './LoginStyle'
-import { UserContext } from '../Context/UserContext'
 
 // Pour gérer la redirection avec TS
 type SomeComponentProps = RouteComponentProps

@@ -6,7 +6,9 @@ import { useToasts } from 'react-toast-notifications'
 import { iUsers, iTokenDecrypted } from '../../Interfaces/UsersInterfaces'
 
 export const UserContext: any = createContext(null)
-const initialState = localStorage.getItem('token') ? localStorage.getItem('token') : null
+const initialState = localStorage.getItem('token')
+  ? localStorage.getItem('token')
+  : null
 
 const UserProvider = withRouter((props) => {
   const { history, children } = props

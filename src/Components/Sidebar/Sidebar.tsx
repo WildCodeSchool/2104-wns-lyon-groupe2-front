@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import Switch from '@material-ui/core/Switch'
-import { FcSettings , FcPlus} from 'react-icons/fc'
+import { FcSettings, FcPlus } from 'react-icons/fc'
 import { useHistory } from 'react-router-dom'
 import Assets from './Assets'
 import WorkspaceSchool from './WorkspaceSchool'
@@ -51,7 +51,6 @@ const Sidebar: React.FC = () => {
           name="checkedA"
           inputProps={{ 'aria-label': 'secondary checkbox' }}
         />
-        <FcPlus className="plus_icon" />
         <AddWorkspace />
       </div>
       {assetsModal && <Assets />}

@@ -10,7 +10,7 @@ import Routes from '../Routes/Routes'
 import './App.scss'
 
 const App = (): JSX.Element => {
-  const { token } = useContext(UserContext)
+  const token: any = useContext(UserContext)
   const { REACT_APP_API_URL } = process.env
   // ici à voir pour le new InmemoryCache pour le Bearer Token
 
