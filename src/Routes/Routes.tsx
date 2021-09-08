@@ -29,11 +29,11 @@ const Routes: React.FC = () => {
               path="/password_management/:token/:id"
               component={NewPassword}
             />
+            <Route exact path="/assets" component={PersonnalAssets} />
+            <Route exact path="/register-new-user" component={AddNewUser} />
 
             <Route exact path="/" component={Home} />
             <Route exact path="/:id" component={Home} />
-            <Route exact path="/assets" component={PersonnalAssets} />
-            <Route exact path="/register-new-user" component={AddNewUser} />
           </Switch>
         </UserProvider>
       </Router>
