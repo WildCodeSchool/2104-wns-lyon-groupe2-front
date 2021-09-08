@@ -1,5 +1,5 @@
 {
-  "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${appName} ${separator} [Branch: ressources-managements-with-chonky]",
+  "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${appName} ${separator} [Branch: ds/38-be-able-to-write-a-publication]",
   "eslint.validate": [
     "javascript",
     "javascriptreact",

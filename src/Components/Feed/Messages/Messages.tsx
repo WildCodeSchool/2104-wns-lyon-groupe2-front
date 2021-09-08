@@ -18,7 +18,7 @@ import MessagesLikes from './MessagesLikes'
 import Comments from './Comments/Comments'
 import MessagesDislikes from './MessagesDislikes'
 
-const GET_WORKSPACES = gql`
+export const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
     getWorkspaceById(input: $input) {
       id
