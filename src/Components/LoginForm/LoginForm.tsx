@@ -35,7 +35,6 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [showPassword, setShowPassword] = useState(false)
   const { addToast } = useToasts()
   const { addUser } = useContext(UserContext)
-  const { setToken } = useContext(UserContext)
 
   // On écrit la mutation comme définit dans le back
   // ici on envoie la variable input définit plus bas
@@ -70,8 +69,6 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
       })
     } else {
       addUser(response.data.login.token)
-      setToken(response.data.login.token)
-      history.push('/')
     }
   }
 

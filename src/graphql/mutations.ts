@@ -4,7 +4,7 @@ export const CREATE_FOLDER = gql`
   mutation createFolder($input: InputFolder!) {
     createFolder(input: $input) {
       name
-      children
+      parentDirectory
       isRootDirectory
     }
   }
@@ -15,8 +15,9 @@ export const UPDATE_FOLDER = gql`
     updateFolder(input: $input) {
       id
       name
-      children
+      parentDirectory
       isRootDirectory
+      sequence
     }
   }
 `
