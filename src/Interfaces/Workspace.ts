@@ -16,7 +16,8 @@ export interface IMessage {
   id?: string
   content?: string
   userId?: string
-  createdAt?: Date
+  userName?: string
+  createdAt?: string
   likes?: ILike[]
   dislikes?: IDislike[]
   comments?: IComment[]
@@ -26,15 +27,18 @@ export interface IComment {
   id?: string
   content?: string
   userId?: string
-  createdAt?: Date
+  userName?: string
+  createdAt?: string
 }
 
 export interface ILike {
   userId?: string
+  userName?: string
 }
 
 export interface IDislike {
   userId?: string
+  userName?: string
 }
 
 export interface iAssets {

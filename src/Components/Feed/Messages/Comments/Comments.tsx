@@ -13,6 +13,7 @@ import { IComment, IMessage } from '../../../../Interfaces/Workspace'
 import useStyles from './CommentsStyle'
 import CommentsInput from './CommentsInput'
 import Messages from '../Messages'
+import useNickname from '../../../Hooks/useNickname'
 
 export interface CommentsProps {
   message: IMessage
@@ -56,12 +57,8 @@ const Comments: React.FC<CommentsProps> = ({
 
   return (
     <div className={classes.icons}>
-      <Button className={classes.icon}>
-        <CommentIcon
-          color="primary"
-          onClick={handleClickOpen}
-          style={{ color: '#3b3b3b' }}
-        />
+      <Button className={classes.icon} onClick={handleClickOpen}>
+        <CommentIcon color="primary" style={{ color: '#3b3b3b' }} />
         <Typography className={classes.commentIcon}>
           {message.comments ? message.comments.length : null}
         </Typography>
@@ -83,18 +80,33 @@ const Comments: React.FC<CommentsProps> = ({
               {message.comments?.map((comment: IComment) => (
                 <Grid ref={bottomRef}>
                   <Paper className={classes.bubble}>
-                    <Grid
+                    <Grid className={classes.userNameContainer}>
+                      <div style={{ width: '50%', marginLeft: '20' }}>
+                        <Avatar className={classes.nickName}>
+                          {useNickname(comment.userName)}
+                        </Avatar>
+                        <Typography className={classes.userName}>
+                          {comment.userName}
+                        </Typography>
+                      </div>
+                      <div className={classes.date}>
+                        {comment.createdAt
+                          ? new Date(
+                              parseInt(comment.createdAt, 10),
+                            ).toLocaleString()
+                          : null}
+                      </div>
+                    </Grid>
+                    <div
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
+                        paddingBottom: '20px',
                       }}
                       className={classes.paperContainer}
                     >
-                      <Avatar className={classes.purple}>AB</Avatar>
                       <Typography className={classes.text}>
                         {comment.content}
                       </Typography>
-                    </Grid>
+                    </div>
                   </Paper>
                 </Grid>
               ))}

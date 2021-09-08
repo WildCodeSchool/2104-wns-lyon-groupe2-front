@@ -59,13 +59,9 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     margin: 0,
   },
-  purple: {
-    backgroundColor: '#4aa0bd',
-    float: 'left',
-    color: 'white',
-  },
   userNameContainer: {
     display: 'flex',
+    justifyContent: 'space-between',
     alignItems: 'center',
     float: 'left',
     margin: 5,
@@ -73,10 +69,24 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
     height: 60,
   },
+  nickName: {
+    backgroundColor: '#4aa0bd',
+    float: 'left',
+    color: 'white',
+  },
   userName: {
     fontSize: 17,
     margin: 10,
+    marginLeft: 50,
     color: '#3b3b3b',
+    alignItems: 'center',
+  },
+  date: {
+    fontSize: 17,
+    margin: 10,
+    marginRight: 25,
+    color: '#3b3b3b',
+    alignItems: 'center',
   },
   text: {
     fontSize: 17,
