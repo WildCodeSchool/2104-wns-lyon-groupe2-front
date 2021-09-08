@@ -19,15 +19,18 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     width: '70%',
-    position: 'relative',
+    margin: 5,
+
+    border: '2px solid white',
+    borderRadius: 10,
   },
   submit: {},
   bubbleContainer: {
-    marginBottom: 20,
+    marginBottom: 5,
   },
   messagesContainer: {
     overflow: 'auto',
-    height: '75vh',
+    height: '73vh',
     width: '100%',
     margin: 10,
     display: 'flex',
@@ -35,11 +38,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   bubble: {
-    // boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
+    boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
     marginTop: 5,
-    marginBottom: 20,
+    marginBottom: 30,
     backgroundColor: 'white',
     borderRadius: 23,
+    border: '5px solid white',
     width: 300,
     [theme.breakpoints.up(600)]: {
       width: '400px',
