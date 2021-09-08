@@ -13,6 +13,8 @@ import NewPassword from '../Pages/Password/NewPassword'
 import Home from '../Pages/Home/Home'
 import Login from '../Pages/Login/Login'
 
+import Publication from '../Pages/Publication/Publication'
+
 const customHistory = createBrowserHistory()
 
 const Routes: React.FC = () => {
@@ -22,6 +24,7 @@ const Routes: React.FC = () => {
         <UserProvider>
           <Switch>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/publication" component={Publication} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
             <Route exact path="/register-new-user" component={AddNewUser} />
             <Route exact path="/mailsent" component={MailSent} />

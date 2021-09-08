@@ -13,7 +13,7 @@ import Comments from './Comments/Comments'
 import MessagesDislikes from './MessagesDislikes'
 import useNickname from '../../Hooks/useNickname'
 
-const GET_WORKSPACES = gql`
+export const GET_WORKSPACES = gql`
   query getWorkspaceById($input: WorkspaceId!) {
     getWorkspaceById(input: $input) {
       id
