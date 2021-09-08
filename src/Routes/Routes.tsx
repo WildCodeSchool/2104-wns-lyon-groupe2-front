@@ -36,7 +36,7 @@ const Routes: React.FC = () => {
               path="/password_management/:token/:id"
               component={NewPassword}
             />
-            <Route exact path="/assets" component={Assets} />
+            <Route exact path="/assets" component={PersonnalAssets} />
             <Route exact path="/register-new-user" component={AddNewUser} />
             <Route exact path="/assets/:id" component={AssetDetails} />
             <Route exact path="/" component={Home} />
