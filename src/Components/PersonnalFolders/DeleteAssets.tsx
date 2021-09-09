@@ -26,7 +26,7 @@ const DeleteAssets: React.FC<TDeleteAssetsProps> = ({ id }) => {
     <>
       <div className="item" onClick={() => onDelete(id as unknown as number)}>
         <MdDelete className="icon_menu" />
-        delete
+        Supprimer
       </div>
     </>
   )
