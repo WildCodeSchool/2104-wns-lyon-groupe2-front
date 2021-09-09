@@ -1,4 +1,3 @@
-import FileUpload from '../../Components/FileUPload/FileUpload'
 import Sidebar from '../../Components/Sidebar/Sidebar'
 import Assets from '../../Components/Assets/Assets'
 
@@ -10,7 +9,6 @@ const PersonnalAssets: React.FC = () => {
       <Sidebar />
       <div style={{ marginLeft: '100px' }}>
         <Assets />
-        <FileUpload />
       </div>
     </div>
   )

@@ -21,6 +21,7 @@ import { useToasts } from 'react-toast-notifications'
 import { iInputLogin } from '../../Interfaces/Auth'
 import { UserContext } from '../Context/UserContext'
 import useStyles from './LoginStyle'
+import { LOGIN_MUTATION } from '../../graphql/mutations'
 
 // Pour gérer la redirection avec TS
 type SomeComponentProps = RouteComponentProps
@@ -35,17 +36,6 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   const [showPassword, setShowPassword] = useState(false)
   const { addToast } = useToasts()
   const { addUser } = useContext(UserContext)
-
-  // On écrit la mutation comme définit dans le back
-  // ici on envoie la variable input définit plus bas
-  // et on récupère le token
-  const LOGIN_MUTATION = gql`
-    mutation login($input: InputLogin!) {
-      login(input: $input) {
-        token
-      }
-    }
-  `
 
   // utilisation de useMutation pour envoyer les data au back
   //  check si retour des data, si oui on envoi

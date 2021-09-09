@@ -1,22 +1,17 @@
-import { useContext, useEffect } from 'react'
 import {
   ApolloProvider,
   ApolloClient,
   InMemoryCache,
   NormalizedCacheObject,
-  createHttpLink,
 } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import { setContext } from '@apollo/client/link/context'
-import { UserContext } from '../Components/Context/UserContext'
 import Routes from '../Routes/Routes'
 import './App.scss'
 
 const App = (): JSX.Element => {
   const { REACT_APP_API_URL } = process.env
-  const httpLink = createHttpLink({
-    uri: `${REACT_APP_API_URL}graphql`,
-  })
+
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
     const token = localStorage.getItem('token')
