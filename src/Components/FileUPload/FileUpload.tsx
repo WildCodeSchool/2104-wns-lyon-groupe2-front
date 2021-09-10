@@ -1,10 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
+import { Container } from '@material-ui/core'
 import { UPLOAD_FILE } from '../../graphql/mutations'
 import { IAssetsProps } from '../Assets/AssetDetails'
+import useStyles from './FileUPloadStyle'
 
 const FileUpload: React.FC<IAssetsProps | null> = (props: any) => {
+  const classes = useStyles()
+
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (data) => console.log(data),
   })
@@ -23,10 +27,12 @@ const FileUpload: React.FC<IAssetsProps | null> = (props: any) => {
 
   return (
     <>
-      <form>
-        <input type="file" name="docUpload" onChange={handleFileChange} />
-        <input type="button" value="send" onClick={() => handlesubmit()} />
-      </form>
+      <Container className={classes.container}>
+        <form>
+          <input type="file" name="docUpload" onChange={handleFileChange} />
+          <input type="button" value="send" onClick={() => handlesubmit()} />
+        </form>
+      </Container>
     </>
   )
 }

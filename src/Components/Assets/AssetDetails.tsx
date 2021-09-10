@@ -3,8 +3,11 @@ import { Container, Typography } from '@material-ui/core'
 import { useQuery } from '@apollo/client'
 import FileUpload from '../FileUPload/FileUpload'
 import useStyles from './AssetDetailsStyle'
+import { dateTransformator } from '../../Tools/date'
 
 import { GET_FOLDER_DETAILS } from '../../graphql/queries'
+import AssetsList from './AssetsLists'
+import AssetsTable from './AssetsTable'
 
 export interface IAssetsProps {
   folderId: string
@@ -31,7 +34,6 @@ const AssetDetails: React.FC<IAssetsProps> = ({ folderId }) => {
       setFolderDetails(data.getFolderById)
     }
   })
-  console.log(data)
   return (
     <>
       {folderDetails && (
@@ -40,9 +42,11 @@ const AssetDetails: React.FC<IAssetsProps> = ({ folderId }) => {
             {folderDetails.name}
           </Typography>
           <Typography className={classes.folderSubtitle}>
-            {folderDetails.createdAt}
+            {dateTransformator(new Date(+folderDetails.createdAt))}
           </Typography>
           <FileUpload folderId={folderId} />
+          <AssetsList folderId={folderId} />
+          <AssetsTable folderId={folderId} />
         </Container>
       )}
     </>

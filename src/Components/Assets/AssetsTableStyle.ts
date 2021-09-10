@@ -1,8 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
-  folderTitle: { fontSize: '42px' },
-  folderSubtitle: { fontSize: '25px', color: 'grey' },
+  tableContainer: { height: '100%', border: 'solid' },
 }))
 
 export default useStyles
