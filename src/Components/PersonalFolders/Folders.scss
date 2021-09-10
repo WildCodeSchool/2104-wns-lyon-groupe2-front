@@ -1,7 +1,6 @@
-.assets_container {
+.folders_container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
   .folders_container {
     display: flex;
@@ -10,6 +9,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     .folder {
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -18,7 +18,7 @@
       .folder_icon {
         font-size: 100px;
       }
-      .asset_title {
+      .folder_title {
         text-align: center;
         font-size: 20px;
         width: 80%;
@@ -27,7 +27,7 @@
   }
 }
 
-.add_asset_container {
+.add_folder_container {
   position: absolute;
   bottom: 40px;
   right: 40px;
@@ -35,7 +35,7 @@
   justify-content: center;
 }
 
-.add_asset_modal {
+.add_folder_modal {
   background-color: #f8f9fa;
   position: absolute;
   top: 50%;
@@ -54,7 +54,7 @@
   input {
     width: 100%;
   }
-  .add_asset_modal_action_bar {
+  .add_folder_modal_action_bar {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 0;
@@ -70,7 +70,7 @@
 }
 
 @media screen and (min-width: 992px) {
-  .assets_container {
+  .folders_container {
     .folders_container {
       display: flex;
       flex-direction: row;
@@ -96,6 +96,7 @@
     padding: 8px 10px;
     font-size: 15px;
     color: #eee;
+    cursor: pointer;
   }
 
   #context-menu .context_menu_section:hover {

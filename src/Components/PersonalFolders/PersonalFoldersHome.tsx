@@ -1,7 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react'
-
 import { useQuery, useMutation } from '@apollo/client'
 import Loader from 'react-loader-spinner'
 import styled from 'styled-components'
@@ -9,7 +8,7 @@ import { FcFolder } from 'react-icons/fc'
 import { BiPencil, BiWindows } from 'react-icons/bi'
 import 'react-contexify/dist/ReactContexify.min.css'
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu'
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
 import { MdDelete } from 'react-icons/md'
 import Modal from '@material-ui/core/Modal'
@@ -20,7 +19,7 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd'
-import './Assets.scss'
+import './Folders.scss'
 import AddFolder from './AddFolder'
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
@@ -42,29 +41,51 @@ type TDataFolders = {
   sequence: number
 }
 
-const Assets: React.FC = () => {
-  // STATES
+const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
+  // ////// //
+  // STATES //
+  // ////// //
+
   const [folder, setFolder] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [newName, setNewName] = useState<null | string>(null)
   const [selectedFolder, setSelectedFolder] = useState<null | string>(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
 
-  // MUTATIONS
+  //  /// //
+  // MISC //
+  // //// //
+
+  const parentDirectory =
+    match.params && match.params.parentId ? match.params.parentId : ''
+
+  // ///////// //
+  // MUTATIONS //
+  // ///////// //
+
   const { loading, error, data, refetch } = useQuery(
     GET_FOLDERS_BY_CURRENT_USER_ID,
+    {
+      variables: {
+        parentDirectory,
+      },
+    },
   )
   const [updateFolder] = useMutation(UPDATE_FOLDER, {
-    onCompleted: () => setNewName(null),
-    refetchQueries: [{ query: GET_FOLDERS_BY_CURRENT_USER_ID }],
+    onCompleted: () => {
+      setNewName(null)
+      refetch()
+    },
   })
+
   const [deleteFolder] = useMutation(DELETE_FOLDER, {
-    refetchQueries: [{ query: GET_FOLDERS_BY_CURRENT_USER_ID }],
+    onCompleted: () => {
+      refetch()
+    },
   })
 
   const removeFolder = (id: string) => {
     deleteFolder({ variables: { input: { id } } })
-
     setFolderToDelete(null)
   }
 
@@ -80,18 +101,9 @@ const Assets: React.FC = () => {
     }
   }
 
-  const getClickOutsideOfTextField = (e) => {
-    const element = e.target as HTMLTextAreaElement
-    if (
-      newName &&
-      selectedFolder &&
-      element.className !== 'MuiInputBase-input MuiOutlinedInput-input' &&
-      element.className !== 'context_menu_section'
-    ) {
-      setNewName(null)
-      setSelectedFolder(null)
-    }
-  }
+  // //////////// //
+  // RENDER FUNCS //
+  // //////////// //
 
   const returnLoader = () => {
     return (
@@ -110,6 +122,10 @@ const Assets: React.FC = () => {
       </div>
     )
   }
+
+  // ////////// //
+  // USE EFFECT //
+  // ////////// //
 
   useEffect(() => {
     if (data) {
@@ -133,15 +149,21 @@ const Assets: React.FC = () => {
           result.push(temporaryArray)
         }
         setFolder(result)
+      } else {
+        setFolder(data.foldersByCurrentUserId)
       }
     }
-  }, [data])
+  }, [data, match.params.id])
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
     }, 400)
   }, [folder])
+
+  useEffect(() => {
+    refetch()
+  }, [match.params])
 
   if (error) {
     return <Alert severity="error">Problème de connexion au serveur</Alert>
@@ -151,15 +173,51 @@ const Assets: React.FC = () => {
     returnLoader()
   }
 
+  // /// //
+  // DND //
+  // /// //
+
+  const getClickOutsideOfTextField = (e) => {
+    const element = e.target as HTMLTextAreaElement
+    if (
+      newName &&
+      selectedFolder &&
+      element.className !== 'MuiInputBase-input MuiOutlinedInput-input' &&
+      element.className !== 'context_menu_section'
+    ) {
+      setNewName(null)
+      setSelectedFolder(null)
+    }
+  }
+
   const handleOnDragEnd = (result: DropResult) => {
     if (
-      (result?.source?.droppableId === result?.destination?.droppableId &&
-        result?.source?.index === result?.destination?.index) ||
-      result.combine
+      result?.source?.droppableId === result?.destination?.droppableId &&
+      result?.source?.index === result?.destination?.index
     ) {
       return
     }
     setIsLoading(true)
+    if (result.combine) {
+      for (const folderSection of folder) {
+        for (const fol of folderSection) {
+          if (fol.id === result.draggableId) {
+            updateFolder({
+              variables: {
+                input: {
+                  id: fol.id,
+                  name: fol.name,
+                  sequence: null,
+                  isRootDirectory: fol.isRootDirectory,
+                  parentDirectory: result.combine.draggableId,
+                },
+              },
+            })
+          }
+        }
+      }
+      return
+    }
 
     // case we want to reorder folders
     if (
@@ -207,8 +265,6 @@ const Assets: React.FC = () => {
           folder[destinationFolderSection][result.destination.index - 1]
         newSequence = previousFolder.sequence
       }
-
-      // console.log(newSequence)
       for (const folderSection of folder) {
         for (const fol of folderSection) {
           if (fol.id === result.draggableId) {
@@ -229,13 +285,17 @@ const Assets: React.FC = () => {
     }
   }
 
+  // ////// //
+  // RETURN //
+  // ////// //
+
   return (
     <div
-      className="assets_container"
-      id="assets_container"
+      className="folders_container"
+      id="folders_container"
       onClick={(e) => getClickOutsideOfTextField(e)}
     >
-      <AddFolder />
+      <AddFolder refetch={refetch} parentId={parentDirectory} />
       <div className="folders_container">
         <DragDropContext onDragEnd={handleOnDragEnd}>
           {folder.map((f: any, i: any) => {
@@ -265,9 +325,12 @@ const Assets: React.FC = () => {
                                 ref={provided.innerRef}
                               >
                                 <ContextMenuTrigger id={id}>
-                                  {/* {/* <Link to={`assets/${id}`}> */}
-                                  <FcFolder className="folder_icon" />
-                                  {/* </Link> */}
+                                  <FcFolder
+                                    className="folder_icon"
+                                    onClick={() =>
+                                      history.push(`/personal-folders/${id}`)
+                                    }
+                                  />
                                 </ContextMenuTrigger>
                                 <ContextMenu id={id}>
                                   <div id="context-menu">
@@ -281,12 +344,12 @@ const Assets: React.FC = () => {
                                       <BiPencil className="icon_menu" />{' '}
                                       <MenuItem>Renommer</MenuItem>
                                     </div>
-                                    <div className="context_menu_section">
+                                    <div
+                                      className="context_menu_section"
+                                      onClick={() => setFolderToDelete(id)}
+                                    >
                                       <MdDelete className="icon_menu" />
-                                      <MenuItem
-                                        className="item"
-                                        onClick={() => setFolderToDelete(id)}
-                                      >
+                                      <MenuItem className="item">
                                         Supprimer
                                       </MenuItem>
                                     </div>
@@ -296,7 +359,7 @@ const Assets: React.FC = () => {
                                   {newName !== null && selectedFolder === id ? (
                                     <TextField
                                       variant="outlined"
-                                      className="asset_title"
+                                      className="folder_title"
                                       onChange={(e) =>
                                         setNewName(e.target.value)
                                       }
@@ -309,7 +372,7 @@ const Assets: React.FC = () => {
                                         setNewName(name)
                                         setSelectedFolder(id)
                                       }}
-                                      className="asset_title"
+                                      className="folder_title"
                                     >
                                       {name}
                                     </p>
@@ -330,9 +393,9 @@ const Assets: React.FC = () => {
         {isLoading && returnLoader()}
         {folderToDelete && (
           <Modal open={!!folderToDelete}>
-            <div className="add_asset_modal">
+            <div className="add_folder_modal">
               <p>Souhaitez-vous réellement supprimer ce dossier ?</p>
-              <div className="add_asset_modal_action_bar">
+              <div className="add_folder_modal_action_bar">
                 <Button
                   onClick={() => setFolderToDelete(null)}
                   variant="contained"
@@ -355,4 +418,4 @@ const Assets: React.FC = () => {
   )
 }
 
-export default Assets
+export default withRouter(PersonalFoldersHome)

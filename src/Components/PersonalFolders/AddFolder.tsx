@@ -5,18 +5,19 @@ import Modal from '@material-ui/core/Modal'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { CREATE_FOLDER } from '../../graphql/mutations'
-import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 
-const AddFolder: React.FC = () => {
-  let input: HTMLInputElement
+type TAddFolderProps = {
+  refetch: any
+  parentId: string
+}
+
+const AddFolder: React.FC<TAddFolderProps> = ({ refetch, parentId }) => {
   const [folderName, setFolderName] = useState<null | string>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [addFolder] = useMutation(CREATE_FOLDER, {
-    refetchQueries: [
-      {
-        query: GET_FOLDERS_BY_CURRENT_USER_ID,
-      },
-    ],
+    onCompleted: () => {
+      refetch()
+    },
   })
 
   const handleClick = () => {
@@ -29,7 +30,7 @@ const AddFolder: React.FC = () => {
         variables: {
           input: {
             name: folderName,
-            parentDirectory: '',
+            parentDirectory: parentId,
             isRootDirectory: false,
           },
         },
@@ -40,22 +41,22 @@ const AddFolder: React.FC = () => {
   }
 
   return (
-    <div className="add_asset_container">
+    <div className="add_folder_container">
       <Fab aria-label="add" onClick={handleClick}>
         <AddIcon />
       </Fab>
       {isModalOpen && (
         <Modal open={isModalOpen} onClose={handleClick}>
-          <div className="add_asset_modal">
+          <div className="add_folder_modal">
             <p>Nouveau dossier</p>
             <TextField
               variant="outlined"
-              className="asset_title"
+              className="folder_title"
               onChange={(e) => setFolderName(e.target.value)}
               value={folderName}
               onKeyDown={(e) => submitNewFolder(e)}
             />
-            <div className="add_asset_modal_action_bar">
+            <div className="add_folder_modal_action_bar">
               <Button onClick={() => handleClick()} variant="contained">
                 Annuler
               </Button>
