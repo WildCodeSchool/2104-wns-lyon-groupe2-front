@@ -25,8 +25,6 @@ const App = (): JSX.Element => {
   })
   const uploadLink = createUploadLink({ uri: `${REACT_APP_API_URL}graphql` })
 
-  // ici à voir pour le new InmemoryCache pour le Bearer Token
-
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     link: authLink.concat(uploadLink),
     cache: new InMemoryCache(),

@@ -2,9 +2,9 @@
 import React, { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
 import { UPLOAD_FILE } from '../../graphql/mutations'
-import { iAssetsProps } from '../Assets/AssetDetails'
+import { IAssetsProps } from '../Assets/AssetDetails'
 
-const FileUpload: React.FC<iAssetsProps | null> = (props: any) => {
+const FileUpload: React.FC<IAssetsProps | null> = (props: any) => {
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (data) => console.log(data),
   })
