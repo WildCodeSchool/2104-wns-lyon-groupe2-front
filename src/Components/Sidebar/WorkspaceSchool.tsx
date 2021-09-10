@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import WorkspaceStudent from './WorkspaceStudent'
 import { iWorkspace } from '../../Interfaces/Workspace'
 import { SidebarContext } from '../Context/SidebarContext'
+import { UserContext } from '../Context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -58,11 +59,13 @@ const GET_WORKSPACES = gql`
 
 const WorkspaceSchool: React.FC = () => {
   const { setFirstFeedOnHomePage } = useContext(SidebarContext)
+  const { userInfos } = useContext(UserContext)
+
   const { loading, error, data } = useQuery(GET_WORKSPACES, {
     variables: {
       input: {
         isSchoolWorkspace: true,
-        schoolId: '2',
+        schoolId: '1',
       },
     },
   })
