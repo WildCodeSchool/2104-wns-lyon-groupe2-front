@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Container } from '@material-ui/core'
 import { UPLOAD_FILE } from '../../graphql/mutations'
 import { IAssetsProps } from '../Assets/AssetDetails'
@@ -13,7 +13,7 @@ const FileUpload: React.FC<IAssetsProps | null> = (props: any) => {
     onCompleted: (data) => console.log(data),
   })
   const { folderId } = props
-
+  // ici itnitialisation du state avec le folderId useless...
   const [data, setData] = useState(folderId)
 
   const handleFileChange = (e) => {
