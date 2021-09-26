@@ -8,6 +8,21 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+    .folders_container_navigation_bar {
+      display: flex;
+      width: 100%;
+      padding: 12px;
+      margin: 12px;
+      border-bottom: 1px solid #dadce0;
+      .folders_container_navigation_bar_folder {
+        padding: 8px;
+        cursor: pointer;
+      }
+      .folders_container_navigation_bar_folder:hover {
+        background-color: #e8e8e8;
+        border-radius: 10px;
+      }
+    }
     .folder {
       cursor: pointer;
       display: flex;

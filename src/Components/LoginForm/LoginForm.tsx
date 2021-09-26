@@ -69,6 +69,7 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
       })
     } else {
       addUser(response.data.login.token)
+      history.push('/')
     }
   }
 

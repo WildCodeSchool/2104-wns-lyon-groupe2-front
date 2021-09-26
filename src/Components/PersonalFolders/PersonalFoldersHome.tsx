@@ -21,7 +21,7 @@ import {
 } from 'react-beautiful-dnd'
 import './Folders.scss'
 import AddFolder from './AddFolder'
-import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
+import { GET_FOLDERS_BY_CURRENT_USER_ID} from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 
 const LoadingContainer = styled.div`
@@ -41,13 +41,20 @@ type TDataFolders = {
   sequence: number
 }
 
+type TDataFoldersPath = {
+  name: string
+  id: string
+}
+
 const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
+
   // ////// //
   // STATES //
   // ////// //
 
-  const [folder, setFolder] = useState([])
+  const [folders, setFolders] = useState<any>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [path, setPath] = useState<null | [TDataFoldersPath]>(null)
   const [newName, setNewName] = useState<null | string>(null)
   const [selectedFolder, setSelectedFolder] = useState<null | string>(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
@@ -63,7 +70,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // MUTATIONS //
   // ///////// //
 
-  const { loading, error, data, refetch } = useQuery(
+  const{refetch, error, data, loading}= useQuery(
     GET_FOLDERS_BY_CURRENT_USER_ID,
     {
       variables: {
@@ -71,6 +78,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       },
     },
   )
+
   const [updateFolder] = useMutation(UPDATE_FOLDER, {
     onCompleted: () => {
       setNewName(null)
@@ -80,7 +88,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
 
   const [deleteFolder] = useMutation(DELETE_FOLDER, {
     onCompleted: () => {
-      refetch()
+     refetch()
     },
   })
 
@@ -131,11 +139,13 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     if (data) {
       const result: any = []
       let temporaryArray: any = []
+      setPath(data.foldersByCurrentUserId.path)
       if (
         data.foldersByCurrentUserId &&
-        data.foldersByCurrentUserId.length > 0
+        data.foldersByCurrentUserId.folders &&
+        data.foldersByCurrentUserId.folders.length > 0
       ) {
-        const sortedArray = data.foldersByCurrentUserId
+        const sortedArray = data.foldersByCurrentUserId.folders
           .slice()
           .sort((a: any, b: any) => a.sequence - b.sequence)
         for (let i = 0; i < sortedArray.length; i += 1) {
@@ -148,9 +158,9 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         if (temporaryArray.length > 0) {
           result.push(temporaryArray)
         }
-        setFolder(result)
+        setFolders(result)
       } else {
-        setFolder(data.foldersByCurrentUserId)
+        setFolders(data.foldersByCurrentUserId.folders)
       }
     }
   }, [data, match.params.id])
@@ -159,10 +169,10 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     setTimeout(() => {
       setIsLoading(false)
     }, 400)
-  }, [folder])
+  }, [folders])
 
   useEffect(() => {
-    refetch()
+   refetch()
   }, [match.params])
 
   if (error) {
@@ -176,7 +186,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // /// //
   // DND //
   // /// //
-
+  
   const getClickOutsideOfTextField = (e) => {
     const element = e.target as HTMLTextAreaElement
     if (
@@ -191,15 +201,44 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   }
 
   const handleOnDragEnd = (result: DropResult) => {
+    console.log(result)
     if (
       result?.source?.droppableId === result?.destination?.droppableId &&
       result?.source?.index === result?.destination?.index
     ) {
       return
     }
+    if(result?.destination?.droppableId?.includes("path")){
+      if(result.destination.droppableId.slice(5) === parentDirectory){
+        return
+      } 
+        let selectedDirectoryId = result.destination.droppableId.slice(5)
+        if(selectedDirectoryId === ""){
+          selectedDirectoryId = 'root'
+        }
+        for (const folderSection of folders) {
+          for (const fol of folderSection) {
+            if (fol.id === result.draggableId) {
+              updateFolder({
+                variables: {
+                  input: {
+                    id: fol.id,
+                    name: fol.name,
+                    sequence: null,
+                    isRootDirectory: fol.isRootDirectory,
+                    parentDirectory: selectedDirectoryId,
+                  },
+                },
+              })
+            }
+          }
+        }
+      
+      
+    }
     setIsLoading(true)
     if (result.combine) {
-      for (const folderSection of folder) {
+      for (const folderSection of folders) {
         for (const fol of folderSection) {
           if (fol.id === result.draggableId) {
             updateFolder({
@@ -239,7 +278,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         result.destination.index <= 0 &&
         sourceFolderSection !== destinationFolderSection
       ) {
-        const previousFolder: any = folder[destinationFolderSection][0]
+        const previousFolder: any = folders[destinationFolderSection][0]
         newSequence =
           previousFolder.sequence === 0 ? 0 : previousFolder.sequence - 1
         // if the folder is placed at the beginning of a section and folders section are same
@@ -248,24 +287,24 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         sourceFolderSection !== destinationFolderSection
       ) {
         const previousFolder: any =
-          folder[destinationFolderSection][result.destination.index - 1]
+          folders[destinationFolderSection][result.destination.index - 1]
         newSequence = previousFolder.sequence
       } else if (result.destination.index <= 0) {
         const previousFolder: any =
-          folder[destinationFolderSection][result.destination.index]
+          folders[destinationFolderSection][result.destination.index]
         newSequence = previousFolder.sequence
         // general case
-      } else if (folder[destinationFolderSection][result.destination.index]) {
+      } else if (folders[destinationFolderSection][result.destination.index]) {
         const previousFolder: any =
-          folder[destinationFolderSection][result.destination.index]
+          folders[destinationFolderSection][result.destination.index]
         newSequence = previousFolder.sequence
         // this case if trigger if the folder is placed at then end of the last section
       } else {
         const previousFolder: any =
-          folder[destinationFolderSection][result.destination.index - 1]
+          folders[destinationFolderSection][result.destination.index - 1]
         newSequence = previousFolder.sequence
       }
-      for (const folderSection of folder) {
+      for (const folderSection of folders) {
         for (const fol of folderSection) {
           if (fol.id === result.draggableId) {
             updateFolder({
@@ -297,8 +336,30 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     >
       <AddFolder refetch={refetch} parentId={parentDirectory} />
       <div className="folders_container">
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          {folder.map((f: any, i: any) => {
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <div className="folders_container_navigation_bar">
+        {path && path.map((level) => 
+        {
+          return(
+            <Droppable droppableId={`path-${level.id}`}>
+              {(provided, snapshot) => (
+                <div ref={provided.innerRef}   {...provided.droppableProps}>
+                  <span 
+                  className='folders_container_navigation_bar_folder'
+                  onClick={() =>
+                  history.push(`/personal-folders/${level.id}`)
+                  }
+                  >{level.name}</span>
+                  <span>{' > '}</span>
+                </div>
+              )}
+              </Droppable>
+           
+          )
+        }
+       )}
+        </div>
+          {folders && folders && folders.length > 0 && folders.map((f: any, i: any) => {
             return (
               <Droppable
                 key={f.id}
@@ -316,8 +377,8 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
                       f.map(({ id, name }: TDataFolders, index: number) => {
                         return (
                           <Draggable key={id} draggableId={id} index={index}>
-                            {(provided) => (
-                              <li
+                            {(provided, snapshot) => (
+                              <li                     
                                 key={id}
                                 className="folder"
                                 {...provided.draggableProps}
