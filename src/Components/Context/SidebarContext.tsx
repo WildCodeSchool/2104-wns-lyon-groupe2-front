@@ -7,6 +7,9 @@ const SidebarProvider: React.FC = ({ children }) => {
   const [checked, setChecked] = useState<boolean>(false)
   const [assetsPopin, setAssetsPopin] = useState<boolean>(false)
   const [firstFeedOnHomePage, setFirstFeedOnHomePage] = useState('')
+  // used to display feeds or personnal assets
+  const [isWorkspaceDisplayed, setIsWorkspaceDisplayed] =
+    useState<boolean>(true)
 
   const handleClick: () => void = () => {
     if (!checked) {
@@ -29,6 +32,8 @@ const SidebarProvider: React.FC = ({ children }) => {
         setAssetsPopin,
         firstFeedOnHomePage,
         setFirstFeedOnHomePage,
+        isWorkspaceDisplayed,
+        setIsWorkspaceDisplayed,
       }}
     >
       {children}
