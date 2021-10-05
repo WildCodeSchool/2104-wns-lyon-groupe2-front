@@ -1,0 +1,8 @@
+FROM node:14.17-alpine3.11 as daddy_studies_dev
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm i
+
+CMD ["dumb-init", "npm", "start"]
