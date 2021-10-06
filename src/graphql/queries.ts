@@ -39,6 +39,7 @@ export const GET_FOLDER_ASSETS = gql`
       url
       id
     }
+  }
 `
 export const GET_FOLDER_PATH = gql`
   query getPath($parentDirectory: String) {
