@@ -1,10 +1,7 @@
 import { Router, Switch, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import UserProvider from '../Components/Context/UserContext'
-
-import AssetDetails from '../Components/Assets/AssetDetails'
-
-import PersonnalAssets from '../Pages/Assets/PersonnalAssets'
+import PersonalFolders from '../Pages/Folders/PersonalFolders'
 import AddNewUser from '../Pages/AddNewUser/AddNewUser'
 
 import { ForgotPassword } from '../Pages/Password/ForgotPassword'
@@ -16,7 +13,6 @@ import Home from '../Pages/Home/Home'
 import Login from '../Pages/Login/Login'
 
 import Publication from '../Pages/Publication/Publication'
-import PersonnalAssetsDetails from '../Pages/Assets/PersonnalAssetsDetails'
 
 const customHistory = createBrowserHistory()
 
@@ -36,12 +32,12 @@ const Routes: React.FC = () => {
               path="/password_management/:token/:id"
               component={NewPassword}
             />
-            <Route exact path="/assets" component={PersonnalAssets} />
+            <Route exact path="/personal-folders" component={PersonalFolders} />
             <Route exact path="/register-new-user" component={AddNewUser} />
             <Route
               exact
-              path="/assets/:id"
-              component={PersonnalAssetsDetails}
+              path="/personal-folders/:parentId"
+              component={PersonalFolders}
             />
             <Route exact path="/" component={Home} />
             <Route exact path="/:id" component={Home} />
