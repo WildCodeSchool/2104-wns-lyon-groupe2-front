@@ -1,0 +1,18 @@
+.workspace_container {
+  .treeview {
+    margin-top: 10px;
+  }
+  .title_container {
+    display: flex;
+    flex-direction: row;
+    font-size: 18px;
+    padding: 5px;
+    .workspace_icon {
+      margin: 0 5px 0 10px;
+    }
+  }
+
+  .title_channel_container {
+    margin-left: 27px;
+  }
+}

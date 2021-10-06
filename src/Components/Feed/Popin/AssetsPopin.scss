@@ -1,0 +1,28 @@
+.popin_container {
+  width: 85%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .popin_add_assets {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25%;
+    height: 300px;
+    border: 1px solid black;
+    .popin_header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .popin_footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 10px;
+    }
+  }
+}
