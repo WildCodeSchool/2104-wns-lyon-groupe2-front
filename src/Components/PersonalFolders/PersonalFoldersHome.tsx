@@ -12,7 +12,8 @@ import { withRouter } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
 import { MdDelete } from 'react-icons/md'
 import Modal from '@material-ui/core/Modal'
-import { Button, Popover, TextField } from '@material-ui/core'
+import { Button, Popover, TextField, Tooltip } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   DragDropContext,
   Draggable,
@@ -21,7 +22,7 @@ import {
 } from 'react-beautiful-dnd'
 import './Folders.scss'
 import AddFolder from './AddFolder'
-import { GET_FOLDERS_BY_CURRENT_USER_ID} from '../../graphql/queries'
+import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 
 const LoadingContainer = styled.div`
@@ -47,7 +48,6 @@ type TDataFoldersPath = {
 }
 
 const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
-
   // ////// //
   // STATES //
   // ////// //
@@ -56,6 +56,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   const [isLoading, setIsLoading] = useState(false)
   const [path, setPath] = useState<null | [TDataFoldersPath]>(null)
   const [newName, setNewName] = useState<null | string>(null)
+  const [sameNameError, setSameNameError] = useState<boolean>(false)
   const [selectedFolder, setSelectedFolder] = useState<null | string>(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
 
@@ -70,7 +71,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // MUTATIONS //
   // ///////// //
 
-  const{refetch, error, data, loading}= useQuery(
+  const { refetch, error, data, loading } = useQuery(
     GET_FOLDERS_BY_CURRENT_USER_ID,
     {
       variables: {
@@ -82,13 +83,17 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   const [updateFolder] = useMutation(UPDATE_FOLDER, {
     onCompleted: () => {
       setNewName(null)
+      setSameNameError(false)
       refetch()
+    },
+    onError: () => {
+      setSameNameError(true)
     },
   })
 
   const [deleteFolder] = useMutation(DELETE_FOLDER, {
     onCompleted: () => {
-     refetch()
+      refetch()
     },
   })
 
@@ -112,6 +117,22 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // //////////// //
   // RENDER FUNCS //
   // //////////// //
+
+  const useStyles = makeStyles({
+    arrow: {
+      '&:before': {
+        border: 'solid 1px #f44336',
+      },
+      color: '#f44336',
+    },
+    tooltip: {
+      backgroundColor: 'white',
+      border: 'solid 1px #f44336',
+      color: '#f44336',
+    },
+  })
+
+  const classes = useStyles()
 
   const returnLoader = () => {
     return (
@@ -172,7 +193,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   }, [folders])
 
   useEffect(() => {
-   refetch()
+    refetch()
   }, [match.params])
 
   if (error) {
@@ -186,7 +207,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // /// //
   // DND //
   // /// //
-  
+
   const getClickOutsideOfTextField = (e) => {
     const element = e.target as HTMLTextAreaElement
     if (
@@ -197,44 +218,42 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     ) {
       setNewName(null)
       setSelectedFolder(null)
+      setSameNameError(false)
     }
   }
 
   const handleOnDragEnd = (result: DropResult) => {
-    console.log(result)
     if (
       result?.source?.droppableId === result?.destination?.droppableId &&
       result?.source?.index === result?.destination?.index
     ) {
       return
     }
-    if(result?.destination?.droppableId?.includes("path")){
-      if(result.destination.droppableId.slice(5) === parentDirectory){
+    if (result?.destination?.droppableId?.includes('path')) {
+      if (result.destination.droppableId.slice(5) === parentDirectory) {
         return
-      } 
-        let selectedDirectoryId = result.destination.droppableId.slice(5)
-        if(selectedDirectoryId === ""){
-          selectedDirectoryId = 'root'
-        }
-        for (const folderSection of folders) {
-          for (const fol of folderSection) {
-            if (fol.id === result.draggableId) {
-              updateFolder({
-                variables: {
-                  input: {
-                    id: fol.id,
-                    name: fol.name,
-                    sequence: null,
-                    isRootDirectory: fol.isRootDirectory,
-                    parentDirectory: selectedDirectoryId,
-                  },
+      }
+      let selectedDirectoryId = result.destination.droppableId.slice(5)
+      if (selectedDirectoryId === '') {
+        selectedDirectoryId = 'root'
+      }
+      for (const folderSection of folders) {
+        for (const fol of folderSection) {
+          if (fol.id === result.draggableId) {
+            updateFolder({
+              variables: {
+                input: {
+                  id: fol.id,
+                  name: fol.name,
+                  sequence: null,
+                  isRootDirectory: fol.isRootDirectory,
+                  parentDirectory: selectedDirectoryId,
                 },
-              })
-            }
+              },
+            })
           }
         }
-      
-      
+      }
     }
     setIsLoading(true)
     if (result.combine) {
@@ -336,120 +355,137 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     >
       <AddFolder refetch={refetch} parentId={parentDirectory} />
       <div className="folders_container">
-      <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div className="folders_container_navigation_bar">
-        {path && path.map((level) => 
-        {
-          return(
-            <Droppable droppableId={`path-${level.id}`}>
-              {(provided, snapshot) => (
-                <div ref={provided.innerRef}   {...provided.droppableProps}>
-                  <span 
-                  className='folders_container_navigation_bar_folder'
-                  onClick={() =>
-                  history.push(`/personal-folders/${level.id}`)
-                  }
-                  >{level.name}</span>
-                  <span>{' > '}</span>
-                </div>
-              )}
-              </Droppable>
-           
-          )
-        }
-       )}
-        </div>
-          {folders && folders && folders.length > 0 && folders.map((f: any, i: any) => {
-            return (
-              <Droppable
-                key={f.id}
-                droppableId={`${'drop-'}${i.toString()}`}
-                direction="horizontal"
-                isCombineEnabled
-              >
-                {(provid) => (
-                  <ul
-                    className="folders_container"
-                    {...provid.droppableProps}
-                    ref={provid.innerRef}
-                  >
-                    {f &&
-                      f.map(({ id, name }: TDataFolders, index: number) => {
-                        return (
-                          <Draggable key={id} draggableId={id} index={index}>
-                            {(provided, snapshot) => (
-                              <li                     
-                                key={id}
-                                className="folder"
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                ref={provided.innerRef}
-                              >
-                                <ContextMenuTrigger id={id}>
-                                  <FcFolder
-                                    className="folder_icon"
-                                    onClick={() =>
-                                      history.push(`/personal-folders/${id}`)
-                                    }
-                                  />
-                                </ContextMenuTrigger>
-                                <ContextMenu id={id}>
-                                  <div id="context-menu">
-                                    <div
-                                      className="context_menu_section"
-                                      onClick={() => {
-                                        setNewName(name)
-                                        setSelectedFolder(id)
-                                      }}
-                                    >
-                                      <BiPencil className="icon_menu" />{' '}
-                                      <MenuItem>Renommer</MenuItem>
-                                    </div>
-                                    <div
-                                      className="context_menu_section"
-                                      onClick={() => setFolderToDelete(id)}
-                                    >
-                                      <MdDelete className="icon_menu" />
-                                      <MenuItem className="item">
-                                        Supprimer
-                                      </MenuItem>
-                                    </div>
-                                  </div>
-                                </ContextMenu>
-                                <>
-                                  {newName !== null && selectedFolder === id ? (
-                                    <TextField
-                                      variant="outlined"
-                                      className="folder_title"
-                                      onChange={(e) =>
-                                        setNewName(e.target.value)
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <div className="folders_container_navigation_bar">
+            {path &&
+              path.map((level) => {
+                return (
+                  <Droppable droppableId={`path-${level.id}`}>
+                    {(provided, snapshot) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        <span
+                          className="folders_container_navigation_bar_folder"
+                          onClick={() =>
+                            history.push(`/personal-folders/${level.id}`)
+                          }
+                        >
+                          {level.name}
+                        </span>
+                        <span>{' > '}</span>
+                      </div>
+                    )}
+                  </Droppable>
+                )
+              })}
+          </div>
+          {folders &&
+            folders &&
+            folders.length > 0 &&
+            folders.map((f: any, i: any) => {
+              return (
+                <Droppable
+                  key={f.id}
+                  droppableId={`${'drop-'}${i.toString()}`}
+                  direction="horizontal"
+                  isCombineEnabled
+                >
+                  {(provid) => (
+                    <ul
+                      className="folders_container"
+                      {...provid.droppableProps}
+                      ref={provid.innerRef}
+                    >
+                      {f &&
+                        f.map(({ id, name }: TDataFolders, index: number) => {
+                          return (
+                            <Draggable key={id} draggableId={id} index={index}>
+                              {(provided, snapshot) => (
+                                <li
+                                  key={id}
+                                  className="folder"
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  ref={provided.innerRef}
+                                >
+                                  <ContextMenuTrigger id={id}>
+                                    <FcFolder
+                                      className="folder_icon"
+                                      onClick={() =>
+                                        history.push(`/personal-folders/${id}`)
                                       }
-                                      value={newName}
-                                      onKeyDown={(e) => submitNewName(e, id)}
                                     />
-                                  ) : (
-                                    <p
-                                      onDoubleClick={() => {
-                                        setNewName(name)
-                                        setSelectedFolder(id)
-                                      }}
-                                      className="folder_title"
-                                    >
-                                      {name}
-                                    </p>
-                                  )}
-                                </>
-                              </li>
-                            )}
-                          </Draggable>
-                        )
-                      })}
-                    {provid.placeholder}
-                  </ul>
-                )}
-              </Droppable>
-            )
-          })}
+                                  </ContextMenuTrigger>
+                                  <ContextMenu id={id}>
+                                    <div id="context-menu">
+                                      <div
+                                        className="context_menu_section"
+                                        onClick={() => {
+                                          setNewName(name)
+                                          setSelectedFolder(id)
+                                        }}
+                                      >
+                                        <BiPencil className="icon_menu" />{' '}
+                                        <MenuItem>Renommer</MenuItem>
+                                      </div>
+                                      <div
+                                        className="context_menu_section"
+                                        onClick={() => setFolderToDelete(id)}
+                                      >
+                                        <MdDelete className="icon_menu" />
+                                        <MenuItem className="item">
+                                          Supprimer
+                                        </MenuItem>
+                                      </div>
+                                    </div>
+                                  </ContextMenu>
+                                  <>
+                                    {newName !== null &&
+                                    selectedFolder === id ? (
+                                      <Tooltip
+                                        classes={{
+                                          tooltip: classes.tooltip,
+                                          arrow: classes.arrow,
+                                        }}
+                                        arrow
+                                        open={sameNameError}
+                                        title="Un dossier portant ce nom existe déjà"
+                                      >
+                                        <TextField
+                                          variant="outlined"
+                                          className="folder_title"
+                                          onChange={(e) =>
+                                            setNewName(e.target.value)
+                                          }
+                                          value={newName}
+                                          onKeyDown={(e) =>
+                                            submitNewName(e, id)
+                                          }
+                                          error={sameNameError}
+                                        />
+                                      </Tooltip>
+                                    ) : (
+                                      <p
+                                        onDoubleClick={() => {
+                                          setNewName(name)
+                                          setSelectedFolder(id)
+                                        }}
+                                        className="folder_title"
+                                      >
+                                        {name}
+                                      </p>
+                                    )}
+                                  </>
+                                </li>
+                              )}
+                            </Draggable>
+                          )
+                        })}
+                      {provid.placeholder}
+                    </ul>
+                  )}
+                </Droppable>
+              )
+            })}
         </DragDropContext>
         {isLoading && returnLoader()}
         {folderToDelete && (
