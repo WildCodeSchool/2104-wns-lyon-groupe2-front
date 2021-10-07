@@ -205,6 +205,7 @@ const AddNewUser: React.FC = () => {
           },
         )
       } else {
+        setIsLoading(false)
         addToast(`Les utilisateurs ont été créés avec succès`, {
           appearance: 'success',
           autoDismiss: true,
