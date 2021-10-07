@@ -8,26 +8,23 @@ interface Props {
   component: React.FC
   [x: string]: any
 }
-
+// HOC pour faire un call API qui va checker le token en back
+// rendu conditionnel pour rediriger vers le composant si auth
+// vers login si pas auth
 const PrivateRoute = ({ component: Component, ...rest }: Props) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [checked, setChecked] = useState<boolean>(false)
   const { userInfos } = useContext(UserContext)
-  const token = localStorage.getItem('token')
-  const [isAuth, { data, loading }] = useMutation(IS_AUTH, {
+  const token = localStorage.getItem('token') || ''
+  const [isAuth] = useMutation(IS_AUTH, {
     fetchPolicy: 'network-only',
   })
   const apiCall = async () => {
-    if (token) {
-      const response = await isAuth({ variables: { input: { token } } })
-      if (response?.data?.isAuth?.auth) {
-        setAuthenticated(true)
-      }
-      setChecked(true)
-    } else {
-      setAuthenticated(false)
-      setChecked(true)
+    const response = await isAuth({ variables: { input: { token } } })
+    if (response?.data?.isAuth?.auth) {
+      setAuthenticated(true)
     }
+    setChecked(true)
   }
   useEffect(() => {
     apiCall()
@@ -47,8 +44,12 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
       {!authenticated && checked && (
         <Route
           {...rest}
-          render={() => {
-            return <Redirect to={{ pathname: '/login' }} />
+          render={(props) => {
+            return (
+              <Redirect
+                to={{ pathname: '/login', state: { from: props.location } }}
+              />
+            )
           }}
         />
       )}

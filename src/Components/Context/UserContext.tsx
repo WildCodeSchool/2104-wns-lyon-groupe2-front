@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import React, { createContext, useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
-import { withRouter } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import { iUsers, iTokenDecrypted } from '../../Interfaces/UsersInterfaces'
 
