@@ -25,3 +25,12 @@ export const GET_FOLDER_PATH = gql`
     getPath(parentDirectory: $parentDirectory)
   }
 `
+
+export const GET_FOLDERS_TREE = gql`
+  query getFoldersTree {
+    getFoldersTree {
+      id
+      name
+    }
+  }
+`

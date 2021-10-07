@@ -10,7 +10,7 @@ import 'react-contexify/dist/ReactContexify.min.css'
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu'
 import { withRouter } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
-import { MdDelete } from 'react-icons/md'
+import { MdDelete, MdOutlineDriveFileMove } from 'react-icons/md'
 import Modal from '@material-ui/core/Modal'
 import { Button, Popover, TextField, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -22,8 +22,10 @@ import {
 } from 'react-beautiful-dnd'
 import './Folders.scss'
 import AddFolder from './AddFolder'
+
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
+import MoveFolderModal from './MoveFolderModal'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -59,6 +61,8 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   const [sameNameError, setSameNameError] = useState<boolean>(false)
   const [selectedFolder, setSelectedFolder] = useState<null | string>(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
+  const [isMoveFolderModalOpen, setIsMoveFolderModalOpen] =
+    useState<boolean>(false)
 
   //  /// //
   // MISC //
@@ -436,6 +440,15 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
                                           Supprimer
                                         </MenuItem>
                                       </div>
+                                      <div
+                                        className="context_menu_section"
+                                        onClick={() => {
+                                          setIsMoveFolderModalOpen(true)
+                                        }}
+                                      >
+                                        <MdOutlineDriveFileMove className="icon_menu" />{' '}
+                                        <MenuItem>Déplacer</MenuItem>
+                                      </div>
                                     </div>
                                   </ContextMenu>
                                   <>
@@ -509,6 +522,12 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
               </div>
             </div>
           </Modal>
+        )}
+        {isMoveFolderModalOpen && (
+          <MoveFolderModal
+            open={isMoveFolderModalOpen}
+            setOpen={setIsMoveFolderModalOpen}
+          />
         )}
       </div>
     </div>
