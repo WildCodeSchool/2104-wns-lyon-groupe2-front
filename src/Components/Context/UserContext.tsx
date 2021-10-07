@@ -43,16 +43,6 @@ const UserProvider: React.FC = ({ children }) => {
           autoDismiss: false,
         },
       )
-      // return history.push('/login')
-    }
-    // check if the token isn't expired
-    // history.push('/')
-
-    if (userData && userData.exp) {
-      const now = Date.now()
-      if (now > userData.exp * 1000) {
-        // return history.push('/login')
-      }
     }
 
     return setUserInfos(userData)
