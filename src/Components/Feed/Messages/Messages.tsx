@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
@@ -27,12 +27,14 @@ export const GET_WORKSPACES = gql`
           content
           userId
           userName
+          color
           createdAt
           comments {
             id
             content
             userId
             userName
+            color
             createdAt
           }
           likes {
@@ -92,6 +94,8 @@ const Messages: React.FC = () => {
     setRefresh(false)
   }, [data, bottomRef.current, messages, refresh])
 
+  const history = useHistory()
+
   if (loading)
     return (
       <div className={classes.loader}>
@@ -112,8 +116,17 @@ const Messages: React.FC = () => {
               <Grid key={message.id} ref={bottomRef}>
                 <Paper className={classes.bubble}>
                   <Grid className={classes.userNameContainer}>
-                    <div style={{ width: '50%', marginLeft: '20' }}>
-                      <Avatar className={classes.nickName}>
+                    <div
+                      onClick={() => {
+                        console.log(message)
+                        history.push(`profile/${message.userId}`)
+                      }}
+                      style={{ width: '50%', marginLeft: '20' }}
+                    >
+                      <Avatar
+                        style={{ backgroundColor: message.color }}
+                        className={classes.nickName}
+                      >
                         {useNickname(message.userName)}
                       </Avatar>
                       <Typography className={classes.userName}>
