@@ -29,9 +29,8 @@ const Routes: React.FC = () => {
         <UserProvider>
           <Switch>
             <Route exact path="/login" component={Login} />
-            <PrivateRoute exact path="/profile" component={Profile} />
             <PrivateRoute exact path="/profile/:id" component={Profile} />
-            <PrivateRoute exact path="/publication" component={Publication} />
+            <PrivateRoute exact path="/profile" component={Profile} />
             <PrivateRoute exact path="/publication" component={Publication} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
             <PrivateRoute
@@ -47,21 +46,16 @@ const Routes: React.FC = () => {
             />
             <PrivateRoute
               exact
-              path="/register-new-user"
-              component={AddNewUser}
+              path="/personal-folders/:parentId"
+              component={PersonalFolders}
             />
             <PrivateRoute
               exact
               path="/personal-folders"
               component={PersonalFolders}
             />
-            <PrivateRoute
-              exact
-              path="/personal-folders/:parentId"
-              component={PersonalFolders}
-            />
-            <PrivateRoute exact path="/" component={Home} />
             <PrivateRoute exact path="/:id" component={Home} />
+            <PrivateRoute exact path="/" component={Home} />
           </Switch>
         </UserProvider>
       </Router>
