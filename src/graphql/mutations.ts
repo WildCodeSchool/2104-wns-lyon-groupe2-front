@@ -28,7 +28,6 @@ export const DELETE_FOLDER = gql`
   }
 `
 
-
 export const UPLOAD_FILE = gql`
   mutation uploadFile($data: Upload!, $folderId: String!) {
     uploadFile(data: $data, folderId: $folderId) {
@@ -41,13 +40,15 @@ export const LOGIN_MUTATION = gql`
   mutation login($input: InputLogin!) {
     login(input: $input) {
       token
+    }
+  }
+`
 
 export const IS_AUTH = gql`
   mutation isAuth($input: Token!) {
     isAuth(input: $input) {
       auth
       message
-
     }
   }
 `
