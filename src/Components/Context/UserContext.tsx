@@ -38,7 +38,7 @@ const UserProvider: React.FC = ({ children }) => {
     const userData: any = jwt_decode(userToken)
     if (userData?.first_connection === true) {
       addToast(
-        'Merci de cliquer sur le lien de changement de mot de passe qui vous a été envoyer par mail',
+        'Merci de cliquer sur le lien de changement de mot de passe qui vous a été envoyé par mail',
         {
           appearance: 'error',
           autoDismiss: false,

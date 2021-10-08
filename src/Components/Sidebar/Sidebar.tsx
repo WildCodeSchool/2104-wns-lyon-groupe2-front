@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import Switch from '@material-ui/core/Switch'
 import { FcSettings, FcPlus } from 'react-icons/fc'
 import { useHistory } from 'react-router-dom'
@@ -9,30 +9,28 @@ import { SidebarContext } from '../Context/SidebarContext'
 import AddWorkspace from './AddWorskpace'
 
 const Sidebar: React.FC = () => {
-  const [assetsModal, setAssetsModal] = useState<boolean>(false)
-  const [workSpaceModal, setWorkSpaceModal] = useState<boolean>(true)
   const history = useHistory()
-  const { handleClick } = useContext(SidebarContext)
-
-  const [checked, setChecked] = useState<boolean>(false)
+  const { isWorkspaceDisplayed, setIsWorkspaceDisplayed } =
+    useContext(SidebarContext)
 
   const handleModals: () => void = () => {
-    setChecked(!checked)
-    if (checked) {
-      setAssetsModal(false)
-      setWorkSpaceModal(true)
-      history.push('/')
-    } else if (!checked) {
-      setWorkSpaceModal(false)
-      setAssetsModal(true)
-      history.push('/assets')
-    }
+    setIsWorkspaceDisplayed(!isWorkspaceDisplayed)
   }
+
+  useEffect(() => {
+    if (isWorkspaceDisplayed) {
+      history.push('/')
+    } else {
+      history.push('/personal-folders')
+    }
+  }, [isWorkspaceDisplayed])
 
   return (
     <div
       className={
-        checked ? 'sidebar_container_assets' : 'sidebar_container_workspace'
+        !isWorkspaceDisplayed
+          ? 'sidebar_container_assets'
+          : 'sidebar_container_workspace'
       }
     >
       <div className="sidebar_header">
@@ -48,15 +46,15 @@ const Sidebar: React.FC = () => {
       </div>
       <div className="btn_sidebar_top">
         <Switch
-          checked={checked}
+          checked={!isWorkspaceDisplayed}
           onChange={handleModals}
           name="checkedA"
           inputProps={{ 'aria-label': 'secondary checkbox' }}
         />
         <AddWorkspace />
       </div>
-      {assetsModal && <Assets />}
-      {workSpaceModal && <WorkspaceSchool />}
+      {!isWorkspaceDisplayed && <Assets />}
+      {isWorkspaceDisplayed && <WorkspaceSchool />}
       <div className="btn_sidebar_bottom">
         <p className="pseudo">pseudo</p>
         <FcSettings className="params_icon" />

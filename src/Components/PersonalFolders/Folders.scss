@@ -1,0 +1,130 @@
+.folders_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .folders_container {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .folders_container_navigation_bar {
+      display: flex;
+      width: 100%;
+      padding: 12px;
+      margin: 12px;
+      border-bottom: 1px solid #dadce0;
+      .folders_container_navigation_bar_folder {
+        padding: 8px;
+        cursor: pointer;
+      }
+      .folders_container_navigation_bar_folder:hover {
+        background-color: #e8e8e8;
+        border-radius: 10px;
+      }
+    }
+    .folder {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 50%;
+      margin-bottom: 20px;
+      .folder_icon {
+        font-size: 100px;
+      }
+      .folder_title {
+        text-align: center;
+        font-size: 20px;
+        width: 80%;
+      }
+    }
+  }
+}
+
+.add_folder_container {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.add_folder_modal {
+  background-color: #f8f9fa;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  p {
+    margin-bottom: 20px;
+  }
+  div {
+    height: 40px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  input {
+    width: 100%;
+  }
+  .add_folder_modal_action_bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    button:first-of-type {
+      margin-right: 20px;
+    }
+  }
+}
+
+.context_menu_section {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 992px) {
+  .folders_container {
+    .folders_container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      width: 100%;
+      .folder {
+        width: 20%;
+        margin-bottom: 20px;
+        .folder_icon {
+          font-size: 150px;
+        }
+      }
+    }
+  }
+
+  #context-menu {
+    position: fixed;
+    z-index: 10000;
+    background: #1b1a1a;
+  }
+
+  #context-menu .context_menu_section {
+    padding: 8px 10px;
+    font-size: 15px;
+    color: #eee;
+    cursor: pointer;
+  }
+
+  #context-menu .context_menu_section:hover {
+    background: #555;
+  }
+
+  #context-menu .context_menu_section .icon_menu {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  #context-menu hr {
+    margin: 2px 0px;
+    border-color: #555;
+  }
+}

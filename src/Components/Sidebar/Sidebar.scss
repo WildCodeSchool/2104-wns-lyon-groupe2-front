@@ -1,7 +1,8 @@
 // style sidebar workspace
 
 .sidebar_container_workspace {
-  width: 250px;
+  min-width: 300px;
+  max-width: 300px;
   height: 100vh;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-top: none;
@@ -47,7 +48,8 @@
 // style sidebar assets
 
 .sidebar_container_assets {
-  width: 15%;
+  min-width: 300px;
+  max-width: 300px;
   height: 100vh;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-top: none;
