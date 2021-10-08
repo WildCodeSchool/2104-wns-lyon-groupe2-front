@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import React, { createContext, useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
-import { withRouter } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import { iUsers, iTokenDecrypted } from '../../Interfaces/UsersInterfaces'
 
@@ -44,16 +43,6 @@ const UserProvider: React.FC = ({ children }) => {
           autoDismiss: false,
         },
       )
-      // return history.push('/login')
-    }
-    // check if the token isn't expired
-    // history.push('/')
-
-    if (userData && userData.exp) {
-      const now = Date.now()
-      if (now > userData.exp * 1000) {
-        // return history.push('/login')
-      }
     }
 
     return setUserInfos(userData)

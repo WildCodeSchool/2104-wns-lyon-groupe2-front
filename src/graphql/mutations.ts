@@ -27,3 +27,12 @@ export const DELETE_FOLDER = gql`
     deleteFolder(input: $input)
   }
 `
+
+export const IS_AUTH = gql`
+  mutation isAuth($input: Token!) {
+    isAuth(input: $input) {
+      auth
+      message
+    }
+  }
+`
