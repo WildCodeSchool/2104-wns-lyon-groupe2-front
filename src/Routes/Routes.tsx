@@ -40,13 +40,13 @@ const Routes: React.FC = () => {
             />
             <PrivateRoute
               exact
-              path="/personal-folders"
-              component={PersonalFolders}
+              path="/register-new-user"
+              component={AddNewUser}
             />
             <PrivateRoute
               exact
-              path="/register-new-user"
-              component={AddNewUser}
+              path="/personal-folders"
+              component={PersonalFolders}
             />
             <PrivateRoute
               exact

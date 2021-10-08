@@ -14,7 +14,6 @@ interface Props {
 const PrivateRoute = ({ component: Component, ...rest }: Props) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [checked, setChecked] = useState<boolean>(false)
-  const { userInfos } = useContext(UserContext)
   const token = localStorage.getItem('token') || ''
   const [isAuth] = useMutation(IS_AUTH, {
     fetchPolicy: 'network-only',
@@ -45,11 +44,7 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
         <Route
           {...rest}
           render={(props) => {
-            return (
-              <Redirect
-                to={{ pathname: '/login', state: { from: props.location } }}
-              />
-            )
+            return <Redirect to={{ pathname: '/login' }} />
           }}
         />
       )}
