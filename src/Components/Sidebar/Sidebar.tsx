@@ -14,16 +14,15 @@ const Sidebar: React.FC = () => {
     useContext(SidebarContext)
 
   const handleModals: () => void = () => {
-    setIsWorkspaceDisplayed(!isWorkspaceDisplayed)
+    setIsWorkspaceDisplayed((prevState) => {
+      if (!prevState) {
+        history.push('/')
+      } else {
+        history.push('/personal-folders')
+      }
+      return !isWorkspaceDisplayed
+    })
   }
-
-  useEffect(() => {
-    if (isWorkspaceDisplayed) {
-      history.push('/')
-    } else {
-      history.push('/personal-folders')
-    }
-  }, [isWorkspaceDisplayed])
 
   return (
     <div
