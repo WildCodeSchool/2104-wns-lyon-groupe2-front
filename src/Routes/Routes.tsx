@@ -18,6 +18,10 @@ import PrivateRoute from './PrivateRoute'
 
 const customHistory = createBrowserHistory()
 
+// From React Router Doc \\
+//  [...] that you should put <Route>s with more specific (typically longer) paths before less-specific ones.
+//
+
 const Routes: React.FC = () => {
   return (
     <div>
@@ -25,9 +29,9 @@ const Routes: React.FC = () => {
         <UserProvider>
           <Switch>
             <Route exact path="/login" component={Login} />
-            <Route exact path="/profile" component={Profile} />
-            <Route exact path="/profile/:id" component={Profile} />
-            <Route exact path="/publication" component={Publication} />
+            <PrivateRoute exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/profile/:id" component={Profile} />
+            <PrivateRoute exact path="/publication" component={Publication} />
             <PrivateRoute exact path="/publication" component={Publication} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
             <PrivateRoute
