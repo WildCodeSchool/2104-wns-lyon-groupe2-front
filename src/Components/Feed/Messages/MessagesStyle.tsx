@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   messagesContainer: {
     overflow: 'auto',
-    height: '73vh',
+    height: '80vh',
     width: '100%',
     margin: 10,
     display: 'flex',
@@ -72,9 +72,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     borderRadius: 20,
     height: 60,
+    cursor: 'pointer',
   },
   nickName: {
-    backgroundColor: '#4aa0bd',
     float: 'left',
     color: 'white',
   },

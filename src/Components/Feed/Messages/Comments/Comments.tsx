@@ -78,7 +78,10 @@ const Comments: React.FC<CommentsProps> = ({
             <Paper className={classes.bubbleMessage}>
               <Grid className={classes.userNameContainer}>
                 <div style={{ width: '50%', marginLeft: '20' }}>
-                  <Avatar className={classes.nickName}>
+                  <Avatar
+                    className={classes.nickName}
+                    style={{ backgroundColor: message.color }}
+                  >
                     {useNickname(message.userName)}
                   </Avatar>
                   <Typography className={classes.userName}>
@@ -119,7 +122,10 @@ const Comments: React.FC<CommentsProps> = ({
                   <Paper className={classes.bubble}>
                     <Grid className={classes.userNameContainer}>
                       <div style={{ width: '50%', marginLeft: '20' }}>
-                        <Avatar className={classes.nickName}>
+                        <Avatar
+                          className={classes.nickName}
+                          style={{ backgroundColor: comment.color }}
+                        >
                           {useNickname(comment.userName)}
                         </Avatar>
                         <Typography className={classes.userName}>

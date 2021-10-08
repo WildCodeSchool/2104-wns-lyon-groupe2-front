@@ -17,6 +17,7 @@ import Login from '../Pages/Login/Login'
 import Assets from '../Components/Assets/Assets'
 
 import Publication from '../Pages/Publication/Publication'
+import Profile from '../Pages/Profile/Profile'
 
 const customHistory = createBrowserHistory()
 
@@ -27,6 +28,8 @@ const Routes: React.FC = () => {
         <UserProvider>
           <Switch>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/profile/:id" component={Profile} />
             <Route exact path="/publication" component={Publication} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
             <Route exact path="/register-new-user" component={AddNewUser} />

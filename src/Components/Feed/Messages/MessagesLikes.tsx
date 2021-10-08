@@ -70,13 +70,14 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({
   }
   useEffect(() => {
     if (message.likes) {
+      setActive(false)
       for (let i = 0; i < message.likes.length; i += 1) {
         if (message.likes[i].userId === userInfos.userId) {
           setActive(true)
         }
       }
     }
-  }, [message])
+  }, [message, active])
 
   const classes = useStyles()
   return (

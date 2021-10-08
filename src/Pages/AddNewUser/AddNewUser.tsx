@@ -224,116 +224,118 @@ const AddNewUser: React.FC = () => {
   }))(Button)
 
   return (
-    <div className="new-user-form-wrapper">
-      <form className="" onSubmit={handleSubmit(createUser)}>
-        <h1 className="">Inscrire un nouvel utilisateur</h1>
-        <TextField
-          helperText={errors.firstname ? "Merci d'indiquer un prénom" : false}
-          error={!!errors.firstname}
-          className="new-user-input"
-          label="Prénom"
-          variant="outlined"
-          {...register('firstname', { required: true })}
-        />
-        <TextField
-          helperText={errors.lastname ? "Merci d'indiquer un nom" : false}
-          error={!!errors.lastname}
-          className="new-user-input"
-          label="Nom"
-          variant="outlined"
-          {...register('lastname', { required: true })}
-        />
-        <TextField
-          helperText={errors.email ? "Merci d'indiquer un email" : false}
-          error={!!errors.email}
-          className="new-user-input"
-          label="Email"
-          variant="outlined"
-          {...register('email', { required: true })}
-        />
-        <FormControl className="new-user-radio-wrapper" component="fieldset">
-          <FormLabel component="legend">L&apos;utilisateur est-il</FormLabel>
-          <RadioGroup aria-label="userType" {...register('userType')}>
-            <div className="new-user-radio">
-              <FormControlLabel
-                value="STUDENT"
-                control={<Radio />}
-                label="un elève ?"
-              />
-              <FormControlLabel
-                value="TEACHER"
-                control={<Radio />}
-                label="un enseignant ?"
-              />
-            </div>
-          </RadioGroup>
-        </FormControl>
-        <ColorButton
-          className="new-user-submit-button"
-          type="submit"
-          variant="contained"
-        >
-          C&apos;est parti !
-        </ColorButton>
-        <Paper className="import-xlsx-file-wrapper" elevation={5}>
-          <h2>Importer un fichier pour créer plusieurs utilisateurs</h2>
-          <p>
-            Afin de faciliter la création de multiples utilisateurs, vous pouvez
-            importer un fichier de type xlsx.
-            <br /> Attention le fichier devra impérativement posséder les
-            entêtes de colonnes suivantes : Nom, Prénom, Email, Catégorie
-            (Etudiant ou Enseignant). Modèle disponible{' '}
-            <Link to="/files/Modèle.xlsx" target="_blank" download>
-              ici
-            </Link>
-          </p>
-
-          <Button
-            component="label"
-            variant="contained"
-            className="import-xlsx-file-button"
-          >
-            <input
-              hidden
-              type="file"
-              id="fileUploader"
-              name="fileUploader"
-              accept=".xlsx"
-              onChange={(e) => {
-                parseExcel(e)
-              }}
-              onClick={(event) => {
-                // eslint-disable-next-line no-param-reassign
-                event.currentTarget.value = ''
-              }}
-            />{' '}
-            Importer un fichier XLSX
-          </Button>
-          {spreadSheetJSON && spreadSheetJSON.length > 0 && (
-            <ColorButton
-              className="import-xlsx-create-multiple-users-button"
-              onClick={() => createMultipleUsers()}
-              variant="contained"
-            >
-              <CheckCircleOutlineIcon className="import-xlsx-create-multiple-users-icon-button" />
-              Créer les utilisateurs
-            </ColorButton>
-          )}
-          {isLoading && <CircularProgress />}
-          {errorEmails && errorEmails.length > 0 && (
-            <div className="import-xlsx-emails-errors-wrapper">
-              <h5>
-                Une erreur s&apos;est produite pour les comptes suivants:{' '}
-              </h5>
-              <div>
-                {errorEmails.map((msg) => {
-                  return <p>{msg}</p>
-                })}
+    <div style={{ overflow: 'auto' }}>
+      <div className="new-user-form-wrapper">
+        <form className="" onSubmit={handleSubmit(createUser)}>
+          <h1 className="">Inscrire un nouvel utilisateur</h1>
+          <TextField
+            helperText={errors.firstname ? "Merci d'indiquer un prénom" : false}
+            error={!!errors.firstname}
+            className="new-user-input"
+            label="Prénom"
+            variant="outlined"
+            {...register('firstname', { required: true })}
+          />
+          <TextField
+            helperText={errors.lastname ? "Merci d'indiquer un nom" : false}
+            error={!!errors.lastname}
+            className="new-user-input"
+            label="Nom"
+            variant="outlined"
+            {...register('lastname', { required: true })}
+          />
+          <TextField
+            helperText={errors.email ? "Merci d'indiquer un email" : false}
+            error={!!errors.email}
+            className="new-user-input"
+            label="Email"
+            variant="outlined"
+            {...register('email', { required: true })}
+          />
+          <FormControl className="new-user-radio-wrapper" component="fieldset">
+            <FormLabel component="legend">L&apos;utilisateur est-il</FormLabel>
+            <RadioGroup aria-label="userType" {...register('userType')}>
+              <div className="new-user-radio">
+                <FormControlLabel
+                  value="STUDENT"
+                  control={<Radio />}
+                  label="un elève ?"
+                />
+                <FormControlLabel
+                  value="TEACHER"
+                  control={<Radio />}
+                  label="un enseignant ?"
+                />
               </div>
-            </div>
-          )}
-        </Paper>
-      </form>
+            </RadioGroup>
+          </FormControl>
+          <ColorButton
+            className="new-user-submit-button"
+            type="submit"
+            variant="contained"
+          >
+            C&apos;est parti !
+          </ColorButton>
+          <Paper className="import-xlsx-file-wrapper" elevation={5}>
+            <h2>Importer un fichier pour créer plusieurs utilisateurs</h2>
+            <p>
+              Afin de faciliter la création de multiples utilisateurs, vous
+              pouvez importer un fichier de type xlsx.
+              <br /> Attention le fichier devra impérativement posséder les
+              entêtes de colonnes suivantes : Nom, Prénom, Email, Catégorie
+              (Etudiant ou Enseignant). Modèle disponible{' '}
+              <Link to="/files/Modèle.xlsx" target="_blank" download>
+                ici
+              </Link>
+            </p>
+
+            <Button
+              component="label"
+              variant="contained"
+              className="import-xlsx-file-button"
+            >
+              <input
+                hidden
+                type="file"
+                id="fileUploader"
+                name="fileUploader"
+                accept=".xlsx"
+                onChange={(e) => {
+                  parseExcel(e)
+                }}
+                onClick={(event) => {
+                  // eslint-disable-next-line no-param-reassign
+                  event.currentTarget.value = ''
+                }}
+              />{' '}
+              Importer un fichier XLSX
+            </Button>
+            {spreadSheetJSON && spreadSheetJSON.length > 0 && (
+              <ColorButton
+                className="import-xlsx-create-multiple-users-button"
+                onClick={() => createMultipleUsers()}
+                variant="contained"
+              >
+                <CheckCircleOutlineIcon className="import-xlsx-create-multiple-users-icon-button" />
+                Créer les utilisateurs
+              </ColorButton>
+            )}
+            {isLoading && <CircularProgress />}
+            {errorEmails && errorEmails.length > 0 && (
+              <div className="import-xlsx-emails-errors-wrapper">
+                <h5>
+                  Une erreur s&apos;est produite pour les comptes suivants:{' '}
+                </h5>
+                <div>
+                  {errorEmails.map((msg) => {
+                    return <p>{msg}</p>
+                  })}
+                </div>
+              </div>
+            )}
+          </Paper>
+        </form>
+      </div>
     </div>
   )
 }
