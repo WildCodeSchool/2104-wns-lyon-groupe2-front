@@ -14,6 +14,7 @@ import Login from '../Pages/Login/Login'
 import PersonalFoldersHome from '../Components/PersonalFolders/PersonalFoldersHome'
 
 import Publication from '../Pages/Publication/Publication'
+import Profile from '../Pages/Profile/Profile'
 import PrivateRoute from './PrivateRoute'
 
 const customHistory = createBrowserHistory()
@@ -25,6 +26,9 @@ const Routes: React.FC = () => {
         <UserProvider>
           <Switch>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/profile/:id" component={Profile} />
+            <Route exact path="/publication" component={Publication} />
             <PrivateRoute exact path="/publication" component={Publication} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
             <PrivateRoute

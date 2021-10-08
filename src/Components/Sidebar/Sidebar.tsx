@@ -14,16 +14,15 @@ const Sidebar: React.FC = () => {
     useContext(SidebarContext)
 
   const handleModals: () => void = () => {
-    setIsWorkspaceDisplayed(!isWorkspaceDisplayed)
+    setIsWorkspaceDisplayed((prevState) => {
+      if (!prevState) {
+        history.push('/')
+      } else {
+        history.push('/personal-folders')
+      }
+      return !isWorkspaceDisplayed
+    })
   }
-
-  useEffect(() => {
-    if (isWorkspaceDisplayed) {
-      history.push('/')
-    } else {
-      history.push('/personal-folders')
-    }
-  }, [isWorkspaceDisplayed])
 
   return (
     <div
@@ -37,7 +36,8 @@ const Sidebar: React.FC = () => {
         <div>
           <img
             className="website_logo"
-            src="logo-ds.png"
+            // eslint-disable-next-line prefer-template
+            src={process.env.PUBLIC_URL + '/logo-ds.png'}
             alt="Daddy Studies"
             onClick={() => history.push('/')}
           />

@@ -1,7 +1,7 @@
 .feed_container {
   width: 85%;
   .feed_header {
-    height: 100px;
+    height: 30px;
   }
 }
 
@@ -10,6 +10,7 @@
     width: 100%;
     height: 100vh;
     .feed_header {
+      height: 70px;
     }
   }
 }
