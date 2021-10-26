@@ -1,0 +1,46 @@
+.move-folder-modal-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 300px;
+  background-color: white;
+  .move-folder-modal-header {
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background-color: #e8e8e8;
+    border-bottom: solid 1px #c0c0c0;
+    svg {
+      margin-right: 10px;
+      padding: 5px;
+      border-radius: 50%;
+    }
+    svg:hover {
+      background-color: #d3d3d3;
+    }
+  }
+  .move-folder-modal-content {
+    .move-folder-modal-content-items {
+      display: flex;
+      align-items: center;
+      padding: 5px 10px;
+      svg:first-of-type {
+        margin-right: 10px;
+      }
+      svg:last-of-type {
+        padding: 5px;
+        cursor: pointer;
+        border-radius: 50%;
+      }
+      svg:last-of-type:hover {
+        background-color: #d3d3d3;
+      }
+    }
+    .move-folder-modal-content-items:hover {
+      background-color: #e8e8e8;
+    }
+  }
+}

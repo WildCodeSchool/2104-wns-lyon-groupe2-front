@@ -24,14 +24,12 @@ const UserProvider: React.FC = ({ children }) => {
   }, [])
 
   const removeUser = () => {
-    console.log('remove user')
     localStorage.removeItem('token')
     setUserInfos(null)
     setToken(null)
   }
 
   const addUser = (userToken: string) => {
-    console.log('add user')
     localStorage.setItem('token', userToken)
     setToken(userToken)
     const userData: iTokenDecrypted = jwt_decode(userToken)
