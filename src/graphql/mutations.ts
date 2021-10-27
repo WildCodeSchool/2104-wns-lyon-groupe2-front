@@ -27,3 +27,11 @@ export const DELETE_FOLDER = gql`
     deleteFolder(input: $input)
   }
 `
+
+export const MOVE_FOLDER = gql`
+  mutation moveFolder($input: UpdateFolder!) {
+    moveFolder(input: $input) {
+      id
+    }
+  }
+`

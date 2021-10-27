@@ -60,6 +60,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   const [newName, setNewName] = useState<null | string>(null)
   const [sameNameError, setSameNameError] = useState<boolean>(false)
   const [selectedFolder, setSelectedFolder] = useState<null | string>(null)
+  const [selectedFolderIdForMove, setSelectedFolderIdForMove] = useState<null | string>(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
   const [isMoveFolderModalOpen, setIsMoveFolderModalOpen] =
     useState<boolean>(false)
@@ -443,6 +444,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
                                       <div
                                         className="context_menu_section"
                                         onClick={() => {
+                                          setSelectedFolderIdForMove(id)
                                           setIsMoveFolderModalOpen(true)
                                         }}
                                       >
@@ -525,6 +527,8 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         )}
         {isMoveFolderModalOpen && (
           <MoveFolderModal
+          refetch={refetch}
+            folderToMove={selectedFolderIdForMove}
             open={isMoveFolderModalOpen}
             setOpen={setIsMoveFolderModalOpen}
           />

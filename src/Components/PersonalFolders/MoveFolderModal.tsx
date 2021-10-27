@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Typography, Modal } from '@material-ui/core'
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  Tooltip,
+  Icon,
+} from '@material-ui/core'
 import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import {
@@ -9,8 +16,8 @@ import {
   BsArrowLeftCircle,
 } from 'react-icons/bs'
 import { useQuery, useMutation } from '@apollo/client'
-import { AiFillFolder } from 'react-icons/ai'
-
+import { AiFillFolder, AiFillFolderAdd } from 'react-icons/ai'
+import { MOVE_FOLDER } from '../../graphql/mutations'
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import './MoveFolderModal.scss'
 
@@ -29,9 +36,16 @@ const style = {
 type TAddFolderProps = {
   open: boolean
   setOpen: any
+  folderToMove: any
+  refetch: any
 }
 
-const MoveFolderModal: React.FC<TAddFolderProps> = ({ open, setOpen }) => {
+const MoveFolderModal: React.FC<TAddFolderProps> = ({
+  open,
+  setOpen,
+  folderToMove,
+  refetch,
+}) => {
   const [folders, setFolders] = useState<any>(null)
   const [currentFolder, setCurrentFolder] = useState<any>(null)
   const [path, setPath] = useState<any>([{ id: null, name: 'Mes ressources' }])
@@ -41,14 +55,17 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({ open, setOpen }) => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { refetch, error, data, loading } = useQuery(
-    GET_FOLDERS_BY_CURRENT_USER_ID,
-    {
-      variables: {
-        parentDirectory: (currentFolder && currentFolder.id) || '',
-      },
+  const { error, data, loading } = useQuery(GET_FOLDERS_BY_CURRENT_USER_ID, {
+    variables: {
+      parentDirectory: (currentFolder && currentFolder.id) || '',
     },
-  )
+  })
+
+  const [moveFolder] = useMutation(MOVE_FOLDER, {
+    onCompleted: () => {
+      refetch()
+    },
+  })
 
   const handleClickOnRightArrow = (folder) => {
     const pathCopy = path.slice()
@@ -62,6 +79,18 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({ open, setOpen }) => {
     setCurrentFolder(path[path.length - 2])
     const pathCopy = path.slice(0, -1)
     setPath(pathCopy)
+  }
+
+  const handleClickOnMoveFolder = () => {
+    moveFolder({
+      variables: {
+        input: {
+          id: folderToMove,
+          parentDirectory: (currentFolder && currentFolder.id) || '',
+        },
+      },
+    })
+    handleClose()
   }
 
   useEffect(() => {
@@ -105,18 +134,25 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({ open, setOpen }) => {
   }
 
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={open} onClose={handleClose}>
       <div className="move-folder-modal-wrapper">
         <div className="move-folder-modal-header">
           <BsArrowLeftCircle onClick={() => handleClickOnLeftArrow()} />
           <p>{currentFolder ? currentFolder.name : 'Mes ressources'}</p>
         </div>
         <div className="move-folder-modal-content">{returnTree()}</div>
+        <div style={{ flex: 1 }} />
+        <div className="move-folder-modal-footer">
+          <Tooltip title="Déplacer le dossier ici">
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => handleClickOnMoveFolder()}
+            >
+              Déplacer ici
+            </Button>
+          </Tooltip>
+        </div>
       </div>
     </Modal>
   )

@@ -1,4 +1,6 @@
 .move-folder-modal-wrapper {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -17,6 +19,7 @@
       margin-right: 10px;
       padding: 5px;
       border-radius: 50%;
+      cursor: pointer;
     }
     svg:hover {
       background-color: #d3d3d3;
@@ -41,6 +44,17 @@
     }
     .move-folder-modal-content-items:hover {
       background-color: #e8e8e8;
+    }
+  }
+  .move-folder-modal-footer {
+    border-top: solid 1px #c0c0c0;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    svg {
+      cursor: pointer;
+      font-size: 24px;
     }
   }
 }
