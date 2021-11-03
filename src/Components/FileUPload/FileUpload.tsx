@@ -6,8 +6,9 @@ import { UPLOAD_FILE } from '../../graphql/mutations'
 import { IAssetsProps } from '../Assets/AssetDetails'
 import useStyles from './FileUPloadStyle'
 
-const FileUpload: React.FC<IAssetsProps | null> = (props: any) => {
-  console.log(props)
+const FileUpload: React.FC<IAssetsProps | null> = (props: {
+  folderId: string
+}) => {
   const classes = useStyles()
 
   const [uploadFile] = useMutation(UPLOAD_FILE, {
@@ -15,7 +16,7 @@ const FileUpload: React.FC<IAssetsProps | null> = (props: any) => {
   })
   const { folderId } = props
   // ici itnitialisation du state avec le folderId useless...
-  const [data, setData] = useState(folderId)
+  const [data, setData] = useState([])
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]

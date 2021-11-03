@@ -23,6 +23,9 @@ export const dataForAssetsTable = (data) => {
       id: i,
       title: elem.title,
       createdAt: elem.createdAt,
+      updatedAt: elem.updatedAt,
+      likes: elem.likes || 0,
+      type: elem.type || 'Unknown',
     }
   })
 }

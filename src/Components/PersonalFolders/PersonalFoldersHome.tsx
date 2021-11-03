@@ -29,6 +29,7 @@ import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
 import FileUpload from '../FileUPload/FileUpload'
+import AssetsTable from '../Assets/AssetsTable'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -567,9 +568,16 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
             />
           )}
         </div>
-        <div className="file_upload_container">
-          <FileUpload folderId={match.params.parentId} />
-        </div>
+        {parentDirectory && (
+          <>
+            <div className="file_upload_container">
+              <FileUpload folderId={parentDirectory} />
+            </div>
+            <div className="assets_list_container">
+              <AssetsTable folderId={parentDirectory} />
+            </div>
+          </>
+        )}
       </div>
     </>
   )

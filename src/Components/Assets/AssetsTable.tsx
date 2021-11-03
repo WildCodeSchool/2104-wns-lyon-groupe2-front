@@ -1,8 +1,4 @@
-import {
-  DataGrid,
-  GridColDef,
-  GridValueGetterParams,
-} from '@material-ui/data-grid'
+import { DataGrid, GridColDef, GridRowProps } from '@material-ui/data-grid'
 
 import { useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
@@ -22,7 +18,7 @@ interface IAssetsDetails {
 const AssetsTable: React.FC<IAssetsProps> = ({ folderId }) => {
   const classes = useStyles()
   const [assetsList, setAssetsList] = useState<IAssetsDetails[] | null>(null)
-
+  const [rows, setRows] = useState([])
   const { loading, error, data, refetch } = useQuery(GET_FOLDER_ASSETS, {
     variables: {
       folderId,
@@ -35,28 +31,20 @@ const AssetsTable: React.FC<IAssetsProps> = ({ folderId }) => {
     { field: 'updatedAt', headerName: 'Last Modification', width: 180 },
     { field: 'likes', headerName: 'Likes', width: 120 },
     { field: 'type', headerName: 'Format', width: 140 },
-    { field: 'size', headerName: 'Poids', width: 120 },
   ]
 
   useEffect(() => {
     if (loading === false && data) setAssetsList(data.getAssetsByFolderId)
-    if (assetsList) console.log(dataForAssetsTable(assetsList))
-  })
-  console.log('assetsList', assetsList)
+    if (assetsList) {
+      setRows(dataForAssetsTable(assetsList))
+    }
+  }, [folderId])
 
   return (
     <>
-      {assetsList && (
-        <Container className={classes.tableContainer}>
-          <DataGrid
-            rows={dataForAssetsTable(assetsList)}
-            columns={columns}
-            pageSize={5}
-            checkboxSelection
-            disableSelectionOnClick
-          />
-        </Container>
-      )}
+      <div style={{ height: 300 }}>
+        <DataGrid rows={rows} columns={columns} checkboxSelection />
+      </div>
     </>
   )
 }
