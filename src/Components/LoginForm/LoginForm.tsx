@@ -21,7 +21,10 @@ import { useToasts } from 'react-toast-notifications'
 import { iInputLogin } from '../../Interfaces/Auth'
 import { UserContext } from '../Context/UserContext'
 import useStyles from './LoginStyle'
+
 import { LOGIN_MUTATION } from '../../graphql/mutations'
+
+import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 
 // Pour gérer la redirection avec TS
 type SomeComponentProps = RouteComponentProps
@@ -52,14 +55,20 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
     const response = await login({ variables: input })
     // Ici une gestion d'erreur custom serait nécessaire
     if (!response.data.login) {
-      const errorMessage = error?.graphQLErrors.map(({ message }) => message)[0]
+      let errorCode = ''
+      if (
+        response.errors &&
+        response?.errors[0]?.message === 'Invalid Credentials'
+      ) {
+        errorCode = '108'
+      }
+      const errorMessage = returnMessageForAnErrorCode(errorCode)
       addToast(`${errorMessage}`, {
         appearance: 'error',
         autoDismiss: true,
       })
     } else {
       addUser(response.data.login.token)
-      history.push('/')
     }
   }
 

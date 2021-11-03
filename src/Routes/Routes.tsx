@@ -1,11 +1,10 @@
 import { Router, Switch, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import UserProvider from '../Components/Context/UserContext'
+import { useContext } from 'react'
 import PersonalFolders from '../Pages/Folders/PersonalFolders'
 import AddNewUser from '../Pages/AddNewUser/AddNewUser'
-
 import { ForgotPassword } from '../Pages/Password/ForgotPassword'
-
+import { UserContext } from '../Components/Context/UserContext'
 import MailSent from '../Pages/Password/MailSent'
 import NewPassword from '../Pages/Password/NewPassword'
 
@@ -18,46 +17,45 @@ import PrivateRoute from './PrivateRoute'
 
 const customHistory = createBrowserHistory()
 
-// From React Router Doc \\
-//  [...] that you should put <Route>s with more specific (typically longer) paths before less-specific ones.
-//
+const renderPublicSwitch = () => {
+  return (
+    <Switch>
+      <Route exact path="/forgotpassword" component={ForgotPassword} />
+      <Route exact path="/mailsent" component={MailSent} />
+      <Route path="/" component={Login} />
+    </Switch>
+  )
+}
+
+const renderPrivateSwitch = () => {
+  return (
+    <Switch>
+      <Route exact path="/publication" component={Publication} />
+      <Route exact path="/register-new-user" component={AddNewUser} />
+      <Route
+        exact
+        path="/password_management/:token/:id"
+        component={NewPassword}
+      />
+      <Route exact path="/personal-folders" component={PersonalFolders} />
+      <Route exact path="/register-new-user" component={AddNewUser} />
+      <Route
+        exact
+        path="/personal-folders/:parentId"
+        component={PersonalFolders}
+      />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/:id" component={Home} />
+    </Switch>
+  )
+}
 
 const Routes: React.FC = () => {
+  const { userInfos } = useContext(UserContext)
   return (
     <div>
       <Router history={customHistory}>
-        <UserProvider>
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <PrivateRoute exact path="/profile/:id" component={Profile} />
-            <PrivateRoute exact path="/profile" component={Profile} />
-            <PrivateRoute exact path="/publication" component={Publication} />
-            <Route exact path="/forgotpassword" component={ForgotPassword} />
-            <PrivateRoute
-              exact
-              path="/register-new-user"
-              component={AddNewUser}
-            />
-            <Route exact path="/mailsent" component={MailSent} />
-            <Route
-              exact
-              path="/password_management/:token/:id"
-              component={NewPassword}
-            />
-            <PrivateRoute
-              exact
-              path="/personal-folders/:parentId"
-              component={PersonalFolders}
-            />
-            <PrivateRoute
-              exact
-              path="/personal-folders"
-              component={PersonalFolders}
-            />
-            <PrivateRoute exact path="/:id" component={Home} />
-            <PrivateRoute exact path="/" component={Home} />
-          </Switch>
-        </UserProvider>
+        {!userInfos ? renderPublicSwitch() : renderPrivateSwitch()}
       </Router>
     </div>
   )

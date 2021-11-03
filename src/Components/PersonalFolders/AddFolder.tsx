@@ -14,19 +14,27 @@ type TAddFolderProps = {
 const AddFolder: React.FC<TAddFolderProps> = ({ refetch, parentId }) => {
   const [folderName, setFolderName] = useState<null | string>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [addFolder] = useMutation(CREATE_FOLDER, {
+  const [sameNameError, setSameNameError] = useState(false)
+  const [addFolder, { error }] = useMutation(CREATE_FOLDER, {
     onCompleted: () => {
+      setIsModalOpen(!isModalOpen)
+      setFolderName(null)
+      setSameNameError(false)
       refetch()
+    },
+    onError: () => {
+      setSameNameError(true)
     },
   })
 
   const handleClick = () => {
     setIsModalOpen(!isModalOpen)
+    setSameNameError(false)
   }
 
-  const submitNewFolder = (e: any = null) => {
+  const submitNewFolder = async (e: any = null) => {
     if ((e && e.key === 'Enter') || !e) {
-      addFolder({
+      await addFolder({
         variables: {
           input: {
             name: folderName,
@@ -35,8 +43,6 @@ const AddFolder: React.FC<TAddFolderProps> = ({ refetch, parentId }) => {
           },
         },
       })
-      setIsModalOpen(!isModalOpen)
-      setFolderName(null)
     }
   }
 
@@ -50,12 +56,18 @@ const AddFolder: React.FC<TAddFolderProps> = ({ refetch, parentId }) => {
           <div className="add_folder_modal">
             <p>Nouveau dossier</p>
             <TextField
+              error={sameNameError}
               variant="outlined"
               className="folder_title"
               onChange={(e) => setFolderName(e.target.value)}
               value={folderName}
               onKeyDown={(e) => submitNewFolder(e)}
             />
+            {sameNameError && (
+              <p className="add_folder_modal_same_name_error">
+                Un dossier portant ce nom existe déjà
+              </p>
+            )}
             <div className="add_folder_modal_action_bar">
               <Button onClick={() => handleClick()} variant="contained">
                 Annuler

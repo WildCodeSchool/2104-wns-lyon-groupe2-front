@@ -43,6 +43,12 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `
+export const MOVE_FOLDER = gql`
+  mutation moveFolder($input: UpdateFolder!) {
+    moveFolder(input: $input) {
+      id
+    }
+    `
 
 export const IS_AUTH = gql`
   mutation isAuth($input: Token!) {

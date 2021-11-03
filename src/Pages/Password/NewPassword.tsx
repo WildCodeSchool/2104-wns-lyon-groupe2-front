@@ -125,7 +125,7 @@ const NewPassword: React.FC = (props: any) => {
         appearance: 'success',
         autoDismiss: true,
       })
-      history.push('/login')
+      history.push('/')
     } else if (response.errors) {
       setShowErrorMessage(true)
     }
