@@ -247,6 +247,9 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   }
 
   const handleOnDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return
+    }
     if (
       result?.source?.droppableId === result?.destination?.droppableId &&
       result?.source?.index === result?.destination?.index
