@@ -10,9 +10,10 @@ import 'react-contexify/dist/ReactContexify.min.css'
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu'
 import { withRouter } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
-import { MdDelete } from 'react-icons/md'
+import { MdDelete, MdOutlineDriveFileMove } from 'react-icons/md'
 import Modal from '@material-ui/core/Modal'
-import { Button, Popover, TextField } from '@material-ui/core'
+import { Button, Popover, TextField, Tooltip } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   DragDropContext,
   Draggable,
@@ -20,10 +21,19 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import './Folders.scss'
+import { useToasts } from 'react-toast-notifications'
 import AddFolder from './AddFolder'
+<<<<<<< HEAD
+import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
+
+import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
+import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
+import MoveFolderModal from './MoveFolderModal'
+=======
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
+>>>>>>> dev
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -51,14 +61,23 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // ////// //
   // STATES //
   // ////// //
-
+  const { addToast } = useToasts()
   const [folders, setFolders] = useState<any>([])
   const [isLoading, setIsLoading] = useState(false)
   const [path, setPath] = useState<null | [TDataFoldersPath]>(null)
   const [newName, setNewName] = useState<null | string>(null)
+  const [sameNameError, setSameNameError] = useState<boolean>(false)
   const [selectedFolder, setSelectedFolder] = useState<null | string>(null)
+  const [selectedFolderIdForMove, setSelectedFolderIdForMove] = useState<
+    null | string
+  >(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
+<<<<<<< HEAD
+  const [isMoveFolderModalOpen, setIsMoveFolderModalOpen] =
+    useState<boolean>(false)
+=======
   const { setIsWorkspaceDisplayed } = useContext(SidebarContext)
+>>>>>>> dev
 
   //  /// //
   // MISC //
@@ -83,7 +102,24 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   const [updateFolder] = useMutation(UPDATE_FOLDER, {
     onCompleted: () => {
       setNewName(null)
+      setSameNameError(false)
       refetch()
+    },
+    onError: (err) => {
+      if (
+        !newName &&
+        err.message === 'A folder with same name has been found'
+      ) {
+        const errorMessage = returnMessageForAnErrorCode('109')
+        addToast(`${errorMessage}`, {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+        setIsLoading(false)
+      }
+      if (newName && err.message === 'A folder with same name has been found') {
+        setSameNameError(true)
+      }
     },
   })
 
@@ -113,6 +149,22 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // //////////// //
   // RENDER FUNCS //
   // //////////// //
+
+  const useStyles = makeStyles({
+    arrow: {
+      '&:before': {
+        border: 'solid 1px #f44336',
+      },
+      color: '#f44336',
+    },
+    tooltip: {
+      backgroundColor: 'white',
+      border: 'solid 1px #f44336',
+      color: '#f44336',
+    },
+  })
+
+  const classes = useStyles()
 
   const returnLoader = () => {
     return (
@@ -199,11 +251,11 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     ) {
       setNewName(null)
       setSelectedFolder(null)
+      setSameNameError(false)
     }
   }
 
   const handleOnDragEnd = (result: DropResult) => {
-    console.log(result)
     if (
       result?.source?.droppableId === result?.destination?.droppableId &&
       result?.source?.index === result?.destination?.index
@@ -417,20 +469,43 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
                                           Supprimer
                                         </MenuItem>
                                       </div>
+                                      <div
+                                        className="context_menu_section"
+                                        onClick={() => {
+                                          setSelectedFolderIdForMove(id)
+                                          setIsMoveFolderModalOpen(true)
+                                        }}
+                                      >
+                                        <MdOutlineDriveFileMove className="icon_menu" />{' '}
+                                        <MenuItem>Déplacer</MenuItem>
+                                      </div>
                                     </div>
                                   </ContextMenu>
                                   <>
                                     {newName !== null &&
                                     selectedFolder === id ? (
-                                      <TextField
-                                        variant="outlined"
-                                        className="folder_title"
-                                        onChange={(e) =>
-                                          setNewName(e.target.value)
-                                        }
-                                        value={newName}
-                                        onKeyDown={(e) => submitNewName(e, id)}
-                                      />
+                                      <Tooltip
+                                        classes={{
+                                          tooltip: classes.tooltip,
+                                          arrow: classes.arrow,
+                                        }}
+                                        arrow
+                                        open={sameNameError}
+                                        title="Un dossier portant ce nom existe déjà"
+                                      >
+                                        <TextField
+                                          variant="outlined"
+                                          className="folder_title"
+                                          onChange={(e) =>
+                                            setNewName(e.target.value)
+                                          }
+                                          value={newName}
+                                          onKeyDown={(e) =>
+                                            submitNewName(e, id)
+                                          }
+                                          error={sameNameError}
+                                        />
+                                      </Tooltip>
                                     ) : (
                                       <p
                                         onDoubleClick={() => {
@@ -477,6 +552,14 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
               </div>
             </div>
           </Modal>
+        )}
+        {isMoveFolderModalOpen && (
+          <MoveFolderModal
+            refetch={refetch}
+            folderToMove={selectedFolderIdForMove}
+            open={isMoveFolderModalOpen}
+            setOpen={setIsMoveFolderModalOpen}
+          />
         )}
       </div>
     </div>

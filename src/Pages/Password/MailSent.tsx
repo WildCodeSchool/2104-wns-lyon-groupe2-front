@@ -23,7 +23,7 @@ const MailSent: React.FC<SomeComponentProps> = (props: any) => {
   const classes = useStyles()
 
   const handleGoBack = () => {
-    history.push('/login')
+    history.push('/')
   }
 
   return (
@@ -32,12 +32,12 @@ const MailSent: React.FC<SomeComponentProps> = (props: any) => {
         <Card className={classes.root} variant="outlined">
           <Typography>Récupération de mot de passe</Typography>
           <CardContent>
-            Merci de checker vos mails, un lien de ré-initialisation vous a été
-            envoyer.
+            Merci de vérifier vos mails, un lien de ré-initialisation vous a été
+            envoyé.
           </CardContent>
 
           <CardActions>
-            <Button onClick={handleGoBack}>Back</Button>
+            <Button onClick={handleGoBack}>Retour</Button>
           </CardActions>
         </Card>
       </div>
