@@ -26,6 +26,7 @@ const errors = [
     message: "Vous devez indiquer le prénom de l'utilisateur",
   },
   { code: '108', message: 'Identifiants invalides' },
+  { code: '109', message: 'Un dossier portant ce nom existe déjà' },
 ]
 
 export const returnMessageForAnErrorCode = (code: string): any => {

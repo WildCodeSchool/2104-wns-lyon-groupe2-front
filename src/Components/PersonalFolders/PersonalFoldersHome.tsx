@@ -21,7 +21,9 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import './Folders.scss'
+import { useToasts } from 'react-toast-notifications'
 import AddFolder from './AddFolder'
+import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
@@ -53,14 +55,16 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // ////// //
   // STATES //
   // ////// //
-
+  const { addToast } = useToasts()
   const [folders, setFolders] = useState<any>([])
   const [isLoading, setIsLoading] = useState(false)
   const [path, setPath] = useState<null | [TDataFoldersPath]>(null)
   const [newName, setNewName] = useState<null | string>(null)
   const [sameNameError, setSameNameError] = useState<boolean>(false)
   const [selectedFolder, setSelectedFolder] = useState<null | string>(null)
-  const [selectedFolderIdForMove, setSelectedFolderIdForMove] = useState<null | string>(null)
+  const [selectedFolderIdForMove, setSelectedFolderIdForMove] = useState<
+    null | string
+  >(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
   const [isMoveFolderModalOpen, setIsMoveFolderModalOpen] =
     useState<boolean>(false)
@@ -91,8 +95,21 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       setSameNameError(false)
       refetch()
     },
-    onError: () => {
-      setSameNameError(true)
+    onError: (err) => {
+      if (
+        !newName &&
+        err.message === 'A folder with same name has been found'
+      ) {
+        const errorMessage = returnMessageForAnErrorCode('109')
+        addToast(`${errorMessage}`, {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+        setIsLoading(false)
+      }
+      if (newName && err.message === 'A folder with same name has been found') {
+        setSameNameError(true)
+      }
     },
   })
 
@@ -527,7 +544,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         )}
         {isMoveFolderModalOpen && (
           <MoveFolderModal
-          refetch={refetch}
+            refetch={refetch}
             folderToMove={selectedFolderIdForMove}
             open={isMoveFolderModalOpen}
             setOpen={setIsMoveFolderModalOpen}

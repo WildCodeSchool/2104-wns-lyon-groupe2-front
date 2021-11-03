@@ -52,11 +52,14 @@
     border-top: solid 1px #c0c0c0;
     padding: 5px;
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    svg {
-      cursor: pointer;
-      font-size: 24px;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    p {
+      font-size: 12px;
+      color: #f44336;
+      align-self: center;
+      margin-bottom: 5px;
     }
   }
 }

@@ -49,9 +49,7 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
   const [folders, setFolders] = useState<any>(null)
   const [currentFolder, setCurrentFolder] = useState<any>(null)
   const [path, setPath] = useState<any>([{ id: null, name: 'Mes ressources' }])
-  // const [parentDirectoryId, setParentDirectoryId] = useState<any>(null)
-  // const [prevParentDirectoryId, setPrevParentDirectoryId] = useState<any>(null)
-  // const [parentDirectoryName, setParentDirectoryName] = useState<any>('Mes ressources')
+  const [sameNameError, setSameNameError] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
@@ -64,10 +62,17 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
   const [moveFolder] = useMutation(MOVE_FOLDER, {
     onCompleted: () => {
       refetch()
+      handleClose()
+    },
+    onError: () => {
+      setSameNameError(true)
     },
   })
 
   const handleClickOnRightArrow = (folder) => {
+    if (sameNameError) {
+      setSameNameError(false)
+    }
     const pathCopy = path.slice()
     pathCopy.push({ id: folder.id, name: folder.name })
     setPath(pathCopy)
@@ -75,7 +80,9 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
   }
 
   const handleClickOnLeftArrow = () => {
-    console.log(path.length - 1)
+    if (sameNameError) {
+      setSameNameError(false)
+    }
     setCurrentFolder(path[path.length - 2])
     const pathCopy = path.slice(0, -1)
     setPath(pathCopy)
@@ -90,7 +97,6 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
         },
       },
     })
-    handleClose()
   }
 
   useEffect(() => {
@@ -143,6 +149,7 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
         <div className="move-folder-modal-content">{returnTree()}</div>
         <div style={{ flex: 1 }} />
         <div className="move-folder-modal-footer">
+          {sameNameError && <p>Un dossier portant ce nom existe déjà</p>}
           <Tooltip title="Déplacer le dossier ici">
             <Button
               variant="contained"

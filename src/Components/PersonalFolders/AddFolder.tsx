@@ -12,7 +12,6 @@ type TAddFolderProps = {
 }
 
 const AddFolder: React.FC<TAddFolderProps> = ({ refetch, parentId }) => {
-  console.log(parentId)
   const [folderName, setFolderName] = useState<null | string>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [sameNameError, setSameNameError] = useState(false)
