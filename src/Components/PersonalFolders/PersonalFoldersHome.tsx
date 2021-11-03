@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import Loader from 'react-loader-spinner'
 import styled from 'styled-components'
@@ -23,11 +23,17 @@ import {
 import './Folders.scss'
 import { useToasts } from 'react-toast-notifications'
 import AddFolder from './AddFolder'
+<<<<<<< HEAD
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import MoveFolderModal from './MoveFolderModal'
+=======
+import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
+import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
+import { SidebarContext } from '../Context/SidebarContext'
+>>>>>>> dev
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -66,8 +72,12 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     null | string
   >(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
+<<<<<<< HEAD
   const [isMoveFolderModalOpen, setIsMoveFolderModalOpen] =
     useState<boolean>(false)
+=======
+  const { setIsWorkspaceDisplayed } = useContext(SidebarContext)
+>>>>>>> dev
 
   //  /// //
   // MISC //
@@ -179,6 +189,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // ////////// //
 
   useEffect(() => {
+    setIsWorkspaceDisplayed(false)
     if (data) {
       const result: any = []
       let temporaryArray: any = []

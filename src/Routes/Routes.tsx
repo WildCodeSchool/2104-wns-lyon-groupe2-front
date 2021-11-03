@@ -13,6 +13,8 @@ import Login from '../Pages/Login/Login'
 import PersonalFoldersHome from '../Components/PersonalFolders/PersonalFoldersHome'
 
 import Publication from '../Pages/Publication/Publication'
+import Profile from '../Pages/Profile/Profile'
+import PrivateRoute from './PrivateRoute'
 
 const customHistory = createBrowserHistory()
 

@@ -1,11 +1,12 @@
 export interface iUsers {
-  id?: number
+  id?: string
   firstname?: string
   lastname?: string
   avatar?: string
   email?: string
-  schoolIdd?: string
+  schoolId?: string
   themeId?: string
+  color: string
   isSchoolAdmin?: boolean
   userType?: string
   exp?: number
@@ -29,6 +30,7 @@ export interface iTokenDecrypted {
   firstname: string
   iat: number
   isSchoolAdmin: boolean
+  color: string
   lastname: string
   schoolId: string
   userId: string
