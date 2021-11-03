@@ -7,6 +7,7 @@ import { IAssetsProps } from '../Assets/AssetDetails'
 import useStyles from './FileUPloadStyle'
 
 const FileUpload: React.FC<IAssetsProps | null> = (props: any) => {
+  console.log(props)
   const classes = useStyles()
 
   const [uploadFile] = useMutation(UPLOAD_FILE, {

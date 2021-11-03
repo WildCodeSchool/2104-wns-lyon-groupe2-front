@@ -28,6 +28,7 @@ import MoveFolderModal from './MoveFolderModal'
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
+import FileUpload from '../FileUPload/FileUpload'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -372,188 +373,202 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // ////// //
 
   return (
-    <div
-      className="folders_container"
-      id="folders_container"
-      onClick={(e) => getClickOutsideOfTextField(e)}
-    >
-      <AddFolder refetch={refetch} parentId={parentDirectory} />
-      <div className="folders_container">
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <div className="folders_container_navigation_bar">
-            {path &&
-              path.map((level) => {
-                return (
-                  <Droppable droppableId={`path-${level.id}`}>
-                    {(provided, snapshot) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
-                        <span
-                          className="folders_container_navigation_bar_folder"
-                          onClick={() =>
-                            history.push(`/personal-folders/${level.id}`)
-                          }
+    <>
+      <div
+        className="folders_container"
+        id="folders_container"
+        onClick={(e) => getClickOutsideOfTextField(e)}
+      >
+        <AddFolder refetch={refetch} parentId={parentDirectory} />
+        <div className="folders_container">
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <div className="folders_container_navigation_bar">
+              {path &&
+                path.map((level) => {
+                  return (
+                    <Droppable droppableId={`path-${level.id}`}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
                         >
-                          {level.name}
-                        </span>
-                        <span>{' > '}</span>
-                      </div>
+                          <span
+                            className="folders_container_navigation_bar_folder"
+                            onClick={() =>
+                              history.push(`/personal-folders/${level.id}`)
+                            }
+                          >
+                            {level.name}
+                          </span>
+                          <span>{' > '}</span>
+                        </div>
+                      )}
+                    </Droppable>
+                  )
+                })}
+            </div>
+            {folders &&
+              folders &&
+              folders.length > 0 &&
+              folders.map((f: any, i: any) => {
+                return (
+                  <Droppable
+                    key={f.id}
+                    droppableId={`${'drop-'}${i.toString()}`}
+                    direction="horizontal"
+                    isCombineEnabled
+                  >
+                    {(provid) => (
+                      <ul
+                        className="folders_container"
+                        {...provid.droppableProps}
+                        ref={provid.innerRef}
+                      >
+                        {f &&
+                          f.map(({ id, name }: TDataFolders, index: number) => {
+                            return (
+                              <Draggable
+                                key={id}
+                                draggableId={id}
+                                index={index}
+                              >
+                                {(provided, snapshot) => (
+                                  <li
+                                    key={id}
+                                    className="folder"
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    ref={provided.innerRef}
+                                  >
+                                    <ContextMenuTrigger id={id}>
+                                      <FcFolder
+                                        className="folder_icon"
+                                        onClick={() =>
+                                          history.push(
+                                            `/personal-folders/${id}`,
+                                          )
+                                        }
+                                      />
+                                    </ContextMenuTrigger>
+                                    <ContextMenu id={id}>
+                                      <div id="context-menu">
+                                        <div
+                                          className="context_menu_section"
+                                          onClick={() => {
+                                            setNewName(name)
+                                            setSelectedFolder(id)
+                                          }}
+                                        >
+                                          <BiPencil className="icon_menu" />{' '}
+                                          <MenuItem>Renommer</MenuItem>
+                                        </div>
+                                        <div
+                                          className="context_menu_section"
+                                          onClick={() => setFolderToDelete(id)}
+                                        >
+                                          <MdDelete className="icon_menu" />
+                                          <MenuItem className="item">
+                                            Supprimer
+                                          </MenuItem>
+                                        </div>
+                                        <div
+                                          className="context_menu_section"
+                                          onClick={() => {
+                                            setSelectedFolderIdForMove(id)
+                                            setIsMoveFolderModalOpen(true)
+                                          }}
+                                        >
+                                          <MdOutlineDriveFileMove className="icon_menu" />{' '}
+                                          <MenuItem>Déplacer</MenuItem>
+                                        </div>
+                                      </div>
+                                    </ContextMenu>
+                                    <>
+                                      {newName !== null &&
+                                      selectedFolder === id ? (
+                                        <Tooltip
+                                          classes={{
+                                            tooltip: classes.tooltip,
+                                            arrow: classes.arrow,
+                                          }}
+                                          arrow
+                                          open={sameNameError}
+                                          title="Un dossier portant ce nom existe déjà"
+                                        >
+                                          <TextField
+                                            variant="outlined"
+                                            className="folder_title"
+                                            onChange={(e) =>
+                                              setNewName(e.target.value)
+                                            }
+                                            value={newName}
+                                            onKeyDown={(e) =>
+                                              submitNewName(e, id)
+                                            }
+                                            error={sameNameError}
+                                          />
+                                        </Tooltip>
+                                      ) : (
+                                        <p
+                                          onDoubleClick={() => {
+                                            setNewName(name)
+                                            setSelectedFolder(id)
+                                          }}
+                                          className="folder_title"
+                                        >
+                                          {name}
+                                        </p>
+                                      )}
+                                    </>
+                                  </li>
+                                )}
+                              </Draggable>
+                            )
+                          })}
+                        {provid.placeholder}
+                      </ul>
                     )}
                   </Droppable>
                 )
               })}
-          </div>
-          {folders &&
-            folders &&
-            folders.length > 0 &&
-            folders.map((f: any, i: any) => {
-              return (
-                <Droppable
-                  key={f.id}
-                  droppableId={`${'drop-'}${i.toString()}`}
-                  direction="horizontal"
-                  isCombineEnabled
-                >
-                  {(provid) => (
-                    <ul
-                      className="folders_container"
-                      {...provid.droppableProps}
-                      ref={provid.innerRef}
-                    >
-                      {f &&
-                        f.map(({ id, name }: TDataFolders, index: number) => {
-                          return (
-                            <Draggable key={id} draggableId={id} index={index}>
-                              {(provided, snapshot) => (
-                                <li
-                                  key={id}
-                                  className="folder"
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  ref={provided.innerRef}
-                                >
-                                  <ContextMenuTrigger id={id}>
-                                    <FcFolder
-                                      className="folder_icon"
-                                      onClick={() =>
-                                        history.push(`/personal-folders/${id}`)
-                                      }
-                                    />
-                                  </ContextMenuTrigger>
-                                  <ContextMenu id={id}>
-                                    <div id="context-menu">
-                                      <div
-                                        className="context_menu_section"
-                                        onClick={() => {
-                                          setNewName(name)
-                                          setSelectedFolder(id)
-                                        }}
-                                      >
-                                        <BiPencil className="icon_menu" />{' '}
-                                        <MenuItem>Renommer</MenuItem>
-                                      </div>
-                                      <div
-                                        className="context_menu_section"
-                                        onClick={() => setFolderToDelete(id)}
-                                      >
-                                        <MdDelete className="icon_menu" />
-                                        <MenuItem className="item">
-                                          Supprimer
-                                        </MenuItem>
-                                      </div>
-                                      <div
-                                        className="context_menu_section"
-                                        onClick={() => {
-                                          setSelectedFolderIdForMove(id)
-                                          setIsMoveFolderModalOpen(true)
-                                        }}
-                                      >
-                                        <MdOutlineDriveFileMove className="icon_menu" />{' '}
-                                        <MenuItem>Déplacer</MenuItem>
-                                      </div>
-                                    </div>
-                                  </ContextMenu>
-                                  <>
-                                    {newName !== null &&
-                                    selectedFolder === id ? (
-                                      <Tooltip
-                                        classes={{
-                                          tooltip: classes.tooltip,
-                                          arrow: classes.arrow,
-                                        }}
-                                        arrow
-                                        open={sameNameError}
-                                        title="Un dossier portant ce nom existe déjà"
-                                      >
-                                        <TextField
-                                          variant="outlined"
-                                          className="folder_title"
-                                          onChange={(e) =>
-                                            setNewName(e.target.value)
-                                          }
-                                          value={newName}
-                                          onKeyDown={(e) =>
-                                            submitNewName(e, id)
-                                          }
-                                          error={sameNameError}
-                                        />
-                                      </Tooltip>
-                                    ) : (
-                                      <p
-                                        onDoubleClick={() => {
-                                          setNewName(name)
-                                          setSelectedFolder(id)
-                                        }}
-                                        className="folder_title"
-                                      >
-                                        {name}
-                                      </p>
-                                    )}
-                                  </>
-                                </li>
-                              )}
-                            </Draggable>
-                          )
-                        })}
-                      {provid.placeholder}
-                    </ul>
-                  )}
-                </Droppable>
-              )
-            })}
-        </DragDropContext>
-        {isLoading && returnLoader()}
-        {folderToDelete && (
-          <Modal open={!!folderToDelete}>
-            <div className="add_folder_modal">
-              <p>Souhaitez-vous réellement supprimer ce dossier ?</p>
-              <div className="add_folder_modal_action_bar">
-                <Button
-                  onClick={() => setFolderToDelete(null)}
-                  variant="contained"
-                >
-                  Annuler
-                </Button>
-                <Button
-                  onClick={() => removeFolder(folderToDelete)}
-                  color="primary"
-                  variant="contained"
-                >
-                  Supprimer
-                </Button>
+          </DragDropContext>
+          {isLoading && returnLoader()}
+          {folderToDelete && (
+            <Modal open={!!folderToDelete}>
+              <div className="add_folder_modal">
+                <p>Souhaitez-vous réellement supprimer ce dossier ?</p>
+                <div className="add_folder_modal_action_bar">
+                  <Button
+                    onClick={() => setFolderToDelete(null)}
+                    variant="contained"
+                  >
+                    Annuler
+                  </Button>
+                  <Button
+                    onClick={() => removeFolder(folderToDelete)}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Supprimer
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Modal>
-        )}
-        {isMoveFolderModalOpen && (
-          <MoveFolderModal
-            refetch={refetch}
-            folderToMove={selectedFolderIdForMove}
-            open={isMoveFolderModalOpen}
-            setOpen={setIsMoveFolderModalOpen}
-          />
-        )}
+            </Modal>
+          )}
+          {isMoveFolderModalOpen && (
+            <MoveFolderModal
+              refetch={refetch}
+              folderToMove={selectedFolderIdForMove}
+              open={isMoveFolderModalOpen}
+              setOpen={setIsMoveFolderModalOpen}
+            />
+          )}
+        </div>
+        <div className="file_upload_container">
+          <FileUpload folderId={match.params.parentId} />
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
