@@ -50,7 +50,7 @@ export const GET_WORKSPACES = gql`
       }
       assets {
         id
-        name
+        assetName
       }
       visio
     }

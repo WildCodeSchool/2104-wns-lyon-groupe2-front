@@ -24,10 +24,9 @@ import './Folders.scss'
 import { useToasts } from 'react-toast-notifications'
 import AddFolder from './AddFolder'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
-
+import MoveFolderModal from './MoveFolderModal'
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
-import MoveFolderModal from './MoveFolderModal'
 import { SidebarContext } from '../Context/SidebarContext'
 
 const LoadingContainer = styled.div`
