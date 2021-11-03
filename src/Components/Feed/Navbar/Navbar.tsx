@@ -67,7 +67,6 @@ const Navbar: React.FC = () => {
 
   const handleLogout = (): void => {
     removeUser()
-    history.push('/login')
   }
 
   const handleRedirectToRegisterNewUserPage = () => {

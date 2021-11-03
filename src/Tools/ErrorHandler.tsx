@@ -25,6 +25,7 @@ const errors = [
     code: '107',
     message: "Vous devez indiquer le prénom de l'utilisateur",
   },
+  { code: '108', message: 'Identifiants invalides' },
 ]
 
 export const returnMessageForAnErrorCode = (code: string): any => {

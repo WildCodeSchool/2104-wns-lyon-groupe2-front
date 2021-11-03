@@ -16,18 +16,34 @@ const UserProvider: React.FC = ({ children }) => {
   const [userInfos, setUserInfos] = useState<iUsers | null>(null)
   const { addToast } = useToasts()
 
-  useEffect(() => {
-    if (initialState) {
-      setUserInfos(jwt_decode(initialState))
-      setToken(initialState)
+  const checkTokenValidity = (encryptedToken: string) => {
+    const userData: iTokenDecrypted = jwt_decode(encryptedToken)
+    if (userData && userData.exp) {
+      const now = Date.now()
+      if (now > userData.exp * 1000) {
+        return false
+      }
     }
-  }, [])
+    return true
+  }
 
   const removeUser = () => {
     localStorage.removeItem('token')
     setUserInfos(null)
     setToken(null)
   }
+
+  useEffect(() => {
+    if (initialState) {
+      const isValid = checkTokenValidity(initialState)
+      if (isValid) {
+        setUserInfos(jwt_decode(initialState))
+        setToken(initialState)
+      } else {
+        removeUser()
+      }
+    }
+  }, [])
 
   const addUser = (userToken: string) => {
     localStorage.setItem('token', userToken)
@@ -41,18 +57,7 @@ const UserProvider: React.FC = ({ children }) => {
           autoDismiss: false,
         },
       )
-      // return history.push('/login')
     }
-    // check if the token isn't expired
-    // history.push('/')
-
-    if (userData && userData.exp) {
-      const now = Date.now()
-      if (now > userData.exp * 1000) {
-        // return history.push('/login')
-      }
-    }
-
     return setUserInfos(userData)
   }
 
