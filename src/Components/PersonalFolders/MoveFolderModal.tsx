@@ -64,8 +64,10 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
       refetch()
       handleClose()
     },
-    onError: () => {
-      setSameNameError(true)
+    onError: (err) => {
+      if (err.message === 'A folder with same name has been found') {
+        setSameNameError(true)
+      }
     },
   })
 
@@ -115,8 +117,12 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
 
   // eslint-disable-next-line consistent-return
   const returnTree: any = () => {
+    let filteredFolders: any[] = []
     if (folders && folders.length > 0) {
-      return folders.map((folder) => {
+      filteredFolders = folders.filter((fol) => fol.id !== folderToMove)
+    }
+    if (filteredFolders && filteredFolders.length > 0) {
+      return filteredFolders.map((folder) => {
         // eslint-disable-next-line react/self-closing-comp
         return (
           <div className="move-folder-modal-content-items">
@@ -130,7 +136,7 @@ const MoveFolderModal: React.FC<TAddFolderProps> = ({
         )
       })
     }
-    if (folders && folders.length === 0) {
+    if (filteredFolders && filteredFolders.length === 0) {
       return (
         <div className="move-folder-modal-content-items">
           <p>Dossier vide</p>
