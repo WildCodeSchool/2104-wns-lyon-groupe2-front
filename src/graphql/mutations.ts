@@ -33,7 +33,8 @@ export const MOVE_FOLDER = gql`
     moveFolder(input: $input) {
       id
     }
-    `
+  }
+`
 
 export const IS_AUTH = gql`
   mutation isAuth($input: Token!) {

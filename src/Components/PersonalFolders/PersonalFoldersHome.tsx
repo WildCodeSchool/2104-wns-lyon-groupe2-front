@@ -23,17 +23,11 @@ import {
 import './Folders.scss'
 import { useToasts } from 'react-toast-notifications'
 import AddFolder from './AddFolder'
-<<<<<<< HEAD
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
-
-import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
-import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import MoveFolderModal from './MoveFolderModal'
-=======
 import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
->>>>>>> dev
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -72,12 +66,9 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     null | string
   >(null)
   const [folderToDelete, setFolderToDelete] = useState<null | string>(null)
-<<<<<<< HEAD
   const [isMoveFolderModalOpen, setIsMoveFolderModalOpen] =
     useState<boolean>(false)
-=======
   const { setIsWorkspaceDisplayed } = useContext(SidebarContext)
->>>>>>> dev
 
   //  /// //
   // MISC //
