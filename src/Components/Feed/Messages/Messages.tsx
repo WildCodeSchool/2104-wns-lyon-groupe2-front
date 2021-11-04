@@ -55,6 +55,7 @@ export const GET_WORKSPACES = gql`
 const Messages: React.FC = () => {
   const classes = useStyles()
   const [messages, setMessages] = useState<IMessage[]>([])
+  const [messageHover, setMessageHover] = useState(null)
   const [userMessage, setUserMessage] = useState('')
   const [feedId, setFeedId] = useState<string>('')
   const [refresh, setRefresh] = useState<boolean>(false)
@@ -84,7 +85,6 @@ const Messages: React.FC = () => {
   })
 
   useEffect(() => {
-    console.log('coucou')
     prevMessagesRef.current = messages.length
   })
 
@@ -108,6 +108,10 @@ const Messages: React.FC = () => {
 
   const history = useHistory()
 
+  const handleMessageHover = (messageId) => {
+    setMessageHover(messageId)
+  }
+
   if (loading)
     return (
       <div className={classes.loader}>
@@ -124,7 +128,13 @@ const Messages: React.FC = () => {
       {messages.length > 0 ? (
         <div className={classes.messagesContainer}>
           {messages.map((message: IMessage, i) => (
-            <Grid key={message.id} className={classes.message}>
+            <Grid
+              id={`message-${message.id}`}
+              key={message.id}
+              className={classes.message}
+              onMouseEnter={() => handleMessageHover(message.id)}
+              onMouseLeave={() => handleMessageHover(null)}
+            >
               <Paper className={classes.bubble} elevation={0}>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                   <Avatar
@@ -157,25 +167,27 @@ const Messages: React.FC = () => {
                         {message.content}
                       </Typography>
                     </Grid>
-                    <Grid className={classes.iconsContainer}>
-                      <Comments
-                        message={message}
-                        workspaceId={params ? params.id : firstFeedOnHomePage}
-                        feedId={feedId}
-                      />
-                      <MessagesLikes
-                        message={message}
-                        workspaceId={params ? params.id : firstFeedOnHomePage}
-                        feedId={feedId}
-                        refetch={refetch}
-                      />
-                      <MessagesDislikes
-                        message={message}
-                        workspaceId={params ? params.id : firstFeedOnHomePage}
-                        feedId={feedId}
-                        refetch={refetch}
-                      />
-                    </Grid>
+                    {messageHover === message.id && (
+                      <Grid className={classes.iconsContainer}>
+                        <Comments
+                          message={message}
+                          workspaceId={params ? params.id : firstFeedOnHomePage}
+                          feedId={feedId}
+                        />
+                        <MessagesLikes
+                          message={message}
+                          workspaceId={params ? params.id : firstFeedOnHomePage}
+                          feedId={feedId}
+                          refetch={refetch}
+                        />
+                        <MessagesDislikes
+                          message={message}
+                          workspaceId={params ? params.id : firstFeedOnHomePage}
+                          feedId={feedId}
+                          refetch={refetch}
+                        />
+                      </Grid>
+                    )}
                   </div>
                 </div>
               </Paper>

@@ -123,14 +123,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     justifyContent: 'center',
     fontSize: 10,
-    marginBottom: 2,
     cursor: 'pointer',
     flexDirection: 'row',
     '&:hover': {
       backgroundColor: '#3b3b5',
     },
-    marginLeft: 5,
-    marginRight: 5,
   },
   likes: {
     fontSize: 12,

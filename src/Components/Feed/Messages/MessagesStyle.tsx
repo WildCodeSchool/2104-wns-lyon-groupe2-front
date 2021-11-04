@@ -80,14 +80,14 @@ const useStyles = makeStyles((theme) => ({
     color: '#3b3b3b',
   },
   iconsContainer: {
+    border: 'solid 1px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     top: 0,
     right: 0,
     position: 'absolute',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderRadius: 10,
   },
   icons: {
     display: 'flex',
@@ -98,7 +98,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     justifyContent: 'center',
     fontSize: 10,
-    marginBottom: 2,
     cursor: 'pointer',
     flexDirection: 'row',
   },
@@ -106,13 +105,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     color: '#3b3b3b',
     fontWeight: 'bold',
-    marginLeft: 5,
   },
   dislikes: {
     fontSize: 16,
     color: '#3b3b3b',
     fontWeight: 'bold',
-    marginLeft: 5,
   },
   loader: {
     position: 'absolute',
