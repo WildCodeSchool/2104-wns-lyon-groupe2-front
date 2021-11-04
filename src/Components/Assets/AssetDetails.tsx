@@ -6,16 +6,7 @@ import useStyles from './AssetDetailsStyle'
 import { dateTransformator } from '../../Tools/date'
 
 import { GET_FOLDER_DETAILS } from '../../graphql/queries'
-import AssetsList from './AssetsLists'
-import AssetsTable from './AssetsTable'
-
-export interface IAssetsProps {
-  folderId: string
-}
-interface IFolderDetails {
-  name: string
-  createdAt: string
-}
+import { IAssetsProps, IFolderDetails } from '../../Interfaces/Assets'
 
 const AssetDetails: React.FC<IAssetsProps> = ({ folderId }) => {
   const classes = useStyles()
@@ -44,9 +35,6 @@ const AssetDetails: React.FC<IAssetsProps> = ({ folderId }) => {
           <Typography className={classes.folderSubtitle}>
             {dateTransformator(new Date(+folderDetails.createdAt))}
           </Typography>
-          <FileUpload folderId={folderId} />
-          <AssetsList folderId={folderId} />
-          <AssetsTable folderId={folderId} />
         </Container>
       )}
     </>

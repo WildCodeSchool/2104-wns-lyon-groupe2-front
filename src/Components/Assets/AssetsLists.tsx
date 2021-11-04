@@ -14,16 +14,10 @@ import { useEffect, useState } from 'react'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import { GET_FOLDER_ASSETS } from '../../graphql/queries'
-import { IAssetsProps } from './AssetDetails'
 import useStyles from './AssetsListsStyle'
 import { elipsMyText } from '../../Tools/dataRework'
+import { IAssetsDetails, IAssetsProps } from '../../Interfaces/Assets'
 
-interface IAssetsDetails {
-  title: string
-  createdAt: string
-  url: string
-  id: number
-}
 // Ce composant a été fait avant le composant AssetTables
 // A voir si encore utile mais je me dis qu'il peut servir
 // de base si on veut une vue "icones" de l'interieur des dossiers.

@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { Container } from '@material-ui/core'
 import { UPLOAD_FILE } from '../../graphql/mutations'
-import { IAssetsProps } from '../Assets/AssetDetails'
 import useStyles from './FileUPloadStyle'
+import { IAssetsProps } from '../../Interfaces/Assets'
 
 const FileUpload: React.FC<IAssetsProps | null> = (props: {
   folderId: string

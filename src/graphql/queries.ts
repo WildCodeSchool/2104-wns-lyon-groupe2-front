@@ -28,16 +28,22 @@ export const GET_FOLDER_DETAILS = gql`
     }
   }
 `
-type Assets = {
-  title: string
-}
+
 export const GET_FOLDER_ASSETS = gql`
   query getAssetsByFolderId($folderId: String!) {
     getAssetsByFolderId(folderId: $folderId) {
+      id
       title
       createdAt
+      updatedAt
       url
-      id
+      type
+      tags
+      lastView
+      likes
+      dislikes
+      bookmarkedCount
+      openingCount
     }
   }
 `

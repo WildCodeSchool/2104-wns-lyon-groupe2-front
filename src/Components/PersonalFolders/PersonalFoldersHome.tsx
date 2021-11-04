@@ -25,11 +25,15 @@ import { useToasts } from 'react-toast-notifications'
 import AddFolder from './AddFolder'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 import MoveFolderModal from './MoveFolderModal'
-import { GET_FOLDERS_BY_CURRENT_USER_ID } from '../../graphql/queries'
+import {
+  GET_FOLDERS_BY_CURRENT_USER_ID,
+  GET_FOLDER_ASSETS,
+} from '../../graphql/queries'
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
 import FileUpload from '../FileUPload/FileUpload'
 import AssetsTable from '../Assets/AssetsTable'
+import { dataForAssetsTable } from '../../Tools/dataRework'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -57,6 +61,8 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // ////// //
   // STATES //
   // ////// //
+  const [rowsToRework, setRowsToRework] = useState([])
+  const [assetsList, setAssetsList] = useState<any>(match.params.parentId)
   const { addToast } = useToasts()
   const [folders, setFolders] = useState<any>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -91,6 +97,16 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       },
     },
   )
+  const {
+    loading: assetLoading,
+    error: assetError,
+    data: assetData,
+    refetch: assetRefetch,
+  } = useQuery(GET_FOLDER_ASSETS, {
+    variables: {
+      folderId: parentDirectory,
+    },
+  })
 
   const [updateFolder] = useMutation(UPDATE_FOLDER, {
     onCompleted: () => {
@@ -217,10 +233,11 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       setIsLoading(false)
     }, 400)
   }, [folders])
-
   useEffect(() => {
-    refetch()
-  }, [match.params])
+    if (assetData) {
+      setRowsToRework(assetData.getAssetsByFolderId)
+    }
+  }, [assetData])
 
   if (error) {
     return <Alert severity="error">Problème de connexion au serveur</Alert>
@@ -229,7 +246,6 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   if (loading) {
     returnLoader()
   }
-
   // /// //
   // DND //
   // /// //
@@ -305,7 +321,6 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       }
       return
     }
-
     // case we want to reorder folders
     if (
       result?.destination?.droppableId.includes('drop') &&
@@ -371,6 +386,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       }
     }
   }
+  console.log(assetData)
 
   // ////// //
   // RETURN //
@@ -573,9 +589,11 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
             <div className="file_upload_container">
               <FileUpload folderId={parentDirectory} />
             </div>
-            <div className="assets_list_container">
-              <AssetsTable folderId={parentDirectory} />
-            </div>
+            {rowsToRework && (
+              <div className="assets_list_container">
+                <AssetsTable assetsList={rowsToRework} />
+              </div>
+            )}
           </>
         )}
       </div>

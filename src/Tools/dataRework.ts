@@ -20,10 +20,10 @@ export const elipsMyText = (txt: string): string | undefined => {
 export const dataForAssetsTable = (data) => {
   return data.map((elem, i) => {
     return {
-      id: i,
+      id: elem.id,
       title: elem.title,
-      createdAt: elem.createdAt,
-      updatedAt: elem.updatedAt,
+      createdAt: new Date(+elem.createdAt).toLocaleDateString(),
+      updatedAt: new Date(+elem.updatedAt).toLocaleDateString(),
       likes: elem.likes || 0,
       type: elem.type || 'Unknown',
     }
