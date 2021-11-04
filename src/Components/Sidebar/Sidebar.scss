@@ -1,3 +1,5 @@
+@import '/src/index.scss';
+
 // style sidebar workspace
 
 .sidebar_container_workspace {
@@ -6,6 +8,7 @@
   height: 100vh;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-top: none;
+  background: $main-color;
   .btn_sidebar_top {
     display: flex;
     justify-content: space-between;
@@ -21,6 +24,7 @@
     width: 15%;
     position: fixed;
     bottom: 0;
+    margin-left: 10px;
     margin-bottom: 10px;
     .params_icon {
       margin-right: 20px;

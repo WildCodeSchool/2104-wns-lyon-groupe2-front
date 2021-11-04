@@ -4,6 +4,7 @@ import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import { useHistory, useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
+import dayjs from 'dayjs'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
 import { IMessage } from '../../../Interfaces/Workspace'
@@ -57,16 +58,16 @@ const Messages: React.FC = () => {
   const [userMessage, setUserMessage] = useState('')
   const [feedId, setFeedId] = useState<string>('')
   const [refresh, setRefresh] = useState<boolean>(false)
-
+  const prevMessagesRef: any = useRef(null)
   const { firstFeedOnHomePage } = useContext(SidebarContext)
   const location = useLocation()
-  const bottomRef: any = useRef()
+  const bottomRef: any = useRef(null)
   const params: any = location.state
 
   const scrollToBottom = (node: any) => {
-    if (messages.length >= 4 && node !== null) {
+    if (node !== null) {
       node?.current.scrollIntoView({
-        behavior: 'smooth',
+        // behavior: 'smooth',
         block: 'nearest',
         inline: 'start',
       })
@@ -83,16 +84,27 @@ const Messages: React.FC = () => {
   })
 
   useEffect(() => {
+    console.log('coucou')
+    prevMessagesRef.current = messages.length
+  })
+
+  const prevMessagesLength = prevMessagesRef.current
+
+  useEffect(() => {
     if (loading === false && data) {
       setUserMessage('')
       setMessages(data.getWorkspaceById.feed[0].messages)
       setFeedId(data.getWorkspaceById.feed[0].id)
     }
-    if (bottomRef.current) {
-      scrollToBottom(bottomRef)
-    }
+
     setRefresh(false)
   }, [data, bottomRef.current, messages, refresh])
+
+  useEffect(() => {
+    if (bottomRef.current && prevMessagesLength !== messages.length) {
+      scrollToBottom(bottomRef)
+    }
+  }, [messages])
 
   const history = useHistory()
 
@@ -108,83 +120,83 @@ const Messages: React.FC = () => {
   }
 
   return (
-    <div>
-      <Grid item xs={12} className={classes.paper}>
-        {messages.length > 0 ? (
-          <div className={classes.messagesContainer}>
-            {messages.map((message: IMessage) => (
-              <Grid key={message.id} ref={bottomRef}>
-                <Paper className={classes.bubble}>
-                  <Grid className={classes.userNameContainer}>
-                    <div
-                      onClick={() => {
-                        console.log(message)
-                        history.push(`profile/${message.userId}`)
-                      }}
-                      style={{ width: '50%', marginLeft: '20' }}
-                    >
-                      <Avatar
-                        style={{ backgroundColor: message.color }}
-                        className={classes.nickName}
-                      >
-                        {useNickname(message.userName)}
-                      </Avatar>
+    <Grid item xs={12} className={classes.paper}>
+      {messages.length > 0 ? (
+        <div className={classes.messagesContainer}>
+          {messages.map((message: IMessage, i) => (
+            <Grid key={message.id} className={classes.message}>
+              <Paper className={classes.bubble} elevation={0}>
+                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <Avatar
+                    onClick={() => {
+                      history.push(`profile/${message.userId}`)
+                    }}
+                    style={{ backgroundColor: message.color }}
+                    className={classes.nickName}
+                  >
+                    {useNickname(message.userName)}
+                  </Avatar>
+
+                  <div style={{ width: '100%', position: 'relative' }}>
+                    <Grid>
                       <Typography className={classes.userName}>
                         {message.userName}
                       </Typography>
-                    </div>
-                    <div className={classes.date}>
-                      {message.createdAt
-                        ? new Date(
-                            parseInt(message.createdAt, 10),
-                          ).toLocaleString()
-                        : null}
-                    </div>
-                  </Grid>
-                  <Grid className={classes.paperContainer}>
-                    <Typography className={classes.text}>
-                      {message.content}
-                    </Typography>
-                  </Grid>
-                  <Grid className={classes.iconsContainer}>
-                    <Comments
-                      message={message}
-                      workspaceId={params ? params.id : firstFeedOnHomePage}
-                      feedId={feedId}
-                    />
-                    <MessagesLikes
-                      message={message}
-                      workspaceId={params ? params.id : firstFeedOnHomePage}
-                      feedId={feedId}
-                      refetch={refetch}
-                    />
-                    <MessagesDislikes
-                      message={message}
-                      workspaceId={params ? params.id : firstFeedOnHomePage}
-                      feedId={feedId}
-                      refetch={refetch}
-                    />
-                  </Grid>
-                </Paper>
-              </Grid>
-            ))}
-          </div>
-        ) : (
-          <i className={classes.notMessages}>
-            Soyez le premier à écrire sur ce channel
-          </i>
-        )}
+                    </Grid>
+                    <Grid className={classes.paperContainer}>
+                      <div className={classes.date}>
+                        {message.createdAt
+                          ? dayjs(
+                              new Date(
+                                parseInt(message.createdAt, 10),
+                              ).toLocaleString(),
+                            ).format('DD/MM/YYYY - HH:mm')
+                          : null}
+                      </div>
+                      <Typography className={classes.text}>
+                        {message.content}
+                      </Typography>
+                    </Grid>
+                    <Grid className={classes.iconsContainer}>
+                      <Comments
+                        message={message}
+                        workspaceId={params ? params.id : firstFeedOnHomePage}
+                        feedId={feedId}
+                      />
+                      <MessagesLikes
+                        message={message}
+                        workspaceId={params ? params.id : firstFeedOnHomePage}
+                        feedId={feedId}
+                        refetch={refetch}
+                      />
+                      <MessagesDislikes
+                        message={message}
+                        workspaceId={params ? params.id : firstFeedOnHomePage}
+                        feedId={feedId}
+                        refetch={refetch}
+                      />
+                    </Grid>
+                  </div>
+                </div>
+              </Paper>
+            </Grid>
+          ))}
+          <div ref={bottomRef} />
+        </div>
+      ) : (
+        <i className={classes.notMessages}>
+          Soyez le premier à écrire sur ce channel
+        </i>
+      )}
 
-        <MessagesInput
-          bottomRef={bottomRef}
-          userMessage={userMessage}
-          setUserMessage={setUserMessage}
-          workspaceId={params ? params.id : firstFeedOnHomePage}
-          feedId={feedId}
-          refetch={refetch}
-        />
-      </Grid>
-    </div>
+      <MessagesInput
+        userMessage={userMessage}
+        setUserMessage={setUserMessage}
+        workspaceId={params ? params.id : firstFeedOnHomePage}
+        feedId={feedId}
+        refetch={refetch}
+      />
+    </Grid>
   )
 }
 

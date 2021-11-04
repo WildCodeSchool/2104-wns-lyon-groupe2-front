@@ -127,7 +127,6 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     flexDirection: 'row',
     '&:hover': {
-      transform: 'scale(0.97)',
       backgroundColor: '#3b3b5',
     },
     marginLeft: 5,
