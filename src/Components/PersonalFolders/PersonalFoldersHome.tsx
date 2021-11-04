@@ -62,7 +62,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // STATES //
   // ////// //
   const [rowsToRework, setRowsToRework] = useState([])
-  const [assetsList, setAssetsList] = useState<any>(match.params.parentId)
+  const [updateComponent, setUpdateComponent] = useState<boolean>(false)
   const { addToast } = useToasts()
   const [folders, setFolders] = useState<any>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -237,7 +237,8 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
     if (assetData) {
       setRowsToRework(assetData.getAssetsByFolderId)
     }
-  }, [assetData])
+    assetRefetch()
+  }, [assetData, updateComponent])
 
   if (error) {
     return <Alert severity="error">Problème de connexion au serveur</Alert>
@@ -386,7 +387,6 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       }
     }
   }
-  console.log(assetData)
 
   // ////// //
   // RETURN //
@@ -587,7 +587,11 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         {parentDirectory && (
           <>
             <div className="file_upload_container">
-              <FileUpload folderId={parentDirectory} />
+              <FileUpload
+                folderId={parentDirectory}
+                setUpdateComponent={setUpdateComponent}
+                updateComponent={updateComponent}
+              />
             </div>
             {rowsToRework && (
               <div className="assets_list_container">

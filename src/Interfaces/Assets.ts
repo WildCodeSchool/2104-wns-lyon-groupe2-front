@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react'
+
 export interface IAssetsDetails {
   id: number
   title: string
@@ -15,6 +17,8 @@ export interface IAssetsDetails {
 
 export interface IAssetsProps {
   folderId: string
+  setUpdateComponent: Dispatch<any>
+  updateComponent: boolean
 }
 
 export interface IFolderDetails {

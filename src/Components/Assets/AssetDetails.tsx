@@ -8,7 +8,7 @@ import { dateTransformator } from '../../Tools/date'
 import { GET_FOLDER_DETAILS } from '../../graphql/queries'
 import { IAssetsProps, IFolderDetails } from '../../Interfaces/Assets'
 
-const AssetDetails: React.FC<IAssetsProps> = ({ folderId }) => {
+const AssetDetails: React.FC<any> = ({ folderId }) => {
   const classes = useStyles()
 
   const [folderDetails, setFolderDetails] = useState<IFolderDetails | null>(
