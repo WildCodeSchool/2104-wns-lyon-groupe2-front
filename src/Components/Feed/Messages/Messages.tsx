@@ -184,9 +184,12 @@ const Messages: React.FC = () => {
           <div ref={bottomRef} />
         </div>
       ) : (
-        <i className={classes.notMessages}>
-          Soyez le premier à écrire sur ce channel
-        </i>
+        <>
+          <i className={classes.notMessages}>
+            Soyez le premier à écrire sur ce channel
+          </i>
+          <div style={{ flex: 1 }} />
+        </>
       )}
 
       <MessagesInput
