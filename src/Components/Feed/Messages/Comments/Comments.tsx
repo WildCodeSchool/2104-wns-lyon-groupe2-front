@@ -57,8 +57,12 @@ const Comments: React.FC<CommentsProps> = ({
 
   return (
     <div className={classes.icons}>
-      <Button className={classes.icon} onClick={handleClickOpen}>
-        <CommentIcon color="primary" style={{ color: '#3b3b3b' }} />
+      <Button onClick={handleClickOpen} style={{ minWidth: 0 }}>
+        <CommentIcon
+          color="primary"
+          style={{ color: '	#696969' }}
+          className={classes.icon}
+        />
         <Typography className={classes.commentIcon}>
           {message.comments ? message.comments.length : null}
         </Typography>

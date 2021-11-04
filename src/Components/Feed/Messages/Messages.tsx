@@ -167,27 +167,26 @@ const Messages: React.FC = () => {
                         {message.content}
                       </Typography>
                     </Grid>
-                    {messageHover === message.id && (
-                      <Grid className={classes.iconsContainer}>
-                        <Comments
-                          message={message}
-                          workspaceId={params ? params.id : firstFeedOnHomePage}
-                          feedId={feedId}
-                        />
-                        <MessagesLikes
-                          message={message}
-                          workspaceId={params ? params.id : firstFeedOnHomePage}
-                          feedId={feedId}
-                          refetch={refetch}
-                        />
-                        <MessagesDislikes
-                          message={message}
-                          workspaceId={params ? params.id : firstFeedOnHomePage}
-                          feedId={feedId}
-                          refetch={refetch}
-                        />
-                      </Grid>
-                    )}
+
+                    <Grid className={classes.iconsContainer}>
+                      <Comments
+                        message={message}
+                        workspaceId={params ? params.id : firstFeedOnHomePage}
+                        feedId={feedId}
+                      />
+                      <MessagesLikes
+                        message={message}
+                        workspaceId={params ? params.id : firstFeedOnHomePage}
+                        feedId={feedId}
+                        refetch={refetch}
+                      />
+                      <MessagesDislikes
+                        message={message}
+                        workspaceId={params ? params.id : firstFeedOnHomePage}
+                        feedId={feedId}
+                        refetch={refetch}
+                      />
+                    </Grid>
                   </div>
                 </div>
               </Paper>
