@@ -1,17 +1,30 @@
+@import '/src/index.scss';
+
 // style sidebar workspace
 
-.sidebar_container_workspace {
+.sidebar_container_workspace,
+.sidebar_container_assets {
+  color: #ffffff;
   min-width: 300px;
   max-width: 300px;
   height: 100vh;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-top: none;
+  background: $main-color;
+  * {
+    text-decoration: none;
+    color: #ffffff;
+  }
+  .title_container {
+    font-weight: bold;
+  }
   .btn_sidebar_top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     .plus_icon {
+      cursor: pointer;
       margin-right: 20px;
     }
   }
@@ -21,6 +34,7 @@
     width: 15%;
     position: fixed;
     bottom: 0;
+    margin-left: 10px;
     margin-bottom: 10px;
     .params_icon {
       margin-right: 20px;
@@ -45,56 +59,8 @@
   }
 }
 
-// style sidebar assets
-
-.sidebar_container_assets {
-  min-width: 300px;
-  max-width: 300px;
-  height: 100vh;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-top: none;
-  .btn_sidebar_top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    .plus_icon {
-      margin-right: 20px;
-    }
-  }
-  .btn_sidebar_bottom {
-    display: flex;
-    justify-content: space-between;
-    width: 15%;
-    position: fixed;
-    bottom: 0;
-    margin-bottom: 10px;
-    .params_icon {
-      margin-right: 20px;
-    }
-    .pseudo {
-      margin-left: 15px;
-    }
-  }
-  .sidebar_header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    height: 100px;
-    .website_logo {
-      width: 160px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-  }
-}
-
 @media screen and (max-width: 768px) {
-  .sidebar_container_workspace {
-    display: none;
-  }
+  .sidebar_container_workspace,
   .sidebar_container_assets {
     display: none;
   }
