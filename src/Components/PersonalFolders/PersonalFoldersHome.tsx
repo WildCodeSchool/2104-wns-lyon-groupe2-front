@@ -591,7 +591,7 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
             />
           )}
         </div>
-        {parentDirectory && rowsToRework && (
+        {rowsToRework && (
           <div className="assets_list_container">
             <AssetsTable
               assetsList={rowsToRework}
