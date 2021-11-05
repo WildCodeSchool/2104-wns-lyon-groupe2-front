@@ -22,18 +22,20 @@ import {
 } from 'react-beautiful-dnd'
 import './Folders.scss'
 import { useToasts } from 'react-toast-notifications'
-import AddFolder from './AddFolder'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 import MoveFolderModal from './MoveFolderModal'
 import {
   GET_FOLDERS_BY_CURRENT_USER_ID,
   GET_FOLDER_ASSETS,
 } from '../../graphql/queries'
+
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
 import FileUpload from '../FileUPload/FileUpload'
-import AssetsTable from '../Assets/AssetsTable'
+import AssetsTable from './Assets/AssetsTable'
 import { dataForAssetsTable } from '../../Tools/dataRework'
+import { TabsContainer } from './TabsContainer'
+import ModalContainer from './ModalContainer'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -399,7 +401,13 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         id="folders_container"
         onClick={(e) => getClickOutsideOfTextField(e)}
       >
-        <AddFolder refetch={refetch} parentId={parentDirectory} />
+        <ModalContainer
+          refetch={refetch}
+          parentId={parentDirectory}
+          folderId={parentDirectory}
+          setUpdateComponent={setUpdateComponent}
+          updateComponent={updateComponent}
+        />
         <div className="folders_container">
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <div className="folders_container_navigation_bar">
@@ -595,7 +603,11 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
             </div>
             {rowsToRework && (
               <div className="assets_list_container">
-                <AssetsTable assetsList={rowsToRework} />
+                <AssetsTable
+                  assetsList={rowsToRework}
+                  setUpdateComponent={setUpdateComponent}
+                  updateComponent={updateComponent}
+                />
               </div>
             )}
           </>

@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import {
-  DataGrid,
-  GridColDef,
-  GridSelectionModel,
-} from '@material-ui/data-grid'
+import { DataGrid, GridColDef } from '@material-ui/data-grid'
 
-import { IGridProps } from '../../Interfaces/Assets'
-import { dataForAssetsTable } from '../../Tools/dataRework'
+import { IAssetsDetails, IGridProps } from '../../../Interfaces/Assets'
+import { dataForAssetsTable } from '../../../Tools/dataRework'
 import NoAssetFound from './NoAssetFound'
 import CustomToolbar from './CustomToolbar'
 
-const AssetsTable: React.FC<IGridProps> = ({ assetsList }) => {
-  const [rows, setRows] = useState([])
-  const [rowsSelected, setRowsSelected] = React.useState<GridSelectionModel>([])
+const AssetsTable: React.FC<IGridProps> = ({
+  assetsList,
+  updateComponent,
+  setUpdateComponent,
+}) => {
+  const [rows, setRows] = useState<IAssetsDetails[]>([])
+  const [rowsSelected, setRowsSelected] = useState<any>([])
 
   const columns: GridColDef[] = [
     { field: 'title', headerName: 'Nom', width: 150 },
@@ -26,7 +26,6 @@ const AssetsTable: React.FC<IGridProps> = ({ assetsList }) => {
       setRows(dataForAssetsTable(assetsList))
     }
   }, [assetsList])
-  console.log(rows)
   return (
     <>
       {rows.length ? (
@@ -35,11 +34,21 @@ const AssetsTable: React.FC<IGridProps> = ({ assetsList }) => {
             rows={rows}
             columns={columns}
             checkboxSelection
-            onSelectionModelChange={(newSelectionModel) => {
-              setRowsSelected(newSelectionModel)
+            onSelectionModelChange={(ids) => {
+              const selectedIds = new Set(ids)
+              const selectRowsData = rows.filter((row) =>
+                selectedIds.has(row.id),
+              )
+              setRowsSelected(selectRowsData)
             }}
             components={{ Toolbar: CustomToolbar }}
-            componentsProps={{ toolbar: { rowsSelected } }}
+            componentsProps={{
+              toolbar: {
+                assetsList: rowsSelected,
+                updateComponent,
+                setUpdateComponent,
+              },
+            }}
           />
         </div>
       ) : (

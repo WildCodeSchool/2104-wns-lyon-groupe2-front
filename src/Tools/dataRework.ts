@@ -26,6 +26,7 @@ export const dataForAssetsTable = (data) => {
       updatedAt: new Date(+elem.updatedAt).toLocaleDateString(),
       likes: elem.likes || 0,
       type: elem.type || 'Unknown',
+      url: elem.url,
     }
   })
 }
