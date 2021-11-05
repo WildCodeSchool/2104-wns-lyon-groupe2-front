@@ -11,7 +11,6 @@ import { IModalProps } from '../../Interfaces/Assets'
 const ModalContainer: React.FC<IModalProps> = ({
   refetch,
   parentId,
-  folderId,
   updateComponent,
   setUpdateComponent,
 }) => {
@@ -68,6 +67,8 @@ const ModalContainer: React.FC<IModalProps> = ({
               sameNameError={sameNameError}
               folderName={folderName}
               setFolderName={setFolderName}
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
             />
           </div>
         </Modal>

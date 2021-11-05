@@ -41,6 +41,8 @@ export const TabsContainer: React.FC<ITabsProps> = ({
   folderName,
   sameNameError,
   submitNewFolder,
+  isModalOpen,
+  setIsModalOpen,
 }) => {
   const [value, setValue] = useState<number>(0)
   const handleChange = (event: any, newValue: number) => {
@@ -58,9 +60,11 @@ export const TabsContainer: React.FC<ITabsProps> = ({
       </Tabs>
       <TabPanel value={value} index={0}>
         <FileUpload
-          folderId={folderId}
+          folderId={parentId}
           updateComponent={updateComponent}
           setUpdateComponent={setUpdateComponent}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -70,6 +74,8 @@ export const TabsContainer: React.FC<ITabsProps> = ({
           sameNameError={sameNameError}
           folderName={folderName}
           setFolderName={setFolderName}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
         />
       </TabPanel>
     </>

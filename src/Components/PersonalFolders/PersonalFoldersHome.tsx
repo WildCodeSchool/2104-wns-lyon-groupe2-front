@@ -404,7 +404,6 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
         <ModalContainer
           refetch={refetch}
           parentId={parentDirectory}
-          folderId={parentDirectory}
           setUpdateComponent={setUpdateComponent}
           updateComponent={updateComponent}
         />
@@ -592,25 +591,14 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
             />
           )}
         </div>
-        {parentDirectory && (
-          <>
-            <div className="file_upload_container">
-              <FileUpload
-                folderId={parentDirectory}
-                setUpdateComponent={setUpdateComponent}
-                updateComponent={updateComponent}
-              />
-            </div>
-            {rowsToRework && (
-              <div className="assets_list_container">
-                <AssetsTable
-                  assetsList={rowsToRework}
-                  setUpdateComponent={setUpdateComponent}
-                  updateComponent={updateComponent}
-                />
-              </div>
-            )}
-          </>
+        {parentDirectory && rowsToRework && (
+          <div className="assets_list_container">
+            <AssetsTable
+              assetsList={rowsToRework}
+              setUpdateComponent={setUpdateComponent}
+              updateComponent={updateComponent}
+            />
+          </div>
         )}
       </div>
     </>

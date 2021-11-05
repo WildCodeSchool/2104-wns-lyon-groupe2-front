@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction } from 'react'
+import { ApolloQueryResult } from '@apollo/client'
+import React, { Dispatch, SetStateAction } from 'react'
 
 export interface IAssetsDetails {
   id: number
@@ -15,12 +16,6 @@ export interface IAssetsDetails {
   openingCount: number
 }
 
-export interface IAssetsProps {
-  folderId: string
-  setUpdateComponent: Dispatch<any>
-  updateComponent: boolean
-}
-
 export interface IFolderDetails {
   name: string
   createdAt: string
@@ -29,11 +24,11 @@ export interface IFolderDetails {
 export interface IGridProps {
   assetsList: IAssetsDetails[]
   updateComponent: boolean
-  setUpdateComponent: Dispatch<any>
+  setUpdateComponent: Dispatch<React.SetStateAction<boolean>>
 }
 export interface IDeleteProps {
   openModal: boolean
-  setOpenModal: Dispatch<any>
+  setOpenModal: Dispatch<React.SetStateAction<boolean>>
   confirmDelete: any
 }
 export interface TabPanelProps {
@@ -42,21 +37,40 @@ export interface TabPanelProps {
   value: number
 }
 
-export interface IModalProps extends IAssetsProps {
+export interface IAssetsProps {
+  folderId: string
+  setUpdateComponent: Dispatch<React.SetStateAction<boolean>>
+  updateComponent: boolean
+  isModalOpen: boolean
+  setIsModalOpen: Dispatch<React.SetStateAction<boolean>>
+}
+export interface IModalProps {
   refetch: any
   parentId: string
+  setUpdateComponent: Dispatch<React.SetStateAction<boolean>>
+  updateComponent: boolean
 }
-export interface ITabsProps extends IModalProps {
+export interface ITabsProps {
   handleClick: any
   submitNewFolder: any
+
   sameNameError: boolean
   folderName: string | null
-  setFolderName: Dispatch<any>
+  setFolderName: Dispatch<React.SetStateAction<string | null>>
+  setIsModalOpen: Dispatch<React.SetStateAction<boolean>>
+  isModalOpen: boolean
+  refetch: Promise<ApolloQueryResult<any>>
+  parentId: string
+  folderId: string
+  setUpdateComponent: Dispatch<React.SetStateAction<boolean>>
+  updateComponent: boolean
 }
 export interface IAddFolderProps {
   handleClick: any
   submitNewFolder: any
   sameNameError: boolean
   folderName: string | null
-  setFolderName: Dispatch<any>
+  setFolderName: Dispatch<React.SetStateAction<string | null>>
+  setIsModalOpen: Dispatch<React.SetStateAction<boolean>>
+  isModalOpen: boolean
 }

@@ -8,14 +8,15 @@ import { UPLOAD_FILE } from '../../graphql/mutations'
 import useStyles from './FileUPloadStyle'
 import { IAssetsDetails, IAssetsProps } from '../../Interfaces/Assets'
 
-const FileUpload: React.FC<IAssetsProps | null> = (props: {
-  folderId: string
-  setUpdateComponent: Dispatch<any>
-  updateComponent: boolean
+const FileUpload: React.FC<IAssetsProps | null> = ({
+  folderId,
+  setUpdateComponent,
+  updateComponent,
+  isModalOpen,
+  setIsModalOpen,
 }) => {
   const classes = useStyles()
 
-  const { folderId, setUpdateComponent, updateComponent } = props
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (result) => setUpdateComponent(!updateComponent),
   })
