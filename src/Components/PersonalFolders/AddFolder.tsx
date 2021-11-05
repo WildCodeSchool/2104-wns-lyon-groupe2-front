@@ -9,7 +9,7 @@ const AddFolder: React.FC<IAddFolderProps> = ({
   folderName,
 }) => {
   return (
-    <div className="add_folder_modal">
+    <>
       <p>Nouveau dossier</p>
       <TextField
         error={sameNameError}
@@ -36,7 +36,7 @@ const AddFolder: React.FC<IAddFolderProps> = ({
           Créer
         </Button>
       </div>
-    </div>
+    </>
   )
 }
 export default AddFolder

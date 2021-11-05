@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { Button, Popover, TextField } from '@material-ui/core'
 import Modal from '@material-ui/core/Modal'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import { Box } from '@material-ui/core'
 import { CREATE_FOLDER } from '../../graphql/mutations'
 import { TabsContainer } from './TabsContainer'
 import { IModalProps } from '../../Interfaces/Assets'
@@ -55,7 +55,7 @@ const ModalContainer: React.FC<IModalProps> = ({
       </Fab>
       {isModalOpen && (
         <Modal open={isModalOpen} onClose={handleClick}>
-          <div className="add_folder_modal">
+          <Box className="add_folder_modal">
             <TabsContainer
               folderId={parentId}
               setUpdateComponent={setUpdateComponent}
@@ -70,7 +70,7 @@ const ModalContainer: React.FC<IModalProps> = ({
               isModalOpen={isModalOpen}
               setIsModalOpen={setIsModalOpen}
             />
-          </div>
+          </Box>
         </Modal>
       )}
     </div>
