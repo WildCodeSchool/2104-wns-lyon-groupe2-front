@@ -1,37 +1,55 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
-import { useMutation, gql } from '@apollo/client'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { Button, Container, IconButton } from '@material-ui/core'
 
-const UPLOAD_FILE = gql`
-  mutation singleUpload($data: Upload!) {
-    singleUpload(data: $data) {
-      url
-    }
-  }
-`
+import { UPLOAD_FILE } from '../../graphql/mutations'
+import useStyles from './FileUPloadStyle'
+import { IAssetsDetails, IAssetsProps } from '../../Interfaces/Assets'
 
-const FileUpload: React.FC = () => {
-  const [singleUpload] = useMutation(UPLOAD_FILE, {
-    onCompleted: (data) => console.log(data),
+const FileUpload: React.FC<IAssetsProps | null> = ({
+  folderId,
+  setUpdateComponent,
+  updateComponent,
+  isModalOpen,
+  setIsModalOpen,
+}) => {
+  const classes = useStyles()
+
+  const [uploadFile] = useMutation(UPLOAD_FILE, {
+    onCompleted: (result) => setUpdateComponent(!updateComponent),
   })
+  const [data, setFileData] = useState()
 
   const handleFileChange = (e) => {
-    const data = e.target.files[0]
-
-    if (!data) return
-    /* const reader = new FileReader()
-    reader.addEventListener('load', () => {
-      const data = reader.result
-      singleUpload({ variables: { data } })
-    })
-    reader.readAsBinaryString(file) */
-    singleUpload({ variables: { data } })
+    const file = e.target.files[0]
+    if (!file) return
+    setFileData(file)
   }
+  const handlesubmit = async () => {
+    await uploadFile({ variables: { data, folderId } })
+  }
+
   return (
     <>
-      <div>
-        <input type="file" name="testUpload" onChange={handleFileChange} />
-      </div>
+      <Container className={classes.container}>
+        <form>
+          <input
+            className="upload_button"
+            type="file"
+            name="docUpload"
+            onChange={handleFileChange}
+          />
+
+          <input
+            className="send_my_upload_button"
+            type="button"
+            value="send"
+            onClick={() => handlesubmit()}
+          />
+        </form>
+      </Container>
     </>
   )
 }
