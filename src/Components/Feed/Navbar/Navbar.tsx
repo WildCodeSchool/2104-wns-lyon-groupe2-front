@@ -6,28 +6,31 @@ import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useHistory } from 'react-router-dom'
 import { FcTrademark } from 'react-icons/fc'
 import './Navbar.scss'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import { Avatar } from '@material-ui/core'
 import Searchbar from './Searchbar'
 import { UserContext } from '../../Context/UserContext'
 
 const StyledMenu = withStyles({
   paper: {
-    border: '1px solid #d3d4d5',
+    border: '1px solid red',
   },
 })((props: MenuProps) => (
   <Menu
+    anchorReference="anchorPosition"
     elevation={0}
-    getContentAnchorEl={null}
+    anchorPosition={{ top: 200, left: 600 }}
     anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
+      vertical: 'top',
+      horizontal: 'left',
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'center',
+      horizontal: 'left',
     }}
     {...props}
   />
@@ -49,7 +52,6 @@ const Navbar: React.FC = () => {
   const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const history = useHistory()
-  const { setToken } = useContext(UserContext)
 
   useEffect(() => {
     if (userInfos) {
@@ -67,43 +69,48 @@ const Navbar: React.FC = () => {
 
   const handleLogout = (): void => {
     removeUser()
-    history.push('/login')
   }
 
   const handleRedirectToRegisterNewUserPage = () => {
     history.push('/register-new-user')
   }
-
-  return (
-    <div className="navbar_container">
-      <Searchbar />
-      <div onClick={handleClick}>
-        <FcTrademark className="logo_user" size={50} />
-      </div>
-      <StyledMenu
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <StyledMenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <ExitToAppIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Se déconnecter" />
-        </StyledMenuItem>
-        {isUserAdmin && (
-          <StyledMenuItem onClick={handleRedirectToRegisterNewUserPage}>
-            <ListItemIcon>
-              <PersonAddIcon fontSize="small" />
+  if (userInfos)
+    return (
+      <div className="logo">
+        <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <StyledMenuItem onClick={() => history.push('/profile')}>
+            <ListItemIcon className="icons">
+              <AccountCircleIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Ajouter un utilisateur" />
+            <ListItemText primary="Mon Profile" />
           </StyledMenuItem>
-        )}
-      </StyledMenu>
-    </div>
-  )
+          {isUserAdmin && (
+            <StyledMenuItem
+              style={{ padding: 20 }}
+              onClick={handleRedirectToRegisterNewUserPage}
+            >
+              <ListItemIcon className="icons">
+                <PersonAddIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Ajout d'utilisateurs" />
+            </StyledMenuItem>
+          )}
+          <StyledMenuItem onClick={handleLogout}>
+            <ListItemIcon className="icons">
+              <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Se déconnecter" />
+          </StyledMenuItem>
+        </StyledMenu>
+      </div>
+    )
+  return <></>
 }
 
 export default Navbar

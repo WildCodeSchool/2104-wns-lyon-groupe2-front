@@ -17,7 +17,6 @@ import { UserContext } from '../Context/UserContext'
 const useStyles = makeStyles((theme) => ({
   container: { marginTop: theme.spacing(1) },
   link: {
-    color: 'black',
     textDecoration: 'none',
   },
   loader: {
@@ -114,7 +113,6 @@ const WorkspaceStudent: React.FC = () => {
                       id: el.id,
                     },
                   }}
-                  className={classes.link}
                 >
                   <TreeItem
                     nodeId={el.feed[0].id as string}
@@ -123,7 +121,7 @@ const WorkspaceStudent: React.FC = () => {
                 </Link>
                 <TreeItem
                   nodeId={el.assets[0].id as string}
-                  label={el.assets[0].assetName}
+                  label={el.assets[0].name}
                 />
                 {el.visio ? (
                   <a href={el.visio}>

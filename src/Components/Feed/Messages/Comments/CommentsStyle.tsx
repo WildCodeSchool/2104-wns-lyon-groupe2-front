@@ -3,23 +3,64 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme) => ({
   container: {},
   bubbleContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   commentsContainer: {
     overflow: 'auto',
     height: '73vh',
+    width: '100%',
     margin: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  messageContainer: {
+    width: '100%',
+    margin: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   bubble: {
     boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
     marginTop: 5,
-    marginRight: 20,
+    marginBottom: 30,
+    backgroundColor: '#f2f1eb',
+    borderRadius: 23,
+    border: '5px solid white',
+    width: 300,
+    [theme.breakpoints.up(600)]: {
+      width: '400px',
+    },
+    [theme.breakpoints.up(900)]: {
+      width: '600px',
+    },
+    [theme.breakpoints.up(1100)]: {
+      width: '700px',
+    },
+    [theme.breakpoints.up(1200)]: {
+      width: '800px',
+    },
+  },
+  bubbleMessage: {
+    boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
+    marginTop: 5,
     marginBottom: 30,
     backgroundColor: 'white',
     borderRadius: 23,
-    width: '80%',
-    [theme.breakpoints.up(768)]: {
-      width: '80%',
+    border: '5px solid white',
+    width: 300,
+    [theme.breakpoints.up(600)]: {
+      width: '400px',
+    },
+    [theme.breakpoints.up(900)]: {
+      width: '600px',
+    },
+    [theme.breakpoints.up(1100)]: {
+      width: '700px',
+    },
+    [theme.breakpoints.up(1200)]: {
+      width: '800px',
     },
   },
   paperContainer: { margin: 10 },
@@ -78,19 +119,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   icon: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'center',
-    fontSize: 10,
-    marginBottom: 2,
-    cursor: 'pointer',
-    flexDirection: 'row',
-    '&:hover': {
-      transform: 'scale(0.97)',
-      backgroundColor: '#3b3b5',
-    },
-    marginLeft: 5,
-    marginRight: 5,
+    marginRight: '2px',
+    fontSize: '16px',
   },
   likes: {
     fontSize: 12,
@@ -98,10 +128,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   commentIcon: {
-    color: '#3b3b3b',
+    color: '#696969',
     fontSize: 16,
     fontWeight: 'bold',
-    marginLeft: 5,
   },
 }))
 

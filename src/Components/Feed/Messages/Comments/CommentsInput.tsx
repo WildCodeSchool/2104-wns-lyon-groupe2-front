@@ -58,6 +58,7 @@ const CommentsInput: React.FC<CommentsInputProps> = ({
         },
       },
     })
+    setUserComment('')
   }
 
   const handleMessage = (text: string) => {
@@ -67,6 +68,7 @@ const CommentsInput: React.FC<CommentsInputProps> = ({
   const handleKeyPress = (event: any) => {
     if (event.key === 'Enter') {
       onSubmit()
+      setUserComment('')
     }
   }
   return (
@@ -83,6 +85,7 @@ const CommentsInput: React.FC<CommentsInputProps> = ({
         id="messages"
         onChange={(e) => handleMessage(e.target.value)}
         onKeyPress={handleKeyPress}
+        value={userComment}
       />
       <Button>
         <SendIcon onClick={onSubmit} />

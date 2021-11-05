@@ -10,7 +10,6 @@ import useStyles from './MessagesStyle'
 export interface MessagesInputProps {
   userMessage: string
   setUserMessage: (userMessage: string) => void
-  bottomRef: any
   workspaceId: string
   feedId: string
   refetch: any
@@ -59,6 +58,7 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
       },
     })
     await refetch()
+    setUserMessage('')
   }
 
   const handleMessage = (text: string) => {
@@ -69,6 +69,7 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
     if (event.key === 'Enter') {
       refetch()
       onSubmit()
+      setUserMessage('')
     }
   }
 
@@ -86,6 +87,7 @@ const MessagesInput: React.FC<MessagesInputProps> = ({
         id="messages"
         onChange={(e) => handleMessage(e.target.value)}
         onKeyPress={handleKeyPress}
+        value={userMessage}
       />
       <Button>
         <SendIcon className={classes.submit} onClick={onSubmit} />

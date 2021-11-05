@@ -70,20 +70,22 @@ const MessagesLikes: React.FC<MessagesLikesProps> = ({
   }
   useEffect(() => {
     if (message.likes) {
+      setActive(false)
       for (let i = 0; i < message.likes.length; i += 1) {
         if (message.likes[i].userId === userInfos.userId) {
           setActive(true)
         }
       }
     }
-  }, [message])
+  }, [message, active])
 
   const classes = useStyles()
   return (
     <div className={classes.icons}>
-      <Button className={classes.icon} onClick={() => addLikes()}>
+      <Button onClick={() => addLikes()} style={{ minWidth: 0 }}>
         <ThumbUpAltRoundedIcon
-          style={active ? { color: 'green' } : { color: '#3b3b3b' }}
+          className={classes.icon}
+          style={active ? { color: 'green' } : { color: '	#696969' }}
         />
         <Typography className={classes.likes}>
           {message.likes ? message.likes.length : null}

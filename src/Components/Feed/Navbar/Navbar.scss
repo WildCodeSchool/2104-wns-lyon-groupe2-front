@@ -1,62 +1,68 @@
-.navbar_container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100px;
-  overflow: hidden;
-  .mobile_searchbar_icon {
-    display: none;
-  }
-  .desktop_searchbar {
-    margin-right: 40px;
-  }
-  .logo_user {
-    cursor: pointer;
-    margin-right: 40px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .navbar_container {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    .mobile_searchbar_icon {
-      display: block;
-      margin-right: 20px;
-    }
-    .desktop_searchbar {
-      display: none;
-    }
-    .logo_user {
-      margin-right: 20px;
-      width: 40px;
-    }
+.logo {
+  div {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
   }
 
-  .mobile_searchbar_container {
-    display: flex;
-    justify-content: center;
-    .mobile_searchbar {
-      margin-top: 15px;
-    }
-  }
+  margin-right: 15px;
 }
 
-/* reset CSS drop-down menu MUi */
+// .navbar_container {
+//   width: 100%;
+//   float: right;
+//   .mobile_searchbar_icon {
+//     display: none;
+//   }
+//   .desktop_searchbar {
+//     margin-right: 40px;
+//   }
+//   .logo_user {
+//     cursor: pointer;
+//   }
+// }
 
-.MuiList-padding {
-  padding: 0 !important;
-}
+// @media screen and (max-width: 768px) {
+//   .navbar_container {
+//     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+//     .mobile_searchbar_icon {
+//       display: block;
+//       margin-right: 20px;
+//     }
+//     .desktop_searchbar {
+//       display: none;
+//     }
+//     .logo_user {
+//       margin-right: 20px;
+//       width: 40px;
+//     }
+//   }
 
-.MuiMenuItem-root {
-  padding: 5px !important;
-  min-height: 0 !important;
-}
+//   .mobile_searchbar_container {
+//     display: flex;
+//     justify-content: center;
+//     .mobile_searchbar {
+//       margin-top: 15px;
+//     }
+//   }
+// }
 
-.MuiListItemIcon-root {
-  min-width: 0 !important;
-}
+// /* reset CSS drop-down menu MUi */
 
-.MuiPopover-root {
-  background: none !important;
-  background-color: none !important;
-}
+// .MuiList-padding {
+//   padding: 0 !important;
+// }
+
+// .MuiMenuItem-root {
+//   padding: 5px !important;
+//   min-height: 0 !important;
+// }
+
+// .MuiListItemIcon-root {
+//   min-width: 0 !important;
+// }
+
+// .MuiPopover-root {
+//   background: none !important;
+//   background-color: none !important;
+// }

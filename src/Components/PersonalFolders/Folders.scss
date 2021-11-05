@@ -30,6 +30,9 @@
       align-items: center;
       width: 50%;
       margin-bottom: 20px;
+      .folders-same-name-tooltip {
+        background-color: red;
+      }
       .folder_icon {
         font-size: 100px;
       }
@@ -55,14 +58,16 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 400px;
+  height: 45%;
   transform: translate(-50%, -50%);
   padding: 20px;
+  .add_folder_modal_same_name_error {
+    color: #f44336;
+  }
   p {
     margin-bottom: 20px;
   }
   div {
-    height: 40px;
     width: 100%;
     margin-bottom: 20px;
   }
