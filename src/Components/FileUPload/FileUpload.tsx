@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { Button, Container, IconButton } from '@material-ui/core'
+import { Box, Button, Container, Typography } from '@material-ui/core'
 
 import { UPLOAD_FILE } from '../../graphql/mutations'
-import useStyles from './FileUPloadStyle'
-import { IAssetsDetails, IAssetsProps } from '../../Interfaces/Assets'
+import { IAssetsProps } from '../../Interfaces/Assets'
 
 const FileUpload: React.FC<IAssetsProps | null> = ({
   folderId,
@@ -15,62 +14,47 @@ const FileUpload: React.FC<IAssetsProps | null> = ({
   isModalOpen,
   setIsModalOpen,
 }) => {
-  const classes = useStyles()
+  const [errorMessage, setErrorMessage] = useState<boolean>(false)
 
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (result) => setUpdateComponent(!updateComponent),
   })
-  /* const [data, setFileData] = useState()
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    setFileData(file)
-  }
-  const handlesubmit = async () => {
-    await uploadFile({ variables: { data, folderId } })
-  } */
-  const handleTest = async (e) => {
+  const handleSendMyFile = async (e) => {
     const data = e.target.files[0]
-    await uploadFile({ variables: { data, folderId } })
-    setIsModalOpen(!isModalOpen)
+    if (data.size > 2097152) {
+      setErrorMessage(true)
+    } else {
+      await uploadFile({ variables: { data, folderId } })
+      setIsModalOpen(!isModalOpen)
+    }
   }
 
   return (
     <>
-      <Container className={classes.container}>
-        {/*   <form>
-          <input
-            className="upload_button"
-            type="file"
-            name="docUpload"
-            onChange={handleFileChange}
-          />
-
-          <input
-            className="send_my_upload_button"
-            type="button"
-            value="send"
-            onClick={() => handlesubmit()}
-          />
-        </form> */}
-      </Container>
-      <Container>
+      <Container style={{ textAlign: 'center' }}>
         {' '}
-        <label htmlFor="upload-photo">
+        <label htmlFor="docUpload">
           <input
             style={{ display: 'none' }}
-            id="upload-photo"
-            name="upload-photo"
+            id="docUpload"
+            name="docUpload"
             type="file"
-            onChange={handleTest}
+            onChange={handleSendMyFile}
+            accept="image/*, .pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.ods"
           />
 
-          <Button color="secondary" variant="contained" component="span">
+          <Button color="primary" variant="contained" component="span">
             Send my file
           </Button>
         </label>
-        ;
+        {errorMessage && (
+          <Box style={{ margin: '20px 0 ' }}>
+            <Typography style={{ color: 'red' }}>
+              Your file is to heavy, please send me something lighter...{' '}
+            </Typography>
+          </Box>
+        )}
       </Container>
     </>
   )
