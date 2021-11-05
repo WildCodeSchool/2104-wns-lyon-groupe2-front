@@ -20,7 +20,7 @@ const FileUpload: React.FC<IAssetsProps | null> = ({
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (result) => setUpdateComponent(!updateComponent),
   })
-  const [data, setFileData] = useState()
+  /* const [data, setFileData] = useState()
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
@@ -29,12 +29,17 @@ const FileUpload: React.FC<IAssetsProps | null> = ({
   }
   const handlesubmit = async () => {
     await uploadFile({ variables: { data, folderId } })
+  } */
+  const handleTest = async (e) => {
+    const data = e.target.files[0]
+    await uploadFile({ variables: { data, folderId } })
+    setIsModalOpen(!isModalOpen)
   }
 
   return (
     <>
       <Container className={classes.container}>
-        <form>
+        {/*   <form>
           <input
             className="upload_button"
             type="file"
@@ -48,7 +53,24 @@ const FileUpload: React.FC<IAssetsProps | null> = ({
             value="send"
             onClick={() => handlesubmit()}
           />
-        </form>
+        </form> */}
+      </Container>
+      <Container>
+        {' '}
+        <label htmlFor="upload-photo">
+          <input
+            style={{ display: 'none' }}
+            id="upload-photo"
+            name="upload-photo"
+            type="file"
+            onChange={handleTest}
+          />
+
+          <Button color="secondary" variant="contained" component="span">
+            Send my file
+          </Button>
+        </label>
+        ;
       </Container>
     </>
   )
