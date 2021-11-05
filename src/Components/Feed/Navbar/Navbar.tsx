@@ -17,19 +17,20 @@ import { UserContext } from '../../Context/UserContext'
 
 const StyledMenu = withStyles({
   paper: {
-    border: '1px solid #d3d4d5',
+    border: '1px solid red',
   },
 })((props: MenuProps) => (
   <Menu
+    anchorReference="anchorPosition"
     elevation={0}
-    getContentAnchorEl={null}
+    anchorPosition={{ top: 200, left: 600 }}
     anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
+      vertical: 'top',
+      horizontal: 'left',
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'center',
+      horizontal: 'left',
     }}
     {...props}
   />
@@ -73,18 +74,9 @@ const Navbar: React.FC = () => {
   const handleRedirectToRegisterNewUserPage = () => {
     history.push('/register-new-user')
   }
-  console.log(userInfos)
   if (userInfos)
     return (
       <div className="logo">
-        <div onClick={handleClick}>
-          <Avatar
-            style={{ backgroundColor: userInfos.color, cursor: 'pointer' }}
-          >
-            {userInfos.firstname.charAt(0)}
-            {userInfos.lastname.charAt(0)}
-          </Avatar>
-        </div>
         <StyledMenu
           id="customized-menu"
           anchorEl={anchorEl}

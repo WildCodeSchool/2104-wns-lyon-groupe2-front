@@ -6,7 +6,7 @@ import { SidebarContext } from '../Context/SidebarContext'
 import AssetsPopin from './Popin/AssetsPopin'
 import WorkspacePopin from './Popin/WorkspacePopin'
 import BurgerMenu from '../Sidebar/BurgerMenu/BurgerMenu'
-import Navbar from './Navbar/Navbar'
+// import Navbar from './Navbar/Navbar'
 import SearchbarPopin from './Popin/SearchbarPopin'
 import { NavbarContext } from '../Context/NavbarContext'
 import Messages from './Messages/Messages'
@@ -20,9 +20,7 @@ const Feed: React.FC = () => {
   return (
     <div className="feed_container">
       <BurgerMenu />
-      <div className="feed_header">
-        <Navbar />
-      </div>
+      <div className="feed_header">{/* <Navbar /> */}</div>
 
       {popin && <SearchbarPopin />}
 
@@ -43,7 +41,7 @@ const Feed: React.FC = () => {
           />
         </div>
       )}
-      <div>
+      <div className="feed-content">
         <Messages />
       </div>
     </div>

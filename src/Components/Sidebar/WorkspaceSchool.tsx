@@ -17,7 +17,6 @@ import { UserContext } from '../Context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   link: {
-    color: 'black',
     textDecoration: 'none',
   },
   loader: {
