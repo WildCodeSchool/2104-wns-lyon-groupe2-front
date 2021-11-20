@@ -31,6 +31,7 @@ const renderPublicSwitch = () => {
 const renderPrivateSwitch = () => {
   return (
     <Switch>
+      <Route exact path="/profile" component={Profile} />
       <Route exact path="/publication" component={Publication} />
       <Route exact path="/register-new-user" component={AddNewUser} />
       <Route
@@ -38,8 +39,10 @@ const renderPrivateSwitch = () => {
         path="/password_management/:token/:id"
         component={NewPassword}
       />
+
       <Route exact path="/personal-folders" component={PersonalFolders} />
       <Route exact path="/register-new-user" component={AddNewUser} />
+
       <Route
         exact
         path="/personal-folders/:parentId"

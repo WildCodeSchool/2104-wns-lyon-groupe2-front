@@ -119,8 +119,19 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   icon: {
-    marginRight: '2px',
-    fontSize: '16px',
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    fontSize: 10,
+    marginBottom: 2,
+    cursor: 'pointer',
+    flexDirection: 'row',
+    '&:hover': {
+      transform: 'scale(0.97)',
+      backgroundColor: '#3b3b5',
+    },
+    marginLeft: 5,
+    marginRight: 5,
   },
   likes: {
     fontSize: 12,
@@ -128,9 +139,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   commentIcon: {
-    color: '#696969',
+    color: '#3b3b3b',
     fontSize: 16,
     fontWeight: 'bold',
+    marginLeft: 5,
   },
 }))
 

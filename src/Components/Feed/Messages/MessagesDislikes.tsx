@@ -82,10 +82,9 @@ const MessagesDislikes: React.FC<MessagesLikesProps> = ({
   const classes = useStyles()
   return (
     <div className={classes.icons}>
-      <Button onClick={() => addDislikes()} style={{ minWidth: 0 }}>
+      <Button className={classes.icon} onClick={() => addDislikes()}>
         <ThumbDownAltRoundedIcon
-          className={classes.icon}
-          style={active ? { color: 'red' } : { color: '	#696969' }}
+          style={active ? { color: 'red' } : { color: '#3b3b3b' }}
         />
         <Typography className={classes.dislikes}>
           {message.dislikes ? message.dislikes.length : null}
