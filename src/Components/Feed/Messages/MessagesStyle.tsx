@@ -3,26 +3,30 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme) => ({
   paper: { width: '100%', overflow: 'hidden' },
   form: {
-    backgroundColor: '#f8f9fa',
+    // backgroundColor: '#f8f9fa',
     position: 'absolute',
     top: '92%',
     left: '50%',
-    transform: 'translate(-50%, -50%)',
+    transform: 'translate(-45%, -30%)',
     display: 'flex',
     justifyContent: 'center',
-    width: '100%',
+    width: '90%',
     overflow: 'hidden',
     [theme.breakpoints.up(768)]: {
-      width: '85%',
-      left: '58%',
+      width: '60%',
+      left: '70%',
+      transform: 'translate(-60%, -25%)',
     },
   },
   input: {
-    width: '70%',
+    width: '100%',
     margin: 5,
 
     border: '2px solid white',
     borderRadius: 10,
+    [theme.breakpoints.up(768)]: {
+      width: '70%',
+    },
   },
   submit: {},
   bubbleContainer: {
@@ -30,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   messagesContainer: {
     overflow: 'auto',
-    height: '80vh',
+    height: '81vh',
     width: '100%',
-    margin: 10,
+    margin: 0,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -40,9 +44,9 @@ const useStyles = makeStyles((theme) => ({
   bubble: {
     boxShadow: '2px 3px 5px 1px rgba(44, 49, 108, 0.15)',
     marginTop: 5,
-    marginBottom: 30,
+    marginBottom: 10,
     backgroundColor: 'white',
-    borderRadius: 23,
+    borderRadius: 20,
     border: '5px solid white',
     width: 300,
     [theme.breakpoints.up(600)]: {
@@ -97,9 +101,9 @@ const useStyles = makeStyles((theme) => ({
     width: '80%',
     margin: '40px auto',
     wordWrap: 'break-word',
-    marginTop: 60,
-    marginBottom: 20,
-    padding: 40,
+    marginTop: 20,
+    marginBottom: 5,
+    padding: 5,
     color: '#3b3b3b',
   },
   iconsContainer: {

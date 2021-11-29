@@ -61,5 +61,4 @@ const Sidebar: React.FC = () => {
     </div>
   )
 }
-
 export default Sidebar

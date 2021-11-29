@@ -1,8 +1,11 @@
 FROM node:14.17-alpine3.11 as daddy_studies_dev
 
+RUN mkdir /app
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm i
+RUN npm i immutable
+COPY . .
 
-CMD ["dumb-init", "npm", "start"]
+CMD ["run", "start"]

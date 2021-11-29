@@ -65,7 +65,7 @@ const WorkspaceSchool: React.FC = () => {
     variables: {
       input: {
         isSchoolWorkspace: true,
-        schoolId: '1',
+        schoolId: userInfos.schoolId,
       },
     },
   })
@@ -121,7 +121,7 @@ const WorkspaceSchool: React.FC = () => {
               </Link>
               <TreeItem
                 nodeId={el.assets[0].id as string}
-                label={el.assets[0].assetName}
+                label={el.assets[0].name}
               />
               {el.visio ? (
                 <a href={el.visio}>

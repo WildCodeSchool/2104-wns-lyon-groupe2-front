@@ -71,6 +71,7 @@ const AddWorkspace: React.FC = () => {
       }
       window.location.reload()
       handleClose()
+      alert('ok')
     } catch {
       // eslint-disable-next-line no-alert
       alert('Une erreur est survenue')

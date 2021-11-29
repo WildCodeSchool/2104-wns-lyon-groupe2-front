@@ -68,6 +68,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = (): void => {
     removeUser()
+    history.push('/login')
   }
 
   const handleRedirectToRegisterNewUserPage = () => {
@@ -77,13 +78,27 @@ const Navbar: React.FC = () => {
   if (userInfos)
     return (
       <div className="logo">
-        <div onClick={handleClick}>
-          <Avatar
+        <div
+          onClick={handleClick}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          {/* <Avatar
             style={{ backgroundColor: userInfos.color, cursor: 'pointer' }}
           >
             {userInfos.firstname.charAt(0)}
             {userInfos.lastname.charAt(0)}
-          </Avatar>
+          </Avatar> */}
+          <AccountCircleIcon
+            fontSize="large"
+            style={{
+              cursor: 'pointer',
+              marginRight: 10,
+              color: 'white',
+            }}
+          />
         </div>
         <StyledMenu
           id="customized-menu"
@@ -94,24 +109,24 @@ const Navbar: React.FC = () => {
         >
           <StyledMenuItem onClick={() => history.push('/profile')}>
             <ListItemIcon className="icons">
-              <AccountCircleIcon fontSize="small" />
+              <AccountCircleIcon fontSize="small" style={{ marginRight: 10 }} />
             </ListItemIcon>
             <ListItemText primary="Mon Profile" />
           </StyledMenuItem>
           {isUserAdmin && (
             <StyledMenuItem
-              style={{ padding: 20 }}
+              style={{ padding: 30 }}
               onClick={handleRedirectToRegisterNewUserPage}
             >
               <ListItemIcon className="icons">
-                <PersonAddIcon fontSize="small" />
+                <PersonAddIcon fontSize="small" style={{ marginRight: 10 }} />
               </ListItemIcon>
               <ListItemText primary="Ajout d'utilisateurs" />
             </StyledMenuItem>
           )}
           <StyledMenuItem onClick={handleLogout}>
             <ListItemIcon className="icons">
-              <ExitToAppIcon fontSize="small" />
+              <ExitToAppIcon fontSize="small" style={{ marginRight: 10 }} />
             </ListItemIcon>
             <ListItemText primary="Se déconnecter" />
           </StyledMenuItem>

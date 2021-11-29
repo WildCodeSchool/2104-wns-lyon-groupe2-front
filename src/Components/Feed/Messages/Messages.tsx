@@ -4,6 +4,9 @@ import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import { useHistory, useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
 import { IMessage } from '../../../Interfaces/Workspace'
@@ -109,7 +112,7 @@ const Messages: React.FC = () => {
 
   return (
     <div>
-      <Grid item xs={12} className={classes.paper}>
+      <Card className={classes.paper} style={{ backgroundColor: 'whitesmoke' }}>
         {messages.length > 0 ? (
           <div className={classes.messagesContainer}>
             {messages.map((message: IMessage) => (
@@ -174,7 +177,6 @@ const Messages: React.FC = () => {
             Soyez le premier à écrire sur ce channel
           </i>
         )}
-
         <MessagesInput
           bottomRef={bottomRef}
           userMessage={userMessage}
@@ -183,7 +185,7 @@ const Messages: React.FC = () => {
           feedId={feedId}
           refetch={refetch}
         />
-      </Grid>
+      </Card>
     </div>
   )
 }
