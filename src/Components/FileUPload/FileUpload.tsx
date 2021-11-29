@@ -5,7 +5,8 @@ import { useMutation } from '@apollo/client'
 import { Box, Button, Container, Typography } from '@material-ui/core'
 
 import { UPLOAD_FILE } from '../../graphql/mutations'
-import { IAssetsProps } from '../../Interfaces/Assets'
+import { IAssetsProps, ITags } from '../../Interfaces/Assets'
+import AutocompleteComponent from '../Autocomplete/Autocomplete'
 
 const FileUpload: React.FC<IAssetsProps | null> = ({
   folderId,
@@ -15,6 +16,7 @@ const FileUpload: React.FC<IAssetsProps | null> = ({
   setIsModalOpen,
 }) => {
   const [errorMessage, setErrorMessage] = useState<boolean>(false)
+  const [allTags, setAllTags] = useState([])
 
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (result) => setUpdateComponent(!updateComponent),
@@ -55,6 +57,7 @@ const FileUpload: React.FC<IAssetsProps | null> = ({
             </Typography>
           </Box>
         )}
+        <AutocompleteComponent allTags={allTags} />
       </Container>
     </>
   )

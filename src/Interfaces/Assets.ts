@@ -74,3 +74,10 @@ export interface IAddFolderProps {
   setIsModalOpen: Dispatch<React.SetStateAction<boolean>>
   isModalOpen: boolean
 }
+
+export interface ITags {
+  title: string
+}
+export interface ITagsProps {
+  allTags: ITags[]
+}

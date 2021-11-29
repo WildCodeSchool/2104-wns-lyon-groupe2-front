@@ -1,10 +1,6 @@
 import { Box, Tab, Tabs, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
-import {
-  TabPanelProps,
-  IAssetsProps,
-  ITabsProps,
-} from '../../Interfaces/Assets'
+import { TabPanelProps, ITabsProps } from '../../Interfaces/Assets'
 import FileUpload from '../FileUPload/FileUpload'
 import AddFolder from './AddFolder'
 
