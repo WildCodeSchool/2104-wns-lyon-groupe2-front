@@ -17,6 +17,7 @@ import { UserContext } from '../Context/UserContext'
 const useStyles = makeStyles((theme) => ({
   container: { marginTop: theme.spacing(1) },
   link: {
+    color: 'black',
     textDecoration: 'none',
   },
   loader: {
@@ -63,7 +64,6 @@ const WorkspaceStudent: React.FC = () => {
     variables: {
       input: {
         isSchoolWorkspace: false,
-        schoolId: '1',
       },
     },
   })
@@ -113,6 +113,7 @@ const WorkspaceStudent: React.FC = () => {
                       id: el.id,
                     },
                   }}
+                  className={classes.link}
                 >
                   <TreeItem
                     nodeId={el.feed[0].id as string}

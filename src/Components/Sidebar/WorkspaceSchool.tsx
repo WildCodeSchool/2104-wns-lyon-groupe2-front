@@ -17,6 +17,7 @@ import { UserContext } from '../Context/UserContext'
 
 const useStyles = makeStyles((theme) => ({
   link: {
+    color: 'black',
     textDecoration: 'none',
   },
   loader: {
@@ -64,7 +65,7 @@ const WorkspaceSchool: React.FC = () => {
     variables: {
       input: {
         isSchoolWorkspace: true,
-        schoolId: '1',
+        schoolId: userInfos.schoolId,
       },
     },
   })
