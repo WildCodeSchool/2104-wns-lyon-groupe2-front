@@ -1,0 +1,14 @@
+.upload_button_container {
+  display: flex;
+  justify-content: flex-end;
+  & .open {
+    margin: 15px;
+    color: blue;
+    cursor: pointer;
+  }
+  & .delete {
+    margin: 15px;
+    color: blue;
+    cursor: pointer;
+  }
+}

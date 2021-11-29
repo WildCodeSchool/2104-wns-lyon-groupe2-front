@@ -20,6 +20,33 @@ export const GET_FOLDERS_BY_CURRENT_USER_ID = gql`
   }
 `
 
+export const GET_FOLDER_DETAILS = gql`
+  query getFolderById($folderId: String!) {
+    getFolderById(folderId: $folderId) {
+      name
+      createdAt
+    }
+  }
+`
+
+export const GET_FOLDER_ASSETS = gql`
+  query getAssetsByFolderId($folderId: String!) {
+    getAssetsByFolderId(folderId: $folderId) {
+      id
+      title
+      createdAt
+      updatedAt
+      url
+      type
+      tags
+      lastView
+      likes
+      dislikes
+      bookmarkedCount
+      openingCount
+    }
+  }
+`
 export const GET_FOLDER_PATH = gql`
   query getPath($parentDirectory: String) {
     getPath(parentDirectory: $parentDirectory)

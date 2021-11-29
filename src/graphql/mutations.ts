@@ -1,5 +1,11 @@
 import { gql } from '@apollo/client'
 
+export const DELETE_ASSETS = gql`
+  mutation deletAsset($input: [String]!) {
+    deleteAsset(input: $input)
+  }
+`
+
 export const CREATE_FOLDER = gql`
   mutation createFolder($input: InputFolder!) {
     createFolder(input: $input) {
@@ -28,6 +34,21 @@ export const DELETE_FOLDER = gql`
   }
 `
 
+export const UPLOAD_FILE = gql`
+  mutation uploadFile($data: Upload!, $folderId: String!) {
+    uploadFile(data: $data, folderId: $folderId) {
+      url
+    }
+  }
+`
+
+export const LOGIN_MUTATION = gql`
+  mutation login($input: InputLogin!) {
+    login(input: $input) {
+      token
+    }
+  }
+`
 export const MOVE_FOLDER = gql`
   mutation moveFolder($input: UpdateFolder!) {
     moveFolder(input: $input) {
