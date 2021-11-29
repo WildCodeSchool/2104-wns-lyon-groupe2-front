@@ -64,7 +64,6 @@ const WorkspaceStudent: React.FC = () => {
     variables: {
       input: {
         isSchoolWorkspace: false,
-        schoolId: '1',
       },
     },
   })
