@@ -2,8 +2,8 @@ import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import { ITags, ITagsProps } from '../../Interfaces/Assets'
 
-const AutocompleteComponent: React.FC<ITagsProps> = ({ allTags }) => {
-  console.log(allTags)
+const AutocompleteComponent: React.FC<ITagsProps> = function ({ allTags }) {
+  console.log('alltags', allTags)
   return (
     <Autocomplete
       multiple

@@ -61,3 +61,11 @@ export const GET_FOLDERS_TREE = gql`
     }
   }
 `
+
+export const GET_TAGS_AUTOCOMPLETE = gql`
+  query tagsAutocomplete {
+    tagsAutocomplete {
+      title
+    }
+  }
+`
