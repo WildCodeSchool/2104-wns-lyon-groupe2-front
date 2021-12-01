@@ -22,7 +22,7 @@ import { IAssetsDetails, IAssetsProps } from '../../Interfaces/Assets'
 // A voir si encore utile mais je me dis qu'il peut servir
 // de base si on veut une vue "icones" de l'interieur des dossiers.
 
-const AssetsList: React.FC<IAssetsProps> = ({ folderId }) => {
+const AssetsList: React.FC<IAssetsProps> = function ({ folderId }) {
   const classes = useStyles()
   const [checked, setChecked] = useState<number[]>([0])
   const [assetsList, setAssetsList] = useState<IAssetsDetails[] | null>(null)
@@ -49,7 +49,7 @@ const AssetsList: React.FC<IAssetsProps> = ({ folderId }) => {
   }
 
   return (
-    <>
+    <div>
       {assetsList && (
         <Container className={classes.mainContainer}>
           <List>
@@ -97,7 +97,7 @@ const AssetsList: React.FC<IAssetsProps> = ({ folderId }) => {
           </List>
         </Container>
       )}
-    </>
+    </div>
   )
 }
 

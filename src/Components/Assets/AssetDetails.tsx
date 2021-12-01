@@ -8,7 +8,7 @@ import { dateTransformator } from '../../Tools/date'
 import { GET_FOLDER_DETAILS } from '../../graphql/queries'
 import { IAssetsProps, IFolderDetails } from '../../Interfaces/Assets'
 
-const AssetDetails: React.FC<any> = ({ folderId }) => {
+const AssetDetails: React.FC<any> = function ({ folderId }) {
   const classes = useStyles()
 
   const [folderDetails, setFolderDetails] = useState<IFolderDetails | null>(
@@ -26,7 +26,7 @@ const AssetDetails: React.FC<any> = ({ folderId }) => {
     }
   })
   return (
-    <>
+    <div>
       {folderDetails && (
         <Container>
           <Typography className={classes.folderTitle}>
@@ -37,7 +37,7 @@ const AssetDetails: React.FC<any> = ({ folderId }) => {
           </Typography>
         </Container>
       )}
-    </>
+    </div>
   )
 }
 
