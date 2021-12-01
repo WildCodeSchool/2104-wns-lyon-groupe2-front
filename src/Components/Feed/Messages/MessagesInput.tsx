@@ -38,13 +38,13 @@ const ADD_WORKSPACE = gql`
   }
 `
 
-const MessagesInput: React.FC<MessagesInputProps> = ({
+const MessagesInput: React.FC<MessagesInputProps> = function ({
   userMessage,
   setUserMessage,
   workspaceId,
   feedId,
   refetch,
-}: MessagesInputProps) => {
+}: MessagesInputProps) {
   const classes = useStyles()
   const [addWorkspace] = useMutation(ADD_WORKSPACE)
   const onSubmit = async () => {

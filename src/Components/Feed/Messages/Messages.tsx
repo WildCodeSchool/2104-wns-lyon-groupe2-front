@@ -54,7 +54,7 @@ export const GET_WORKSPACES = gql`
   }
 `
 
-const Messages: React.FC = () => {
+const Messages: React.FC = function () {
   const classes = useStyles()
   const [messages, setMessages] = useState<IMessage[]>([])
   const [userMessage, setUserMessage] = useState('')

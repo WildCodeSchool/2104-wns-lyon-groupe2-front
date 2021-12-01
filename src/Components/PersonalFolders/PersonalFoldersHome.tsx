@@ -36,6 +36,7 @@ import AssetsTable from './Assets/AssetsTable'
 import { dataForAssetsTable } from '../../Tools/dataRework'
 import { TabsContainer } from './TabsContainer'
 import ModalContainer from './ModalContainer'
+import { ITags } from '../../Interfaces/Assets'
 
 const LoadingContainer = styled.div`
   position: fixed;

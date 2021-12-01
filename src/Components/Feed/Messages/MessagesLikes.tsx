@@ -43,12 +43,12 @@ const ADD_LIKE = gql`
   }
 `
 
-const MessagesLikes: React.FC<MessagesLikesProps> = ({
+const MessagesLikes: React.FC<MessagesLikesProps> = function ({
   message,
   workspaceId,
   feedId,
   refetch,
-}) => {
+}) {
   const { userInfos } = useContext(UserContext)
   const [active, setActive] = useState(false)
   const [addLike] = useMutation(ADD_LIKE)
