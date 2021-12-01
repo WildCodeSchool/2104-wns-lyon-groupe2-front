@@ -1,4 +1,12 @@
-.file__upload__container {
+.file_upload_container {
+  margin-top: 20px;
   display: flex;
-  border: solid;
+  text-align: center;
+  flex-direction: column;
+  height: 200px;
+  justify-content: space-between;
+  &_button {
+  }
+  &_tags {
+  }
 }

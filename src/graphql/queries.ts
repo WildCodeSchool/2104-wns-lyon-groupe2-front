@@ -65,6 +65,7 @@ export const GET_FOLDERS_TREE = gql`
 export const GET_ALL_TAGS = gql`
   query getAllTags {
     getAllTags {
+      id
       label
     }
   }

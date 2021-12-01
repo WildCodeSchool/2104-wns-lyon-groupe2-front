@@ -18,6 +18,7 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
   setIsModalOpen,
 }) {
   const [errorMessage, setErrorMessage] = useState<boolean>(false)
+  const [tagsSelected, setTagsSelected] = useState<ITags[] | []>([])
 
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (result) => setUpdateComponent(!updateComponent),
@@ -28,14 +29,15 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
     if (data.size > 2097152) {
       setErrorMessage(true)
     } else {
-      await uploadFile({ variables: { data, folderId } })
+      await uploadFile({
+        variables: { data, folderId, tagsSelected },
+      })
       setIsModalOpen(!isModalOpen)
     }
   }
-
   const { data } = useQuery(GET_ALL_TAGS)
   return (
-    <Container className="file__upload__container">
+    <div className="file_upload_container">
       {' '}
       <label htmlFor="docUpload">
         <input
@@ -46,15 +48,11 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
           onChange={handleSendMyFile}
           accept="image/*, .pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.ods"
         />
-
-        <Button
-          style={{ border: 'solid' }}
-          color="primary"
-          variant="contained"
-          component="span"
-        >
-          Send my file
-        </Button>
+        <div className="file_upload_container_button">
+          <Button color="primary" variant="contained" component="span">
+            Send my file
+          </Button>
+        </div>
       </label>
       {errorMessage && (
         <Box style={{ margin: '20px 0 ' }}>
@@ -64,9 +62,14 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
         </Box>
       )}
       {data?.getAllTags?.length && (
-        <AutocompleteComponent allTags={data.getAllTags} />
+        <div className="file_upload_container_tags">
+          <AutocompleteComponent
+            allTags={data.getAllTags}
+            setTagsSelected={setTagsSelected}
+          />
+        </div>
       )}
-    </Container>
+    </div>
   )
 }
 export default FileUpload

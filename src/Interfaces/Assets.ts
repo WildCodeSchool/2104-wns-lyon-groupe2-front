@@ -80,4 +80,6 @@ export interface ITags {
 }
 export interface ITagsProps {
   allTags: ITags[]
+  tagsSelected?: ITags[]
+  setTagsSelected: Dispatch<React.SetStateAction<Array<ITags>>>
 }
