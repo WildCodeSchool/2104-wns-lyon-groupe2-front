@@ -76,7 +76,7 @@ export interface IAddFolderProps {
 }
 
 export interface ITags {
-  title: string
+  label: string
 }
 export interface ITagsProps {
   allTags: ITags[]

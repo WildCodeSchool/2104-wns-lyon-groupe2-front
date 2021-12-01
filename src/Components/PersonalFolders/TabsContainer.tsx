@@ -4,7 +4,7 @@ import { TabPanelProps, ITabsProps } from '../../Interfaces/Assets'
 import FileUpload from '../FileUPload/FileUpload'
 import AddFolder from './AddFolder'
 
-const TabPanel = (props: TabPanelProps) => {
+const TabPanel = function (props: TabPanelProps) {
   const { children, value, index, ...other } = props
 
   return (
@@ -26,7 +26,7 @@ const a11yProps = (index: number) => {
   }
 }
 
-export const TabsContainer: React.FC<ITabsProps> = ({
+export const TabsContainer: React.FC<ITabsProps> = function ({
   folderId,
   updateComponent,
   setUpdateComponent,
@@ -39,7 +39,7 @@ export const TabsContainer: React.FC<ITabsProps> = ({
   submitNewFolder,
   isModalOpen,
   setIsModalOpen,
-}) => {
+}) {
   const [value, setValue] = useState<number>(0)
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue)

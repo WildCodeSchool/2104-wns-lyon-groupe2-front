@@ -8,12 +8,12 @@ import { CREATE_FOLDER } from '../../graphql/mutations'
 import { TabsContainer } from './TabsContainer'
 import { IModalProps } from '../../Interfaces/Assets'
 
-const ModalContainer: React.FC<IModalProps> = ({
+const ModalContainer: React.FC<IModalProps> = function ({
   refetch,
   parentId,
   updateComponent,
   setUpdateComponent,
-}) => {
+}) {
   const [folderName, setFolderName] = useState<null | string>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [sameNameError, setSameNameError] = useState(false)

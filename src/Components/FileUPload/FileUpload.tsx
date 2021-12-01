@@ -7,7 +7,8 @@ import { Box, Button, Container, Typography } from '@material-ui/core'
 import { UPLOAD_FILE } from '../../graphql/mutations'
 import { IAssetsProps, ITags } from '../../Interfaces/Assets'
 import AutocompleteComponent from '../Autocomplete/Autocomplete'
-import { GET_TAGS_AUTOCOMPLETE } from '../../graphql/queries'
+import { GET_ALL_TAGS } from '../../graphql/queries'
+import './FileUpload.scss'
 
 const FileUpload: React.FC<IAssetsProps | null> = function ({
   folderId,
@@ -17,7 +18,6 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
   setIsModalOpen,
 }) {
   const [errorMessage, setErrorMessage] = useState<boolean>(false)
-  const [tags, setTags] = useState([])
 
   const [uploadFile] = useMutation(UPLOAD_FILE, {
     onCompleted: (result) => setUpdateComponent(!updateComponent),
@@ -32,13 +32,10 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
       setIsModalOpen(!isModalOpen)
     }
   }
-  const { loading, error, data: dataTags } = useQuery(GET_TAGS_AUTOCOMPLETE)
-  useEffect(() => {
-    console.log('data', dataTags)
-  }, [])
 
+  const { data } = useQuery(GET_ALL_TAGS)
   return (
-    <Container style={{ textAlign: 'center' }}>
+    <Container className="file__upload__container">
       {' '}
       <label htmlFor="docUpload">
         <input
@@ -50,7 +47,12 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
           accept="image/*, .pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.ods"
         />
 
-        <Button color="primary" variant="contained" component="span">
+        <Button
+          style={{ border: 'solid' }}
+          color="primary"
+          variant="contained"
+          component="span"
+        >
           Send my file
         </Button>
       </label>
@@ -61,7 +63,9 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
           </Typography>
         </Box>
       )}
-      <AutocompleteComponent allTags={tags} />
+      {data?.getAllTags?.length && (
+        <AutocompleteComponent allTags={data.getAllTags} />
+      )}
     </Container>
   )
 }
