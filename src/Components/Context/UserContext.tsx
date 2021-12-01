@@ -15,6 +15,8 @@ const UserProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string | null>(null)
   const [userInfos, setUserInfos] = useState<iUsers | null>()
   const { addToast } = useToasts()
+  const [school, setSchool] = useState([])
+  const [schoolId, setSchoolId] = useState('')
 
   const checkTokenValidity = (encryptedToken: string) => {
     const userData: iTokenDecrypted = jwt_decode(encryptedToken)
@@ -63,7 +65,17 @@ const UserProvider: React.FC = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ token, setToken, userInfos, removeUser, addUser }}
+      value={{
+        token,
+        setToken,
+        userInfos,
+        removeUser,
+        addUser,
+        school,
+        setSchool,
+        schoolId,
+        setSchoolId,
+      }}
     >
       {children}
     </UserContext.Provider>

@@ -17,20 +17,19 @@ import { UserContext } from '../../Context/UserContext'
 
 const StyledMenu = withStyles({
   paper: {
-    border: '1px solid red',
+    border: '1px solid #d3d4d5',
   },
 })((props: MenuProps) => (
   <Menu
-    anchorReference="anchorPosition"
     elevation={0}
-    anchorPosition={{ top: 200, left: 600 }}
+    getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: 'top',
-      horizontal: 'left',
+      vertical: 'bottom',
+      horizontal: 'center',
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'left',
+      horizontal: 'center',
     }}
     {...props}
   />
@@ -69,14 +68,38 @@ const Navbar: React.FC = function () {
 
   const handleLogout = (): void => {
     removeUser()
+    history.push('/login')
   }
 
   const handleRedirectToRegisterNewUserPage = () => {
     history.push('/register-new-user')
   }
+  console.log(userInfos)
   if (userInfos)
     return (
       <div className="logo">
+        <div
+          onClick={handleClick}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          {/* <Avatar
+            style={{ backgroundColor: userInfos.color, cursor: 'pointer' }}
+          >
+            {userInfos.firstname.charAt(0)}
+            {userInfos.lastname.charAt(0)}
+          </Avatar> */}
+          <AccountCircleIcon
+            fontSize="large"
+            style={{
+              cursor: 'pointer',
+              marginRight: 10,
+              color: 'white',
+            }}
+          />
+        </div>
         <StyledMenu
           id="customized-menu"
           anchorEl={anchorEl}
@@ -86,24 +109,24 @@ const Navbar: React.FC = function () {
         >
           <StyledMenuItem onClick={() => history.push('/profile')}>
             <ListItemIcon className="icons">
-              <AccountCircleIcon fontSize="small" />
+              <AccountCircleIcon fontSize="small" style={{ marginRight: 10 }} />
             </ListItemIcon>
             <ListItemText primary="Mon Profile" />
           </StyledMenuItem>
           {isUserAdmin && (
             <StyledMenuItem
-              style={{ padding: 20 }}
+              style={{ padding: 30 }}
               onClick={handleRedirectToRegisterNewUserPage}
             >
               <ListItemIcon className="icons">
-                <PersonAddIcon fontSize="small" />
+                <PersonAddIcon fontSize="small" style={{ marginRight: 10 }} />
               </ListItemIcon>
               <ListItemText primary="Ajout d'utilisateurs" />
             </StyledMenuItem>
           )}
           <StyledMenuItem onClick={handleLogout}>
             <ListItemIcon className="icons">
-              <ExitToAppIcon fontSize="small" />
+              <ExitToAppIcon fontSize="small" style={{ marginRight: 10 }} />
             </ListItemIcon>
             <ListItemText primary="Se déconnecter" />
           </StyledMenuItem>

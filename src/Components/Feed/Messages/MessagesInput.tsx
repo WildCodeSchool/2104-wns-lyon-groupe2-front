@@ -10,6 +10,7 @@ import useStyles from './MessagesStyle'
 export interface MessagesInputProps {
   userMessage: string
   setUserMessage: (userMessage: string) => void
+  bottomRef: any
   workspaceId: string
   feedId: string
   refetch: any
