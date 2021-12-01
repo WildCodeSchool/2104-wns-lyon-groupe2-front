@@ -3,8 +3,6 @@ import { TextField, Button, Container } from '@material-ui/core'
 import * as EmailValidator from 'email-validator'
 import { useMutation, gql } from '@apollo/client'
 
-import useStyles from '../../Components/LoginForm/LoginStyle'
-
 // This component was built following TDD method with
 // React testing Library, and mockProvider from Apollo Graphql
 export const GET_PASSWORD_BY_MAIL = gql`
@@ -18,7 +16,6 @@ export const GET_PASSWORD_BY_MAIL = gql`
 
 export const ForgotPassword: React.FC = (props: any) => {
   const { history } = props
-  const classes = useStyles()
   const [email, setEmail] = useState<string>('')
 
   const [getMyPasswordBack, { loading, data, error }] = useMutation(
@@ -47,8 +44,8 @@ export const ForgotPassword: React.FC = (props: any) => {
       data-testid="forgot_container"
       className="forgot_password_container"
     >
-      <div className={classes.paper}>
-        <div className={classes.title}>
+      <div>
+        <div>
           <h4>Récupération de mot de passe</h4>
         </div>
         {loading && <p>Loading...</p>}
@@ -66,9 +63,7 @@ export const ForgotPassword: React.FC = (props: any) => {
             inputProps={{ 'data-testid': 'email' }}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {error && (
-            <p className={classes.formError}>This mail does not exist!</p>
-          )}
+          {error && <p>This mail does not exist!</p>}
 
           <Button
             data-testid="send_mail_button"
@@ -77,7 +72,6 @@ export const ForgotPassword: React.FC = (props: any) => {
             variant="contained"
             color="primary"
             disabled={!validate()}
-            className={classes.submit}
           >
             Connexion
           </Button>
