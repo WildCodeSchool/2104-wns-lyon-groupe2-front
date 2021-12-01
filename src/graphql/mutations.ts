@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { ITags } from '../Interfaces/Assets'
 
 export const DELETE_ASSETS = gql`
   mutation deletAsset($input: [String]!) {
@@ -33,10 +34,14 @@ export const DELETE_FOLDER = gql`
     deleteFolder(input: $input)
   }
 `
-
+// Here add tagsSelected type
 export const UPLOAD_FILE = gql`
-  mutation uploadFile($data: Upload!, $folderId: String!) {
-    uploadFile(data: $data, folderId: $folderId) {
+  mutation uploadFile(
+    $data: Upload!
+    $folderId: String!
+    $tagsSelected: [InputTag]
+  ) {
+    uploadFile(data: $data, folderId: $folderId, tagsSelected: $tagsSelected) {
       url
     }
   }

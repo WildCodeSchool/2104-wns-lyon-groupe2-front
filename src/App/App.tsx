@@ -9,7 +9,7 @@ import { setContext } from '@apollo/client/link/context'
 import Routes from '../Routes/Routes'
 import './App.scss'
 
-const App = (): JSX.Element => {
+const App = function (): JSX.Element {
   const { REACT_APP_API_URL } = process.env
 
   const authLink = setContext((_, { headers }) => {
@@ -27,7 +27,7 @@ const App = (): JSX.Element => {
 
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     link: authLink.concat(uploadLink),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ addTypename: false }),
   })
 
   return (

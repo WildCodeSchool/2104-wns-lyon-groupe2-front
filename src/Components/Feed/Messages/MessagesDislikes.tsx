@@ -43,12 +43,12 @@ const ADD_DISLIKE = gql`
   }
 `
 
-const MessagesDislikes: React.FC<MessagesLikesProps> = ({
+const MessagesDislikes: React.FC<MessagesLikesProps> = function ({
   message,
   workspaceId,
   feedId,
   refetch,
-}) => {
+}) {
   const { userInfos } = useContext(UserContext)
   const [active, setActive] = useState(false)
   const [addDislike] = useMutation(ADD_DISLIKE)

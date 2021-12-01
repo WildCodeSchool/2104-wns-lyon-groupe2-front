@@ -46,7 +46,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem)
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = function () {
   const { userInfos, removeUser } = useContext(UserContext)
   const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -133,7 +133,7 @@ const Navbar: React.FC = () => {
         </StyledMenu>
       </div>
     )
-  return <></>
+  return <>Problem</>
 }
 
 export default Navbar
