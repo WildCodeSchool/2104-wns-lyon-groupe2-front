@@ -16,7 +16,7 @@ interface InputToChangePassword {
   first_connection: boolean
 }
 
-const NewPassword: React.FC = function (props: any) {
+const NewPassword: React.FC = (props: any) => {
   const { addToast } = useToasts()
   const { history } = props
   const classes = useStyles()

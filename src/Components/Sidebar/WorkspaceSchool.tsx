@@ -121,7 +121,7 @@ const WorkspaceSchool: React.FC = () => {
               </Link>
               <TreeItem
                 nodeId={el.assets[0].id as string}
-                label={el.assets[0].name}
+                label={el.assets[0].assetName}
               />
               {el.visio ? (
                 <a href={el.visio}>

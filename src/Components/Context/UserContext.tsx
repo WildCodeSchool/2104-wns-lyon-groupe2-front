@@ -16,7 +16,6 @@ const UserProvider: React.FC = ({ children }) => {
   const [userInfos, setUserInfos] = useState<iUsers | null>()
   const { addToast } = useToasts()
   const [school, setSchool] = useState([])
-  const [schoolId, setSchoolId] = useState('')
 
   const checkTokenValidity = (encryptedToken: string) => {
     const userData: iTokenDecrypted = jwt_decode(encryptedToken)
@@ -73,8 +72,6 @@ const UserProvider: React.FC = ({ children }) => {
         addUser,
         school,
         setSchool,
-        schoolId,
-        setSchoolId,
       }}
     >
       {children}
