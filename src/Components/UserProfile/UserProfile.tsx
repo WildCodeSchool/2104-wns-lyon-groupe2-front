@@ -92,6 +92,12 @@ const UserProfile = (props: any) => {
   if (userInfos)
     return (
       <Grid>
+        <div
+          className={classes.coverContainer}
+          style={{
+            background: `no-repeat url(${userInfos.backgroundUrl})`,
+          }}
+        />
         <Grid item xs={12} className={classes.container}>
           <Avatar
             sizes="40"

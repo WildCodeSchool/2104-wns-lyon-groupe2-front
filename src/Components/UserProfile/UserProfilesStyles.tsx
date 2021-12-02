@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
   uploadBackground: {
     margin: 10,
   },
+  coverContainer: {
+    height: 50,
+    position: 'relative',
+    top: 0,
+  },
 }))
 
 export default useStyles
