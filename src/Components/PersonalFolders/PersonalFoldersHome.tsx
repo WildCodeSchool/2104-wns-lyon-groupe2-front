@@ -38,6 +38,8 @@ import { dataForAssetsTable } from '../../Tools/dataRework'
 import { TabsContainer } from './TabsContainer'
 import ModalContainer from './ModalContainer'
 import { ITags } from '../../Interfaces/Assets'
+import Navbar from '../Feed/Navbar/Navbar'
+import Searchbar from '../Feed/Navbar/Searchbar'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -405,6 +407,19 @@ const PersonalFoldersHome: React.FC = function ({ match, history }: any) {
       id="folders_container"
       onClick={(e) => getClickOutsideOfTextField(e)}
     >
+      <div
+        style={{
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+          width: '100%',
+          height: 100,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Searchbar />
+        <Navbar />
+      </div>
       <ModalContainer
         refetch={refetch}
         parentId={parentDirectory}
