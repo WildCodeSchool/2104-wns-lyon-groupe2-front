@@ -6,6 +6,7 @@ import { IGridProps } from '../../../Interfaces/Assets'
 import { DELETE_ASSETS } from '../../../graphql/mutations'
 import './GridToolbarEvent.scss'
 import DeleteModal from './DeleteModal'
+import Navbar from '../../Feed/Navbar/Navbar'
 
 const GridToolbarEvent: React.FC<IGridProps> = ({
   assetsList,
