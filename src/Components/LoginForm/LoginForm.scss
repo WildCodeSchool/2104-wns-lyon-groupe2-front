@@ -1,0 +1,66 @@
+.login_container {
+  display: flex;
+  height: 100vh;
+  .login_form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .login_form_input {
+      width: 100%;
+      .forgot_password_link {
+        text-decoration: none;
+        list-style-type: none;
+        color: #a4a4a4;
+      }
+      .button_login {
+        background-color: #312783;
+        color: white;
+        margin-bottom: 25px;
+      }
+    }
+  }
+  .company_presentation {
+    width: 50%;
+    background: linear-gradient(#312783, #1d71b8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .presentation {
+      margin: 0 20% 0 20%;
+    }
+    .title_presentation {
+      color: white;
+      padding: 20px;
+    }
+    .content_presentation {
+      color: white;
+      line-height: 30px;
+      font-size: 20px;
+    }
+  }
+}
+
+.login_form_and_logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  .login_logo {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login_container .company_presentation {
+    display: none;
+  }
+  .login_form_and_logo {
+    width: 100%;
+  }
+  .login_container .login_form {
+    width: 70%;
+  }
+}

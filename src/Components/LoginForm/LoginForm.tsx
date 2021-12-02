@@ -20,11 +20,12 @@ import { useMutation, gql } from '@apollo/client'
 import { useToasts } from 'react-toast-notifications'
 import { iInputLogin } from '../../Interfaces/Auth'
 import { UserContext } from '../Context/UserContext'
-import useStyles from './LoginStyle'
 
 import { LOGIN_MUTATION } from '../../graphql/mutations'
 
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
+
+import './LoginForm.scss'
 
 // Pour gérer la redirection avec TS
 type SomeComponentProps = RouteComponentProps
@@ -32,7 +33,7 @@ type SomeComponentProps = RouteComponentProps
 // L'interface ici doit (??) être identique à l'interface ...Graphql coté back ?
 
 const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
-  const classes = useStyles()
+  /* const classes = useStyles() */
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
@@ -85,79 +86,94 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
   }
 
   return (
-    <Container maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <img className={classes.logo} src="logo-ds.png" alt="Daddy Studies" />
-        <form className={classes.form}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyPress={(e) => handleKeyPress(e)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Mot de passe"
-            type={showPassword ? 'text' : 'password'}
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyPress={(e) => handleKeyPress(e)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? (
-                      <Visibility color="primary" />
-                    ) : (
-                      <VisibilityOff color="primary" />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                value="remember"
-                color="primary"
-                onChange={(e) => setRemember(!remember)}
-              />
-            }
-            label="Se souvenir de moi"
-          />
-          <Button
-            onClick={onSubmit}
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={!validate()}
-            className={classes.submit}
-          >
-            Connexion
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link to="/forgotpassword">
-                <p className={classes.forgot}>Mot de passe oublié ?</p>
-              </Link>
+    <div className="login_container">
+      <div className="login_form_and_logo">
+        <img className="login_logo" src="/logo_daddy_studdies.png" alt="logo" />
+        <form className="login_form">
+          <div className="login_form_input">
+            <p style={{ fontSize: '20px' }}>
+              Veuillez vous connecter s'il vous plait
+            </p>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyPress={(e) => handleKeyPress(e)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Mot de passe"
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={(e) => handleKeyPress(e)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? (
+                        <Visibility color="primary" />
+                      ) : (
+                        <VisibilityOff color="primary" />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="remember"
+                  color="primary"
+                  onChange={(e) => setRemember(!remember)}
+                />
+              }
+              label="Se souvenir de moi"
+            />
+            <Button
+              className="button_login"
+              onClick={onSubmit}
+              fullWidth
+              variant="contained"
+              disabled={!validate()}
+            >
+              Connexion
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link className="forgot_password_link" to="/forgotpassword">
+                  <p>Mot de passe oublié ?</p>
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
+          </div>
         </form>
       </div>
-    </Container>
+      <div className="company_presentation">
+        <div className="presentation">
+          <h2 className="title_presentation">
+            Bienvenue sur le site daddy studdies
+          </h2>
+          <p className="content_presentation">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }
 
