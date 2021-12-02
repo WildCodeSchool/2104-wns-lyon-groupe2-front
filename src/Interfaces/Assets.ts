@@ -45,6 +45,10 @@ export interface IAssetsProps {
   setIsModalOpen: Dispatch<React.SetStateAction<boolean>>
 }
 export interface IModalProps {
+  setCreateFolderMode: any
+  createFolderMode: boolean
+  isOpen: boolean
+  setIsOpen: any
   refetch: any
   parentId: string
   setUpdateComponent: Dispatch<React.SetStateAction<boolean>>
@@ -53,7 +57,7 @@ export interface IModalProps {
 export interface ITabsProps {
   handleClick: any
   submitNewFolder: any
-
+  createFolderMode: boolean
   sameNameError: boolean
   folderName: string | null
   setFolderName: Dispatch<React.SetStateAction<string | null>>

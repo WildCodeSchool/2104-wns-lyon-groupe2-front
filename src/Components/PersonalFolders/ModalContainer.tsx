@@ -9,17 +9,20 @@ import { TabsContainer } from './TabsContainer'
 import { IModalProps } from '../../Interfaces/Assets'
 
 const ModalContainer: React.FC<IModalProps> = function ({
+  setCreateFolderMode,
+  createFolderMode,
+  isOpen,
+  setIsOpen,
   refetch,
   parentId,
   updateComponent,
   setUpdateComponent,
 }) {
   const [folderName, setFolderName] = useState<null | string>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [sameNameError, setSameNameError] = useState(false)
   const [addFolder, { error }] = useMutation(CREATE_FOLDER, {
     onCompleted: () => {
-      setIsModalOpen(!isModalOpen)
+      setIsOpen(!isOpen)
       setFolderName(null)
       setSameNameError(false)
       refetch()
@@ -30,8 +33,9 @@ const ModalContainer: React.FC<IModalProps> = function ({
   })
 
   const handleClick = () => {
-    setIsModalOpen(!isModalOpen)
+    setIsOpen(!isOpen)
     setSameNameError(false)
+    setCreateFolderMode(false)
   }
 
   const submitNewFolder = async (e: any = null) => {
@@ -53,10 +57,11 @@ const ModalContainer: React.FC<IModalProps> = function ({
       <Fab aria-label="add" onClick={handleClick}>
         <AddIcon />
       </Fab>
-      {isModalOpen && (
-        <Modal open={isModalOpen} onClose={handleClick}>
+      {isOpen && (
+        <Modal open={isOpen} onClose={handleClick}>
           <Box className="add_folder_modal">
             <TabsContainer
+              createFolderMode={createFolderMode}
               folderId={parentId}
               setUpdateComponent={setUpdateComponent}
               updateComponent={updateComponent}
@@ -67,8 +72,8 @@ const ModalContainer: React.FC<IModalProps> = function ({
               sameNameError={sameNameError}
               folderName={folderName}
               setFolderName={setFolderName}
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
+              isModalOpen={isOpen}
+              setIsModalOpen={setIsOpen}
             />
           </Box>
         </Modal>

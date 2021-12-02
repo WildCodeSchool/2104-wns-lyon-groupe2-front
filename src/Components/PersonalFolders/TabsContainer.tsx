@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs, Typography } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TabPanelProps, ITabsProps } from '../../Interfaces/Assets'
 import FileUpload from '../FileUPload/FileUpload'
 import AddFolder from './AddFolder'
@@ -27,6 +27,7 @@ const a11yProps = (index: number) => {
 }
 
 export const TabsContainer: React.FC<ITabsProps> = function ({
+  createFolderMode,
   folderId,
   updateComponent,
   setUpdateComponent,
@@ -44,6 +45,13 @@ export const TabsContainer: React.FC<ITabsProps> = function ({
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue)
   }
+
+  useEffect(() => {
+    if (createFolderMode) {
+      setValue(1)
+    }
+  }, [])
+
   return (
     <>
       <Tabs
