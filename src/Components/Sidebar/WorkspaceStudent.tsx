@@ -5,7 +5,7 @@ import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { FcAssistant } from 'react-icons/fc'
+import GroupIcon from '@material-ui/icons/Group'
 import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
 import Loader from 'react-loader-spinner'
@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { iWorkspace } from '../../Interfaces/Workspace'
 import { UserContext } from '../Context/UserContext'
+import { GET_WORKSPACES } from '../../graphql/queries'
 
 const useStyles = makeStyles((theme) => ({
   container: { marginTop: theme.spacing(1) },
@@ -26,36 +27,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '300px',
   },
 }))
-
-export const GET_WORKSPACES = gql`
-  query allWorkspaces($input: InputWorkspaceGet!) {
-    allWorkspaces(input: $input) {
-      id
-      title
-      isSchoolWorkspace
-      feed {
-        id
-        feedName
-        messages {
-          id
-          content
-          userId
-          comments {
-            id
-            content
-            userId
-            createdAt
-          }
-        }
-      }
-      assets {
-        id
-        assetName
-      }
-      visio
-    }
-  }
-`
 
 const WorkspaceStudent: React.FC = () => {
   const { userInfos } = useContext(UserContext)
@@ -92,8 +63,8 @@ const WorkspaceStudent: React.FC = () => {
       {workspace ? (
         <div className="workspace_container">
           <div className="title_container">
-            <FcAssistant className="workspace_icon" />
-            <p>Espace de travail</p>
+            <GroupIcon className="workspace_icon" />
+            <p className="section_name">Espace de travail</p>
           </div>
           <TreeView
             defaultCollapseIcon={<ExpandMoreIcon />}

@@ -92,11 +92,11 @@ const Navbar: React.FC = function () {
             {userInfos.lastname.charAt(0)}
           </Avatar> */}
           <AccountCircleIcon
-            fontSize="large"
             style={{
               cursor: 'pointer',
-              marginRight: 10,
-              color: 'white',
+              marginRight: 30,
+              color: '#312783',
+              fontSize: '50px',
             }}
           />
         </div>

@@ -22,6 +22,7 @@ import {
 } from 'react-beautiful-dnd'
 import './Folders.scss'
 import { useToasts } from 'react-toast-notifications'
+import FolderIcon from '@material-ui/icons/Folder'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 import MoveFolderModal from './MoveFolderModal'
 import {
@@ -464,7 +465,8 @@ const PersonalFoldersHome: React.FC = function ({ match, history }: any) {
                                   ref={provided.innerRef}
                                 >
                                   <ContextMenuTrigger id={id}>
-                                    <FcFolder
+                                    <FolderIcon
+                                      style={{ color: '#F5A454' }}
                                       className="folder_icon"
                                       onClick={() =>
                                         history.push(`/personal-folders/${id}`)

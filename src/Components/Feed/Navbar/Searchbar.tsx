@@ -6,7 +6,7 @@ import { NavbarContext } from '../../Context/NavbarContext'
 
 const useStyles = makeStyles((theme) => ({
   input: {
-    width: '40vw',
+    width: '20vw',
     marginLeft: 60,
     backgroundColor: 'white',
     borderRadius: 20,
@@ -15,9 +15,6 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 100,
       marginRight: 10,
     },
-  },
-  noBorder: {
-    border: 'none',
   },
 }))
 const Searchbar: React.FC = () => {
@@ -38,7 +35,6 @@ const Searchbar: React.FC = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           InputProps={{
-            classes: { notchedOutline: classes.noBorder },
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton>

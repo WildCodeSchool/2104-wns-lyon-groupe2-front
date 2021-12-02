@@ -14,6 +14,7 @@ import Login from '../Pages/Login/Login'
 import Publication from '../Pages/Publication/Publication'
 import Profile from '../Pages/Profile/Profile'
 import PrivateRoute from './PrivateRoute'
+import Navbar from '../Components/Feed/Navbar/Navbar'
 
 const customHistory = createBrowserHistory()
 
