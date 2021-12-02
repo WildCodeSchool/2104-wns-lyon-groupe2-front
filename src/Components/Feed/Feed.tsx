@@ -26,9 +26,9 @@ const Feed: React.FC = () => {
       <div
         className="feed_header"
         style={{
-          backgroundColor: school.primaryColor,
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
           width: '100%',
-          height: 50,
+          height: 100,
         }}
       >
         <Searchbar />

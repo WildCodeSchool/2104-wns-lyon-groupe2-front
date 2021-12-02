@@ -13,20 +13,7 @@
     margin-bottom: 20px;
     .plus_icon {
       margin-right: 20px;
-    }
-  }
-  .btn_sidebar_bottom {
-    display: flex;
-    justify-content: space-between;
-    width: 15%;
-    position: fixed;
-    bottom: 0;
-    margin-bottom: 10px;
-    .params_icon {
-      margin-right: 20px;
-    }
-    .pseudo {
-      margin-left: 15px;
+      color: #312783;
     }
   }
   .sidebar_header {
@@ -37,7 +24,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     height: 100px;
     .website_logo {
-      width: 160px;
+      width: 400px;
       border-radius: 50%;
       margin: 20px 0 20px 0;
       cursor: pointer;
@@ -53,6 +40,7 @@
   height: 100vh;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-top: none;
+  background-color: #312783;
   .btn_sidebar_top {
     display: flex;
     justify-content: space-between;
@@ -60,20 +48,7 @@
     margin-bottom: 20px;
     .plus_icon {
       margin-right: 20px;
-    }
-  }
-  .btn_sidebar_bottom {
-    display: flex;
-    justify-content: space-between;
-    width: 15%;
-    position: fixed;
-    bottom: 0;
-    margin-bottom: 10px;
-    .params_icon {
-      margin-right: 20px;
-    }
-    .pseudo {
-      margin-left: 15px;
+      color: white;
     }
   }
   .sidebar_header {
@@ -84,7 +59,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     height: 100px;
     .website_logo {
-      width: 160px;
+      width: 400px;
       border-radius: 50%;
       cursor: pointer;
     }

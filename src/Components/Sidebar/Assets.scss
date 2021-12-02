@@ -5,10 +5,18 @@
   .title_container {
     display: flex;
     flex-direction: row;
+    align-items: center;
     font-size: 18px;
-    padding: 5px;
+    padding: 20px;
+    background-color: #1d71b8;
+    border-radius: 25px;
+    margin: 30px;
     .assets_icon {
-      margin: 0 5px 0 10px;
+      margin: 0 15px 0 10px;
+      color: white;
+    }
+    .section_name {
+      color: white;
     }
   }
   .title_channel_container {
@@ -17,12 +25,16 @@
   .favorites {
     display: flex;
     flex-direction: row;
-    margin: 0 0 20px 0px;
+    margin: 0 30px 0 30px;
     list-style: none;
     font-size: 18px;
-    padding: 5px;
+    padding: 20px;
     .favorite_icon {
-      margin: 0 5px 0 10px;
+      margin: 0 15px 0 10px;
+      color: white;
+    }
+    .section_name {
+      color: white;
     }
   }
 }

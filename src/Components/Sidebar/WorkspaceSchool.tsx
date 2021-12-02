@@ -10,10 +10,12 @@ import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import SchoolIcon from '@material-ui/icons/School'
 import WorkspaceStudent from './WorkspaceStudent'
 import { iWorkspace } from '../../Interfaces/Workspace'
 import { SidebarContext } from '../Context/SidebarContext'
 import { UserContext } from '../Context/UserContext'
+import { GET_WORKSPACES } from '../../graphql/queries'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -26,36 +28,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '100px',
   },
 }))
-
-const GET_WORKSPACES = gql`
-  query allWorkspaces($input: InputWorkspaceGet!) {
-    allWorkspaces(input: $input) {
-      id
-      title
-      isSchoolWorkspace
-      feed {
-        id
-        feedName
-        messages {
-          id
-          content
-          userId
-          comments {
-            id
-            content
-            userId
-            createdAt
-          }
-        }
-      }
-      assets {
-        id
-        assetName
-      }
-      visio
-    }
-  }
-`
 
 const WorkspaceSchool: React.FC = () => {
   const { setFirstFeedOnHomePage } = useContext(SidebarContext)
@@ -89,8 +61,8 @@ const WorkspaceSchool: React.FC = () => {
   return (
     <div className="workspace_container">
       <div className="title_container">
-        <FcGraduationCap className="workspace_icon" />
-        <p>Ecoles/Formations</p>
+        <SchoolIcon className="workspace_icon" />
+        <p className="section_name">Ecoles/Formations</p>
       </div>
       <div>
         <TreeView
