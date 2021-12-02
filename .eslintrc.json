@@ -27,6 +27,7 @@
     "react/require-default-props": "off",
     "no-extra-semi": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/destructuring-assignment": "off",
     "react/no-unescaped-entities": 0,
     "react/function-component-definition": "off",
     "@typescript-eslint/ban-ts-comment": "off",
