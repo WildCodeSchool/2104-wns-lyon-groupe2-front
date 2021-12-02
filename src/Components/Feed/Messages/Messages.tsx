@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect, useContext } from 'react'
 import { Grid, Paper, Avatar, Typography } from '@material-ui/core'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useHistory, useLocation } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
 import useStyles from './MessagesStyle'
 import MessagesInput from './MessagesInput'
 import { IMessage } from '../../../Interfaces/Workspace'
@@ -15,51 +13,16 @@ import MessagesLikes from './MessagesLikes'
 import Comments from './Comments/Comments'
 import MessagesDislikes from './MessagesDislikes'
 import useNickname from '../../Hooks/useNickname'
+import { GET_WORKSPACES } from '../../../graphql/queries'
+import { UserContext } from '../../Context/UserContext'
 
-export const GET_WORKSPACES = gql`
-  query getWorkspaceById($input: WorkspaceId!) {
-    getWorkspaceById(input: $input) {
-      id
-      title
-      schoolId
-      feed {
-        id
-        feedName
-        messages {
-          id
-          content
-          userId
-          userName
-          color
-          createdAt
-          comments {
-            id
-            content
-            userId
-            userName
-            color
-            createdAt
-          }
-          likes {
-            userId
-            userName
-          }
-          dislikes {
-            userId
-            userName
-          }
-        }
-      }
-    }
-  }
-`
-
-const Messages: React.FC = function () {
+const Messages: React.FC = () => {
   const classes = useStyles()
   const [messages, setMessages] = useState<IMessage[]>([])
   const [userMessage, setUserMessage] = useState('')
   const [feedId, setFeedId] = useState<string>('')
   const [refresh, setRefresh] = useState<boolean>(false)
+  const { userInfos } = useContext(UserContext)
 
   const { firstFeedOnHomePage } = useContext(SidebarContext)
   const location = useLocation()
@@ -121,12 +84,12 @@ const Messages: React.FC = function () {
                   <Grid className={classes.userNameContainer}>
                     <div
                       onClick={() => {
-                        console.log(message)
                         history.push(`profile/${message.userId}`)
                       }}
                       style={{ width: '50%', marginLeft: '20' }}
                     >
                       <Avatar
+                        src={userInfos.avatarUrl}
                         style={{ backgroundColor: message.color }}
                         className={classes.nickName}
                       >

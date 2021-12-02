@@ -1,3 +1,5 @@
+import { IAssetsDetails } from '../Interfaces/Assets'
+
 // uppercase first lettre not && return a txt with ... if too long
 export const elipsMyText = (txt: string): string | undefined => {
   let txtTransform = ''
@@ -17,7 +19,9 @@ export const elipsMyText = (txt: string): string | undefined => {
   return txtTransform
 }
 
-export const dataForAssetsTable = (data) => {
+export const dataForAssetsTable = (
+  data: IAssetsDetails[],
+): IAssetsDetails[] => {
   return data.map((elem, i) => {
     return {
       id: elem.id,

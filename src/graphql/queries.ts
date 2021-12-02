@@ -72,11 +72,11 @@ export const GET_ALL_TAGS = gql`
 `
 
 export const GET_WORKSPACES = gql`
-  query allWorkspaces($input: InputWorkspaceGet!) {
-    allWorkspaces(input: $input) {
+  query getWorkspaceById($input: WorkspaceId!) {
+    getWorkspaceById(input: $input) {
       id
       title
-      isSchoolWorkspace
+      schoolId
       feed {
         id
         feedName
@@ -84,19 +84,27 @@ export const GET_WORKSPACES = gql`
           id
           content
           userId
+          userName
+          color
+          createdAt
           comments {
             id
             content
             userId
+            userName
+            color
             createdAt
+          }
+          likes {
+            userId
+            userName
+          }
+          dislikes {
+            userId
+            userName
           }
         }
       }
-      assets {
-        id
-        assetName
-      }
-      visio
     }
   }
 `

@@ -46,7 +46,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem)
 
-const Navbar: React.FC = function () {
+const Navbar: React.FC = () => {
   const { userInfos, removeUser } = useContext(UserContext)
   const [isUserAdmin, setIsUserAdmin] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -85,12 +85,6 @@ const Navbar: React.FC = function () {
             justifyContent: 'center',
           }}
         >
-          {/* <Avatar
-            style={{ backgroundColor: userInfos.color, cursor: 'pointer' }}
-          >
-            {userInfos.firstname.charAt(0)}
-            {userInfos.lastname.charAt(0)}
-          </Avatar> */}
           <AccountCircleIcon
             style={{
               cursor: 'pointer',
