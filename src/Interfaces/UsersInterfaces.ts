@@ -1,3 +1,6 @@
+import { History } from 'history'
+import React from 'react'
+
 export interface iUsers {
   id?: string
   firstname?: string
@@ -11,6 +14,8 @@ export interface iUsers {
   userType?: string
   exp?: number
   iat?: number
+  avatarUrl?: string
+  backgroundUrl?: string
 }
 
 export interface iNewUser {
@@ -42,4 +47,20 @@ export interface iXLSXUser {
   Nom: string
   Email: string
   Catégorie: string
+}
+
+export interface InputPasswordRecovery {
+  userId: string
+  token: string
+}
+
+export interface InputToChangePassword {
+  userId: string
+  password: string
+  // eslint-disable-next-line camelcase
+  first_connection: boolean
+}
+
+export interface UserProfileProps {
+  userInfos: iUsers
 }

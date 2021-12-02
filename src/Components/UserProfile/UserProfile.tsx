@@ -1,59 +1,61 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {
-  Container,
-  CssBaseline,
-  Grid,
-  Avatar,
-  Typography,
-} from '@material-ui/core'
-import { useQuery, gql } from '@apollo/client'
-import { useHistory, useLocation } from 'react-router'
+import { Grid, Avatar, Typography, Button } from '@material-ui/core'
+import { useMutation, useQuery } from '@apollo/client'
+import { useHistory } from 'react-router'
+import { useToasts } from 'react-toast-notifications'
 import { iUsers } from '../../Interfaces/UsersInterfaces'
 import useStyles from './UserProfilesStyles'
 import { UserContext } from '../Context/UserContext'
-
-export interface UserProfileProps {
-  userInfos: iUsers
-}
-export const GET_USER_BY_ID = gql`
-  query Query($input: UserId!) {
-    getUserByID(input: $input) {
-      id
-      lastname
-      firstname
-      avatar
-      email
-      color
-      schoolId
-      userType
-      isSchoolAdmin
-    }
-  }
-`
+import { GET_USER_BY_ID, UPLOAD_USER_PROFIL } from '../../graphql/mutations'
 
 const UserProfile = (props: any) => {
-  console.log(props)
   const classes = useStyles()
   const [user, setUser] = useState<iUsers>()
-  const { userInfos } = useContext(UserContext)
+  const { userInfos, addUser } = useContext(UserContext)
+  const { addToast } = useToasts()
+
   // eslint-disable-next-line react/destructuring-assignment
   const history = useHistory()
   const id: string = history.location.pathname.split('/')[2]
-  console.log(id)
 
-  const { loading, error, data, refetch } = useQuery(GET_USER_BY_ID, {
+  const {
+    loading,
+    error,
+    data: userData,
+    refetch,
+  } = useQuery(GET_USER_BY_ID, {
     variables: {
       input: {
         id,
       },
     },
   })
+  const [uploadUserProfil] = useMutation(UPLOAD_USER_PROFIL, {
+    onCompleted: (res) => console.log(res),
+  })
+  const handleSendMyPix = async (e) => {
+    const data = e.target.files[0]
+    const type = e.target.id
+    if (data.size > 2097152) {
+      addToast('You have to send us something smaller...', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    } else {
+      const sendMyPix = await uploadUserProfil({
+        variables: { data, type },
+      })
+      if (sendMyPix?.data?.uploadUserProfil?.token) {
+        addUser(sendMyPix?.data?.uploadUserProfil?.token)
+      }
+    }
+  }
 
   useEffect(() => {
-    if (data) {
-      setUser(data.getUserByID)
+    if (userData) {
+      setUser(userData.getUserByID)
     }
-  }, [data])
+  }, [userData])
 
   if (user)
     return (
@@ -62,7 +64,12 @@ const UserProfile = (props: any) => {
           <Grid item xs={12} className={classes.container}>
             <Avatar
               sizes="40"
-              style={{ width: 100, height: 100, backgroundColor: user.color }}
+              src={userInfos.avatarUrl}
+              style={{
+                width: 100,
+                height: 100,
+                backgroundColor: !user.avatarUrl ? user.color : undefined,
+              }}
             >
               {user.firstname && user.lastname ? (
                 <Typography style={{ fontSize: 40 }}>
@@ -88,13 +95,16 @@ const UserProfile = (props: any) => {
         <Grid item xs={12} className={classes.container}>
           <Avatar
             sizes="40"
+            src={userInfos.avatarUrl}
             style={{
               width: 100,
               height: 100,
-              backgroundColor: userInfos.color,
+              backgroundColor: !userInfos.avatarUrl ? userInfos.color : null,
             }}
           >
-            {userInfos.firstname && userInfos.lastname ? (
+            {userInfos.firstname &&
+            userInfos.lastname &&
+            !userInfos.avatarUrl ? (
               <Typography style={{ fontSize: 40 }}>
                 {userInfos.firstname.charAt(0) + userInfos.lastname.charAt(0)}
               </Typography>
@@ -108,6 +118,52 @@ const UserProfile = (props: any) => {
             </Typography>
           </Grid>
           <Typography>{userInfos.email}</Typography>
+        </Grid>
+        <Grid className={classes.uploadContainer}>
+          <div>
+            <label htmlFor="avatarUpload">
+              <input
+                style={{ display: 'none' }}
+                id="avatarUpload"
+                name="avatarUpload"
+                type="file"
+                onChange={handleSendMyPix}
+                accept="image/*"
+              />
+              <div className="file_upload_container_button">
+                <Button
+                  className={classes.uploadAvatar}
+                  color="primary"
+                  variant="contained"
+                  component="span"
+                >
+                  Change my Avatar
+                </Button>
+              </div>
+            </label>
+          </div>
+          <div>
+            <label htmlFor="backgroundUpload">
+              <input
+                style={{ display: 'none' }}
+                id="backgroundUpload"
+                name="backgroundUpload"
+                type="file"
+                onChange={handleSendMyPix}
+                accept="image/*"
+              />
+              <div className="file_upload_container_button">
+                <Button
+                  className={classes.uploadBackground}
+                  color="primary"
+                  variant="contained"
+                  component="span"
+                >
+                  Change my Background
+                </Button>
+              </div>
+            </label>
+          </div>
         </Grid>
       </Grid>
     )

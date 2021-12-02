@@ -1,10 +1,10 @@
-import { Box, Tab, Tabs, Typography } from '@material-ui/core'
+import { Box, Tab, Tabs } from '@material-ui/core'
 import React, { useState } from 'react'
 import { TabPanelProps, ITabsProps } from '../../Interfaces/Assets'
-import FileUpload from '../FileUPload/FileUpload'
+import AssetsUpload from '../FileUPload/AssetsUpload'
 import AddFolder from './AddFolder'
 
-const TabPanel = function (props: TabPanelProps) {
+const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props
 
   return (
@@ -26,11 +26,9 @@ const a11yProps = (index: number) => {
   }
 }
 
-export const TabsContainer: React.FC<ITabsProps> = function ({
-  folderId,
+export const TabsContainer: React.FC<ITabsProps> = ({
   updateComponent,
   setUpdateComponent,
-  refetch,
   parentId,
   handleClick,
   setFolderName,
@@ -39,7 +37,7 @@ export const TabsContainer: React.FC<ITabsProps> = function ({
   submitNewFolder,
   isModalOpen,
   setIsModalOpen,
-}) {
+}) => {
   const [value, setValue] = useState<number>(0)
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue)
@@ -55,7 +53,7 @@ export const TabsContainer: React.FC<ITabsProps> = function ({
         <Tab label="Créer un dossier" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <FileUpload
+        <AssetsUpload
           folderId={parentId}
           updateComponent={updateComponent}
           setUpdateComponent={setUpdateComponent}

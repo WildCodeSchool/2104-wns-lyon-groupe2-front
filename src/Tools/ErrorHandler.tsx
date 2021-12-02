@@ -29,7 +29,7 @@ const errors = [
   { code: '109', message: 'Un dossier portant ce nom existe déjà' },
 ]
 
-export const returnMessageForAnErrorCode = (code: string): any => {
+export const returnMessageForAnErrorCode = (code: string): string => {
   const errorFound = errors.filter((error) => code === error.code)[0]
   if (errorFound) {
     return errorFound.message

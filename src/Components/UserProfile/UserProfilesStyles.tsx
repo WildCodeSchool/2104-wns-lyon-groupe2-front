@@ -16,6 +16,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     fontWeight: 500,
   },
+  uploadContainer: {
+    marginTop: 20,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  uploadAvatar: {
+    margin: 10,
+  },
+  uploadBackground: {
+    margin: 10,
+  },
 }))
 
 export default useStyles
