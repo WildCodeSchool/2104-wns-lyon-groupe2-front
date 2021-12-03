@@ -15,6 +15,7 @@ import Publication from '../Pages/Publication/Publication'
 import Profile from '../Pages/Profile/Profile'
 import PrivateRoute from './PrivateRoute'
 import Navbar from '../Components/Feed/Navbar/Navbar'
+import Search from '../Pages/Search/Search'
 
 const customHistory = createBrowserHistory()
 
@@ -42,6 +43,8 @@ const renderPrivateSwitch = () => {
 
       <Route exact path="/personal-folders" component={PersonalFolders} />
       <Route exact path="/register-new-user" component={AddNewUser} />
+
+      <Route exact path="/search" component={Search} />
 
       <Route
         exact
