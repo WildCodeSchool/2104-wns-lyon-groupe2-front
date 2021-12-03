@@ -18,6 +18,7 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
   const [isAuth] = useMutation(IS_AUTH, {
     fetchPolicy: 'network-only',
   })
+  
   const apiCall = async () => {
     const response = await isAuth({ variables: { input: { token } } })
     if (response?.data?.isAuth?.auth) {
@@ -25,6 +26,7 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
     }
     setChecked(true)
   }
+
   useEffect(() => {
     apiCall()
   }, [])

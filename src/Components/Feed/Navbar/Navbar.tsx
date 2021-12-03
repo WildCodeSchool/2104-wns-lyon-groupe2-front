@@ -74,7 +74,6 @@ const Navbar: React.FC = () => {
   const handleRedirectToRegisterNewUserPage = () => {
     history.push('/register-new-user')
   }
-  console.log(userInfos)
   if (userInfos)
     return (
       <div className="logo">
