@@ -164,13 +164,22 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
       <div className="company_presentation">
         <div className="presentation">
           <h2 className="title_presentation">
-            Bienvenue sur le site daddy studdies
+            Bienvenue sur le site Daddy Studdies
           </h2>
           <p className="content_presentation">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s
           </p>
+          <Button
+            onClick={() => history.push('/create-my-school')}
+            fullWidth
+            variant="contained"
+            disabled={!validate()}
+            style={{ marginTop: 20 }}
+          >
+            <p>Je souhaite inscrire mon école</p>
+          </Button>
         </div>
       </div>
     </div>

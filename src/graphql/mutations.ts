@@ -107,3 +107,23 @@ export const GET_USER_BY_ID = gql`
     }
   }
 `
+
+export const SIGNUP_MUTATION = gql`
+  mutation Mutation($createSchoolInput: InputSchool!) {
+    createSchool(input: $createSchoolInput) {
+      data {
+        id
+        firstname
+        schoolName
+      }
+      user {
+        id
+        firstname
+      }
+      workspace {
+        id
+        title
+      }
+    }
+  }
+`

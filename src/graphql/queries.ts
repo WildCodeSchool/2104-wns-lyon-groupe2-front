@@ -72,6 +72,36 @@ export const GET_ALL_TAGS = gql`
 `
 
 export const GET_WORKSPACES = gql`
+  query allWorkspaces($input: InputWorkspaceGet!) {
+    allWorkspaces(input: $input) {
+      id
+      title
+      isSchoolWorkspace
+      feed {
+        id
+        feedName
+        messages {
+          id
+          content
+          userId
+          comments {
+            id
+            content
+            userId
+            createdAt
+          }
+        }
+      }
+      assets {
+        id
+        assetName
+      }
+      visio
+    }
+  }
+`
+
+export const GET_WORKSPACE_BY_ID = gql`
   query getWorkspaceById($input: WorkspaceId!) {
     getWorkspaceById(input: $input) {
       id
