@@ -45,7 +45,7 @@ export interface IDislike {
 
 export interface iAssets {
   id?: string
-  name?: string
+  assetName?: string
   folders?: iFolders[]
 }
 

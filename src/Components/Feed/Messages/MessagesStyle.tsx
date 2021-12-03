@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     height: '81vh',
     width: '100%',
-    margin: 0,
+    marginTop: 30,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

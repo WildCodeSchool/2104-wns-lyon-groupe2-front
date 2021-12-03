@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { FcPlus } from 'react-icons/fc'
 import { useMutation, gql } from '@apollo/client'
 import { TextField, Switch, FormControlLabel } from '@material-ui/core'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 import { UserContext } from '../Context/UserContext'
 
 // export interface AddWorkspaceProps {
@@ -80,7 +81,7 @@ const AddWorkspace: React.FC = () => {
 
   return (
     <div>
-      <FcPlus className="plus_icon" size={20} onClick={handleClickOpen} />
+      <AddCircleOutlineIcon className="plus_icon" onClick={handleClickOpen} />
       <Dialog
         open={open}
         onClose={handleClose}

@@ -38,7 +38,7 @@ const StyledMenu = withStyles({
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     '&:focus': {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: 'theme.palette.primary.main',
       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
         color: theme.palette.common.white,
       },
@@ -74,7 +74,6 @@ const Navbar: React.FC = () => {
   const handleRedirectToRegisterNewUserPage = () => {
     history.push('/register-new-user')
   }
-  console.log(userInfos)
   if (userInfos)
     return (
       <div className="logo">
@@ -86,11 +85,11 @@ const Navbar: React.FC = () => {
           }}
         >
           <AccountCircleIcon
-            fontSize="large"
             style={{
               cursor: 'pointer',
-              marginRight: 10,
-              color: 'white',
+              marginRight: 30,
+              color: '#312783',
+              fontSize: '50px',
             }}
           />
         </div>

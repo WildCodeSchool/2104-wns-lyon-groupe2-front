@@ -13,7 +13,7 @@ import MessagesLikes from './MessagesLikes'
 import Comments from './Comments/Comments'
 import MessagesDislikes from './MessagesDislikes'
 import useNickname from '../../Hooks/useNickname'
-import { GET_WORKSPACES } from '../../../graphql/queries'
+import { GET_WORKSPACE_BY_ID } from '../../../graphql/queries'
 import { UserContext } from '../../Context/UserContext'
 
 const Messages: React.FC = () => {
@@ -39,7 +39,7 @@ const Messages: React.FC = () => {
     }
   }
 
-  const { loading, error, data, refetch } = useQuery(GET_WORKSPACES, {
+  const { loading, error, data, refetch } = useQuery(GET_WORKSPACE_BY_ID, {
     variables: {
       input: {
         id: params ? params.id : firstFeedOnHomePage,

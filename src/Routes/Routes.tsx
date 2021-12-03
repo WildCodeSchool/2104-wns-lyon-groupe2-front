@@ -14,6 +14,9 @@ import Login from '../Pages/Login/Login'
 import Publication from '../Pages/Publication/Publication'
 import Profile from '../Pages/Profile/Profile'
 import PrivateRoute from './PrivateRoute'
+import Navbar from '../Components/Feed/Navbar/Navbar'
+import Search from '../Pages/Search/Search'
+import CreateSchool from '../Pages/CreateSchool/CreateSchool'
 
 const customHistory = createBrowserHistory()
 
@@ -22,6 +25,7 @@ const renderPublicSwitch = () => {
     <Switch>
       <Route exact path="/forgotpassword" component={ForgotPassword} />
       <Route exact path="/mailsent" component={MailSent} />
+      <Route path="/create-my-school" component={CreateSchool} />
       <Route path="/" component={Login} />
     </Switch>
   )
@@ -41,6 +45,8 @@ const renderPrivateSwitch = () => {
 
       <Route exact path="/personal-folders" component={PersonalFolders} />
       <Route exact path="/register-new-user" component={AddNewUser} />
+
+      <Route exact path="/search" component={Search} />
 
       <Route
         exact

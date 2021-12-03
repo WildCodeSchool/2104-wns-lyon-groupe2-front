@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import './Feed.scss'
 import { SidebarContext } from '../Context/SidebarContext'
 import AssetsPopin from './Popin/AssetsPopin'
@@ -11,11 +11,13 @@ import Searchbar from './Navbar/Searchbar'
 import SearchbarPopin from './Popin/SearchbarPopin'
 import { NavbarContext } from '../Context/NavbarContext'
 import Messages from './Messages/Messages'
+import { UserContext } from '../Context/UserContext'
+import { useQuery, gql } from '@apollo/client'
 
 const Feed: React.FC = () => {
   const { workspacePopin, setWorkspacePopin, assetsPopin, setAssetsPopin } =
     useContext(SidebarContext)
-
+  const { school } = useContext(UserContext)
   const { popin } = useContext(NavbarContext)
 
   return (
@@ -23,7 +25,11 @@ const Feed: React.FC = () => {
       <BurgerMenu />
       <div
         className="feed_header"
-        style={{ backgroundColor: '#3a8cc7', width: '100%', height: 50 }}
+        style={{
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+          width: '100%',
+          height: 100,
+        }}
       >
         <Searchbar />
         <Navbar />

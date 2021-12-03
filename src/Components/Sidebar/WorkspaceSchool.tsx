@@ -5,15 +5,16 @@ import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { FcGraduationCap } from 'react-icons/fc'
 import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import SchoolIcon from '@material-ui/icons/School'
 import WorkspaceStudent from './WorkspaceStudent'
 import { iWorkspace } from '../../Interfaces/Workspace'
 import { SidebarContext } from '../Context/SidebarContext'
 import { UserContext } from '../Context/UserContext'
+import { GET_WORKSPACES } from '../../graphql/queries'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -26,36 +27,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '100px',
   },
 }))
-
-const GET_WORKSPACES = gql`
-  query allWorkspaces($input: InputWorkspaceGet!) {
-    allWorkspaces(input: $input) {
-      id
-      title
-      isSchoolWorkspace
-      feed {
-        id
-        feedName
-        messages {
-          id
-          content
-          userId
-          comments {
-            id
-            content
-            userId
-            createdAt
-          }
-        }
-      }
-      assets {
-        id
-        assetName
-      }
-      visio
-    }
-  }
-`
 
 const WorkspaceSchool: React.FC = () => {
   const { setFirstFeedOnHomePage } = useContext(SidebarContext)
@@ -73,6 +44,7 @@ const WorkspaceSchool: React.FC = () => {
   const classes = useStyles()
   useEffect(() => {
     if (data?.allWorkspaces.length) {
+      console.log(data)
       setWorkspace(data.allWorkspaces)
       setFirstFeedOnHomePage(data.allWorkspaces[0].id)
     }
@@ -89,8 +61,8 @@ const WorkspaceSchool: React.FC = () => {
   return (
     <div className="workspace_container">
       <div className="title_container">
-        <FcGraduationCap className="workspace_icon" />
-        <p>Ecoles/Formations</p>
+        <SchoolIcon className="workspace_icon" />
+        <p className="section_name">Ecoles/Formations</p>
       </div>
       <div>
         <TreeView
@@ -121,7 +93,7 @@ const WorkspaceSchool: React.FC = () => {
               </Link>
               <TreeItem
                 nodeId={el.assets[0].id as string}
-                label={el.assets[0].name}
+                label={el.assets[0].assetName}
               />
               {el.visio ? (
                 <a href={el.visio}>

@@ -22,6 +22,7 @@ import {
 } from 'react-beautiful-dnd'
 import './Folders.scss'
 import { useToasts } from 'react-toast-notifications'
+import FolderIcon from '@material-ui/icons/Folder'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 import MoveFolderModal from './MoveFolderModal'
 import {
@@ -33,6 +34,10 @@ import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
 import AssetsTable from './Assets/AssetsTable'
 import ModalContainer from './ModalContainer'
+
+import { ITags } from '../../Interfaces/Assets'
+import Navbar from '../Feed/Navbar/Navbar'
+import Searchbar from '../Feed/Navbar/Searchbar'
 import { TDataFolders, TDataFoldersPath } from '../../Interfaces/Folders'
 
 const LoadingContainer = styled.div`
@@ -386,6 +391,19 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
       id="folders_container"
       onClick={(e) => getClickOutsideOfTextField(e)}
     >
+      <div
+        style={{
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+          width: '100%',
+          height: 100,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Searchbar />
+        <Navbar />
+      </div>
       <ModalContainer
         refetch={refetch}
         parentId={parentDirectory}
@@ -446,7 +464,8 @@ const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
                                   ref={provided.innerRef}
                                 >
                                   <ContextMenuTrigger id={id}>
-                                    <FcFolder
+                                    <FolderIcon
+                                      style={{ color: '#F5A454' }}
                                       className="folder_icon"
                                       onClick={() =>
                                         history.push(`/personal-folders/${id}`)

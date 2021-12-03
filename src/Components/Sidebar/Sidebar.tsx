@@ -37,7 +37,11 @@ const Sidebar: React.FC = () => {
           <img
             className="website_logo"
             // eslint-disable-next-line prefer-template
-            src={process.env.PUBLIC_URL + '/logo-ds.png'}
+            src={
+              isWorkspaceDisplayed
+                ? `${process.env.PUBLIC_URL}/logo_daddy_studdies.png`
+                : `${process.env.PUBLIC_URL}/logo_blanc_daddy_studdies.png`
+            }
             alt="Daddy Studies"
             onClick={() => history.push('/')}
           />
@@ -54,10 +58,6 @@ const Sidebar: React.FC = () => {
       </div>
       {!isWorkspaceDisplayed && <Assets />}
       {isWorkspaceDisplayed && <WorkspaceSchool />}
-      <div className="btn_sidebar_bottom">
-        <p className="pseudo">pseudo</p>
-        <FcSettings className="params_icon" />
-      </div>
     </div>
   )
 }
