@@ -100,3 +100,41 @@ export const GET_WORKSPACES = gql`
     }
   }
 `
+
+export const GET_WORKSPACE_BY_ID = gql`
+  query getWorkspaceById($input: WorkspaceId!) {
+    getWorkspaceById(input: $input) {
+      id
+      title
+      schoolId
+      feed {
+        id
+        feedName
+        messages {
+          id
+          content
+          userId
+          userName
+          color
+          createdAt
+          comments {
+            id
+            content
+            userId
+            userName
+            color
+            createdAt
+          }
+          likes {
+            userId
+            userName
+          }
+          dislikes {
+            userId
+            userName
+          }
+        }
+      }
+    }
+  }
+`

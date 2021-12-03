@@ -2,23 +2,16 @@ import { useQuery, gql, useMutation } from '@apollo/client'
 import { Container, TextField, Button } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useToasts } from 'react-toast-notifications'
+import {
+  InputPasswordRecovery,
+  InputToChangePassword,
+} from '../../Interfaces/UsersInterfaces'
 
 import useStyles from './NewPasswordStyle'
 
-interface InputPasswordRecovery {
-  userId: string
-  token: string
-}
-interface InputToChangePassword {
-  userId: string
-  password: string
-  // eslint-disable-next-line camelcase
-  first_connection: boolean
-}
-
 const NewPassword: React.FC = (props: any) => {
   const { addToast } = useToasts()
-  const { history } = props
+  const { history, onClick } = props
   const classes = useStyles()
   const [ShowErrorMessage, setShowErrorMessage] = useState(false)
   const [password, setPassword] = useState('')
@@ -113,8 +106,8 @@ const NewPassword: React.FC = (props: any) => {
   }
   let response
   const onSubmit = async (): Promise<void> => {
-    if (props.onClick) {
-      props.onClick()
+    if (onClick) {
+      onClick()
     }
     response = await updatePassword({ variables: { inputToChangePassword } })
     if (

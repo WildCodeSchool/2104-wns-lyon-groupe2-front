@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Container, Typography } from '@material-ui/core'
 import { useQuery } from '@apollo/client'
-import FileUpload from '../FileUPload/FileUpload'
+import FileUpload from '../FileUPload/AssetsUpload'
 import useStyles from './AssetDetailsStyle'
 import { dateTransformator } from '../../Tools/date'
 

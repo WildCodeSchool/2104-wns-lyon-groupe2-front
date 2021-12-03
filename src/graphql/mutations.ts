@@ -35,13 +35,17 @@ export const DELETE_FOLDER = gql`
   }
 `
 // Here add tagsSelected type
-export const UPLOAD_FILE = gql`
-  mutation uploadFile(
+export const UPLOAD_ASSETS = gql`
+  mutation uploadAssets(
     $data: Upload!
     $folderId: String!
     $tagsSelected: [InputTag]
   ) {
-    uploadFile(data: $data, folderId: $folderId, tagsSelected: $tagsSelected) {
+    uploadAssets(
+      data: $data
+      folderId: $folderId
+      tagsSelected: $tagsSelected
+    ) {
       url
     }
   }
@@ -109,3 +113,53 @@ export const SEARCH = gql`
     }
   }
 `
+
+export const ADD_USER = gql`
+  mutation registerUser($input: InputUser!) {
+    registerUser(input: $input) {
+      email
+      lastname
+      firstname
+    }
+  }
+`
+
+export const UPLOAD_USER_PROFIL = gql`
+  mutation uploadUserProfil($data: Upload!, $type: String!) {
+    uploadUserProfil(data: $data, type: $type) {
+      token
+    }
+  }
+`
+
+export const GET_USER_BY_ID = gql`
+  query Query($input: UserId!) {
+    getUserByID(input: $input) {
+      id
+      lastname
+      firstname
+      avatar
+      email
+      color
+      schoolId
+      userType
+      isSchoolAdmin
+    }
+  }
+`
+
+export const SIGNUP_MUTATION = gql`
+  mutation Mutation($createSchoolInput: InputSchool!) {
+    createSchool(input: $createSchoolInput) {
+      data {
+        id
+        firstname
+        schoolName
+      }
+      user {
+        id
+        firstname
+      }
+      workspace {
+        id
+        title
