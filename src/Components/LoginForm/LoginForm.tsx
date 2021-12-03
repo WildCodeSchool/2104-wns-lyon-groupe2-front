@@ -175,7 +175,6 @@ const LoginForm: React.FC<SomeComponentProps> = ({ history }) => {
             onClick={() => history.push('/create-my-school')}
             fullWidth
             variant="contained"
-            disabled={!validate()}
             style={{ marginTop: 20 }}
           >
             <p>Je souhaite inscrire mon école</p>
