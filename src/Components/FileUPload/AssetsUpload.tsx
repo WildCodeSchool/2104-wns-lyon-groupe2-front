@@ -4,23 +4,23 @@ import React, { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { Box, Button, Container, Typography } from '@material-ui/core'
 
-import { UPLOAD_FILE } from '../../graphql/mutations'
+import { UPLOAD_ASSETS } from '../../graphql/mutations'
 import { IAssetsProps, ITags } from '../../Interfaces/Assets'
 import AutocompleteComponent from '../Autocomplete/Autocomplete'
 import { GET_ALL_TAGS } from '../../graphql/queries'
-import './FileUpload.scss'
+import './AssetsUpload.scss'
 
-const FileUpload: React.FC<IAssetsProps | null> = function ({
+const AssetsUpload: React.FC<IAssetsProps | null> = ({
   folderId,
   setUpdateComponent,
   updateComponent,
   isModalOpen,
   setIsModalOpen,
-}) {
+}) => {
   const [errorMessage, setErrorMessage] = useState<boolean>(false)
   const [tagsSelected, setTagsSelected] = useState<ITags[] | []>([])
 
-  const [uploadFile] = useMutation(UPLOAD_FILE, {
+  const [uploadAssets] = useMutation(UPLOAD_ASSETS, {
     onCompleted: (result) => setUpdateComponent(!updateComponent),
   })
 
@@ -29,7 +29,7 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
     if (data.size > 2097152) {
       setErrorMessage(true)
     } else {
-      await uploadFile({
+      await uploadAssets({
         variables: { data, folderId, tagsSelected },
       })
       setIsModalOpen(!isModalOpen)
@@ -72,4 +72,4 @@ const FileUpload: React.FC<IAssetsProps | null> = function ({
     </div>
   )
 }
-export default FileUpload
+export default AssetsUpload

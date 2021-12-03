@@ -1,9 +1,9 @@
 import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import { ITags, ITagsProps } from '../../Interfaces/Assets'
-import '../FileUPload/FileUpload.scss'
+import '../FileUPload/AssetsUpload.scss'
 
-const AutocompleteComponent: React.FC<ITagsProps> = function (props) {
+const AutocompleteComponent: React.FC<ITagsProps> = (props) => {
   const { allTags, setTagsSelected } = props
   const handleSelectTags = (event, value) => {
     setTagsSelected(value)

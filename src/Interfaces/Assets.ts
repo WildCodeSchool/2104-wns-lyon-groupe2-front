@@ -8,12 +8,12 @@ export interface IAssetsDetails {
   updatedAt: string
   url: string
   type: string
-  tags: string[]
-  lastView: string
+  tags?: string[]
+  lastView?: string
   likes: number
-  dislikes: number
-  bookmarkedCount: number
-  openingCount: number
+  dislikes?: number
+  bookmarkedCount?: number
+  openingCount?: number
 }
 
 export interface IFolderDetails {

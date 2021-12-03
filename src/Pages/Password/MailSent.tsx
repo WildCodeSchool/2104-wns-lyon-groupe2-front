@@ -1,13 +1,7 @@
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import {
-  Avatar,
   Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Grid,
   Container,
   Card,
   CardActions,

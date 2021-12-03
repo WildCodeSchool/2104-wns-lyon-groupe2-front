@@ -23,6 +23,7 @@ import { green } from '@material-ui/core/colors'
 import { returnMessageForAnErrorCode } from '../../Tools/ErrorHandler'
 import { UserContext } from '../../Components/Context/UserContext'
 import { iXLSXUser, iNewUser } from '../../Interfaces/UsersInterfaces'
+import { ADD_USER } from '../../graphql/mutations'
 
 const AddNewUser: React.FC = () => {
   const {
@@ -35,15 +36,6 @@ const AddNewUser: React.FC = () => {
   const history = useHistory()
   const { userInfos } = useContext(UserContext)
   const { addToast } = useToasts()
-  const ADD_USER = gql`
-    mutation registerUser($input: InputUser!) {
-      registerUser(input: $input) {
-        email
-        lastname
-        firstname
-      }
-    }
-  `
 
   const [addUser, { data, error }] = useMutation(ADD_USER, {
     errorPolicy: 'all',

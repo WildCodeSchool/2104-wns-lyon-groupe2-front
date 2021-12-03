@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useEffect, useContext } from 'react'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -7,19 +7,14 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import CommentIcon from '@material-ui/icons/Comment'
-
 import { Grid, TextField, Typography, Avatar, Paper } from '@material-ui/core'
-import { IComment, IMessage } from '../../../../Interfaces/Workspace'
+import { UserContext } from '../../../Context/UserContext'
+
+import { IComment } from '../../../../Interfaces/Workspace'
 import useStyles from './CommentsStyle'
 import CommentsInput from './CommentsInput'
-import Messages from '../Messages'
 import useNickname from '../../../Hooks/useNickname'
-
-export interface CommentsProps {
-  message: IMessage
-  workspaceId: string
-  feedId: string
-}
+import { CommentsProps } from '../../../../Interfaces/Messages'
 
 const Comments: React.FC<CommentsProps> = ({
   message,
@@ -27,6 +22,8 @@ const Comments: React.FC<CommentsProps> = ({
   feedId,
 }) => {
   const [open, setOpen] = React.useState(false)
+  const { userInfos } = useContext(UserContext)
+
   const classes = useStyles()
 
   const handleClickOpen = () => {
@@ -79,6 +76,7 @@ const Comments: React.FC<CommentsProps> = ({
               <Grid className={classes.userNameContainer}>
                 <div style={{ width: '50%', marginLeft: '20' }}>
                   <Avatar
+                    src={userInfos.avatarUrl}
                     className={classes.nickName}
                     style={{ backgroundColor: message.color }}
                   >
@@ -123,6 +121,7 @@ const Comments: React.FC<CommentsProps> = ({
                     <Grid className={classes.userNameContainer}>
                       <div style={{ width: '50%', marginLeft: '20' }}>
                         <Avatar
+                          src={userInfos.avatarUrl}
                           className={classes.nickName}
                           style={{ backgroundColor: comment.color }}
                         >

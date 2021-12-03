@@ -3,9 +3,6 @@ import { NavbarContext } from '../../Components/Context/NavbarContext'
 import { SidebarContext } from '../../Components/Context/SidebarContext'
 import { UserContext } from '../../Components/Context/UserContext'
 import Navbar from '../../Components/Feed/Navbar/Navbar'
-import AssetsPopin from '../../Components/Feed/Popin/AssetsPopin'
-import SearchbarPopin from '../../Components/Feed/Popin/SearchbarPopin'
-import WorkspacePopin from '../../Components/Feed/Popin/WorkspacePopin'
 import BurgerMenu from '../../Components/Sidebar/BurgerMenu/BurgerMenu'
 import Sidebar from '../../Components/Sidebar/Sidebar'
 import UserProfile from '../../Components/UserProfile/UserProfile'
@@ -17,7 +14,6 @@ const Profile: React.FC = () => {
     useContext(SidebarContext)
 
   const { popin } = useContext(NavbarContext)
-  console.log(userInfos)
   return (
     <div className="home_page_container">
       <Sidebar />

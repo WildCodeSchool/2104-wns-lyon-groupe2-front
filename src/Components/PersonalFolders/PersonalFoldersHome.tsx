@@ -5,14 +5,14 @@ import { useQuery, useMutation } from '@apollo/client'
 import Loader from 'react-loader-spinner'
 import styled from 'styled-components'
 import { FcFolder } from 'react-icons/fc'
-import { BiPencil, BiWindows } from 'react-icons/bi'
+import { BiPencil } from 'react-icons/bi'
 import 'react-contexify/dist/ReactContexify.min.css'
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu'
 import { withRouter } from 'react-router-dom'
 import { Alert } from '@material-ui/lab'
 import { MdDelete, MdOutlineDriveFileMove } from 'react-icons/md'
 import Modal from '@material-ui/core/Modal'
-import { Button, Popover, TextField, Tooltip } from '@material-ui/core'
+import { Button, TextField, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   DragDropContext,
@@ -32,12 +32,13 @@ import {
 
 import { UPDATE_FOLDER, DELETE_FOLDER } from '../../graphql/mutations'
 import { SidebarContext } from '../Context/SidebarContext'
-import FileUpload from '../FileUPload/FileUpload'
 import AssetsTable from './Assets/AssetsTable'
-import { dataForAssetsTable } from '../../Tools/dataRework'
-import { TabsContainer } from './TabsContainer'
 import ModalContainer from './ModalContainer'
+
 import { ITags } from '../../Interfaces/Assets'
+import Navbar from '../Feed/Navbar/Navbar'
+import Searchbar from '../Feed/Navbar/Searchbar'
+import { TDataFolders, TDataFoldersPath } from '../../Interfaces/Folders'
 
 const LoadingContainer = styled.div`
   position: fixed;
@@ -46,22 +47,7 @@ const LoadingContainer = styled.div`
   transform: translate(-50%, -50%);
 `
 
-type TDataFolders = {
-  id: string
-  userId: string
-  createdAt: string
-  name: string
-  parentDirectory: string
-  isRootDirectory?: boolean
-  sequence: number
-}
-
-type TDataFoldersPath = {
-  name: string
-  id: string
-}
-
-const PersonalFoldersHome: React.FC = function ({ match, history }: any) {
+const PersonalFoldersHome: React.FC = ({ match, history }: any) => {
   // ////// //
   // STATES //
   // ////// //
@@ -405,6 +391,19 @@ const PersonalFoldersHome: React.FC = function ({ match, history }: any) {
       id="folders_container"
       onClick={(e) => getClickOutsideOfTextField(e)}
     >
+      <div
+        style={{
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+          width: '100%',
+          height: 100,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Searchbar />
+        <Navbar />
+      </div>
       <ModalContainer
         refetch={refetch}
         parentId={parentDirectory}
