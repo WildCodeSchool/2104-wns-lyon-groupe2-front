@@ -25,7 +25,6 @@ const Search: React.FC = () => {
 
   const { assets } = searchResponse || {}
   const { folders } = searchResponse || {}
-  console.log('🚀 ~ file: Search.tsx ~ line 28 ~ folders', folders)
   const { users } = searchResponse || {}
 
   return (

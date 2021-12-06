@@ -105,7 +105,8 @@ export const SEARCH = gql`
         _id
         lastname
         firstname
-        avatar
+        avatarUrl
+        backgroundUrl
         email
         isSchoolAdmin
         city
