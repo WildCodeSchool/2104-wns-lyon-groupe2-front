@@ -163,3 +163,7 @@ export const SIGNUP_MUTATION = gql`
       workspace {
         id
         title
+      }
+    }
+  }
+`
