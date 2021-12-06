@@ -27,6 +27,11 @@ const Search: React.FC = () => {
   const { folders } = searchResponse || {}
   const { users } = searchResponse || {}
 
+  console.log(
+    '🚀 ~ file: Search.tsx ~ line 24 ~ searchResponse',
+    searchResponse,
+  )
+
   return (
     <div className="search_container">
       <div
@@ -40,7 +45,7 @@ const Search: React.FC = () => {
         <Searchbar />
         <Navbar />
       </div>
-      {searchResponse ? (
+      {searchResponse.length ? (
         <div className="search_results">
           <>
             {users.length ? (
@@ -78,7 +83,15 @@ const Search: React.FC = () => {
           </>
         </div>
       ) : (
-        <div>Aucun résultat</div>
+        <div
+          style={{
+            padding: '20px',
+            width: '100%',
+            height: 100,
+          }}
+        >
+          Aucun résultat trouvé
+        </div>
       )}
     </div>
   )
