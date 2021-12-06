@@ -2,6 +2,7 @@ import { ApolloQueryResult } from '@apollo/client'
 import React, { Dispatch, SetStateAction } from 'react'
 
 export interface IAssetsDetails {
+  // private _id: any
   id: number
   title: string
   createdAt: string
