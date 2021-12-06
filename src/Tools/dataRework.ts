@@ -19,9 +19,7 @@ export const elipsMyText = (txt: string): string | undefined => {
   return txtTransform
 }
 
-export const dataForAssetsTable = (
-  data: IAssetsDetails[],
-): IAssetsDetails[] => {
+export const dataForAssetsTable = (data: any[]): any[] => {
   return data.map((elem, i) => {
     return {
       // eslint-disable-next-line no-underscore-dangle
