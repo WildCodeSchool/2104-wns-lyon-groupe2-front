@@ -45,7 +45,9 @@ const Search: React.FC = () => {
         <Searchbar />
         <Navbar />
       </div>
-      {searchResponse.length ? (
+      {searchResponse.assets.length ||
+      searchResponse.users.length ||
+      searchResponse.folders.length ? (
         <div className="search_results">
           <>
             {users.length ? (
