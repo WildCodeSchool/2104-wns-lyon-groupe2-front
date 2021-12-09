@@ -23,7 +23,7 @@ export const dataForAssetsTable = (data: any[]): any[] => {
   return data.map((elem, i) => {
     return {
       // eslint-disable-next-line no-underscore-dangle
-      id: elem._id,
+      id: elem.id,
       title: elem.title,
       createdAt: new Date(+elem.createdAt).toLocaleDateString(),
       updatedAt: new Date(+elem.updatedAt).toLocaleDateString(),
