@@ -108,9 +108,7 @@ const UserProfile = (props: any) => {
               backgroundColor: !userInfos.avatarUrl ? userInfos.color : null,
             }}
           >
-            {userInfos.firstname &&
-            userInfos.lastname &&
-            !userInfos.avatarUrl ? (
+            {userInfos.firstname && userInfos.lastname ? (
               <Typography style={{ fontSize: 40 }}>
                 {userInfos.firstname.charAt(0) + userInfos.lastname.charAt(0)}
               </Typography>

@@ -74,6 +74,47 @@ export const IS_AUTH = gql`
     }
   }
 `
+export const SEARCH = gql`
+  mutation search($input: InputSearch!) {
+    search(input: $input) {
+      assets {
+        _id
+        title
+        createdAt
+        updatedAt
+        url
+        type
+        tags
+        lastView
+        likes
+        dislikes
+        bookmarkedCount
+        openingCount
+      }
+      folders {
+        _id
+        sequence
+        userId
+        createdAt
+        name
+        parentDirectory
+        isRootDirectory
+        path
+      }
+      users {
+        _id
+        lastname
+        firstname
+        avatarUrl
+        backgroundUrl
+        email
+        isSchoolAdmin
+        city
+      }
+    }
+  }
+`
+
 export const ADD_USER = gql`
   mutation registerUser($input: InputUser!) {
     registerUser(input: $input) {
@@ -104,6 +145,26 @@ export const GET_USER_BY_ID = gql`
       schoolId
       userType
       isSchoolAdmin
+    }
+  }
+`
+
+export const SIGNUP_MUTATION = gql`
+  mutation Mutation($createSchoolInput: InputSchool!) {
+    createSchool(input: $createSchoolInput) {
+      data {
+        id
+        firstname
+        schoolName
+      }
+      user {
+        id
+        firstname
+      }
+      workspace {
+        id
+        title
+      }
     }
   }
 `

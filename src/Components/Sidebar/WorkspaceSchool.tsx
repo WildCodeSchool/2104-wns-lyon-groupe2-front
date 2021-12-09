@@ -5,7 +5,6 @@ import TreeView from '@material-ui/lab/TreeView'
 import TreeItem from '@material-ui/lab/TreeItem'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { FcGraduationCap } from 'react-icons/fc'
 import './Workspace.scss'
 import { useQuery, gql } from '@apollo/client'
 import { Link } from 'react-router-dom'
@@ -45,6 +44,7 @@ const WorkspaceSchool: React.FC = () => {
   const classes = useStyles()
   useEffect(() => {
     if (data?.allWorkspaces.length) {
+      console.log(data)
       setWorkspace(data.allWorkspaces)
       setFirstFeedOnHomePage(data.allWorkspaces[0].id)
     }

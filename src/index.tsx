@@ -10,16 +10,19 @@ import UserProvider from './Components/Context/UserContext'
 import SidebarContextProvider from './Components/Context/SidebarContext'
 import NavbarProvider from './Components/Context/NavbarContext'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+import SearchProvider from './Components/Context/SearchContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <ToastProvider placement="bottom-center">
       <NavbarProvider>
-        <UserProvider>
-          <SidebarContextProvider>
-            <App />
-          </SidebarContextProvider>
-        </UserProvider>
+        <SearchProvider>
+          <UserProvider>
+            <SidebarContextProvider>
+              <App />
+            </SidebarContextProvider>
+          </UserProvider>
+        </SearchProvider>
       </NavbarProvider>
     </ToastProvider>
   </React.StrictMode>,

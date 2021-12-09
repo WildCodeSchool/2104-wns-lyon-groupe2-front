@@ -26,6 +26,7 @@ const AssetsTable: React.FC<IGridProps> = ({
       setRows(dataForAssetsTable(assetsList))
     }
   }, [assetsList])
+
   return (
     <>
       {rows.length ? (

@@ -19,12 +19,11 @@ export const elipsMyText = (txt: string): string | undefined => {
   return txtTransform
 }
 
-export const dataForAssetsTable = (
-  data: IAssetsDetails[],
-): IAssetsDetails[] => {
+export const dataForAssetsTable = (data: any[]): any[] => {
   return data.map((elem, i) => {
     return {
-      id: elem.id,
+      // eslint-disable-next-line no-underscore-dangle
+      id: elem._id,
       title: elem.title,
       createdAt: new Date(+elem.createdAt).toLocaleDateString(),
       updatedAt: new Date(+elem.updatedAt).toLocaleDateString(),
